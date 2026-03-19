@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "description": "Gemini Kit framework configuration (not read by Gemini CLI — framework metadata only)",
+  "models": {
+    "default": "gemini-2.0-flash",
+    "reasoning": "gemini-2.0-pro",
+    "fast": "gemini-2.0-flash-lite"
+  },
+  "modelRouting": {
+    "planner": "gemini-2.0-pro",
+    "developer": "gemini-2.0-flash",
+    "tester": "gemini-2.0-flash",
+    "reviewer": "gemini-2.0-pro",
+    "autoSelect": true,
+    "complexTriggers": ["plan", "analyze --deep", "review --strict"]
+  },
+  "tokenBudget": {
+    "maxContextPerAgent": 2000,
+    "maxResponseLines": 300,
+    "preferStructuredOutput": true
+  },
+  "agents": ["planner", "developer", "tester", "reviewer"],
+  "skills": ["debug", "sql", "api", "analyze", "plan", "review"],
+  "commands": ["plan", "debug", "analyze", "help", "review", "test"],
+  "memory": {
+    "shortTermPath": ".gemini/memory/short-term.md",
+    "longTermPath": ".gemini/memory/long-term.md",
+    "executionPath": ".gemini/memory/execution.md",
+    "maxShortTermEntries": 50,
+    "maxLongTermEntries": 200
+  },
+  "hooks": {
+    "sessionInit": ".gemini/hooks/session-init.md",
+    "preTool": ".gemini/hooks/pre-tool.md",
+    "postTool": ".gemini/hooks/post-tool.md"
+  },
+  "tools": {
+    "db": {
+      "connections": {},
+      "readOnly": true,
+      "requireConfirmation": true
+    },
+    "api": {
+      "allowedDomains": [],
+      "auth": {},
+      "timeoutMs": 30000
+    },
+    "script": {
+      "sandbox": true,
+      "timeoutMs": 60000,
+      "requireConfirmation": true
+    }
+  }
+}

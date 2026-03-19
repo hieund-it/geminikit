@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentHandoff",
+  "description": "Standard envelope for passing output from one agent to the next in the GeminiKit pipeline.",
+  "type": "object",
+  "required": ["from_agent", "to_agent", "status", "artifacts", "context"],
+  "properties": {
+    "from_agent": {
+      "type": "string",
+      "enum": ["planner", "researcher", "developer", "tester", "reviewer", "documenter"],
+      "description": "Agent that produced this handoff"
+    },
+    "to_agent": {
+      "type": "string",
+      "enum": ["planner", "researcher", "developer", "tester", "reviewer", "documenter"],
+      "description": "Agent that should receive and act on this handoff"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ready", "blocked", "partial"],
+      "description": "ready = handoff complete; blocked = next agent cannot start; partial = proceed with caveats"
+    },
+    "artifacts": {
+      "type": "object",
+      "description": "Output produced by from_agent, consumed by to_agent",
+      "properties": {
+        "files_created": { "type": "array", "items": { "type": "string" } },
+        "files_modified": { "type": "array", "items": { "type": "string" } },
+        "files_deleted": { "type": "array", "items": { "type": "string" } },
+        "plan": { "type": "object", "description": "Populated when from_agent=planner" },
+        "research": { "type": "object", "description": "Populated when from_agent=researcher" },
+        "test_report": { "type": "object", "description": "Populated when from_agent=tester" },
+        "review_report": { "type": "object", "description": "Populated when from_agent=reviewer" },
+        "documentation": { "type": "object", "description": "Populated when from_agent=documenter" }
+      }
+    },
+    "context": {
+      "type": "object",
+      "required": ["task", "phase_id"],
+      "properties": {
+        "task": { "type": "string", "description": "Original user task description" },
+        "phase_id": { "type": ["number", "null"], "description": "Current plan phase ID (null if pre-planning)" },
+        "tech_stack": { "type": "array", "items": { "type": "string" } },
+        "constraints": { "type": "array", "items": { "type": "string" } },
+        "success_criteria": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Required when status=blocked. Must be non-empty."
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Caveats, partial completions, or warnings for to_agent"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Confidence in artifacts. If low, to_agent MUST verify before acting."
+    }
+  },
+  "additionalProperties": false
+}

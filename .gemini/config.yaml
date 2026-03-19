@@ -1,0 +1,72 @@
+# Gemini Kit Extended Configuration
+# Runtime config: settings.json | Extended config: here
+
+version: "1.0.0"
+
+# Directory paths
+paths:
+  agents: .gemini/agents
+  skills: .gemini/skills
+  commands: .gemini/commands
+  hooks: .gemini/hooks
+  memory: .gemini/memory
+  prompts: .gemini/prompts
+  rules: .gemini/rules
+  schemas: .gemini/schemas
+  tools: .gemini/tools
+  templates: .gemini/template
+
+# Hook configuration
+hooks:
+  session_init:
+    file: .gemini/hooks/session-init.md
+    trigger: on_session_start
+    blocking: false
+  pre_tool:
+    file: .gemini/hooks/pre-tool.md
+    trigger: before_tool_call
+    blocking: true
+  post_tool:
+    file: .gemini/hooks/post-tool.md
+    trigger: after_tool_call
+    blocking: false
+
+# Memory configuration
+memory:
+  short_term:
+    file: .gemini/memory/short-term.md
+    ttl: session          # clears on session end
+    max_entries: 50
+  long_term:
+    file: .gemini/memory/long-term.md
+    ttl: persistent       # persists across sessions
+    max_entries: 200
+  execution:
+    file: .gemini/memory/execution.md
+    ttl: task             # clears on task completion
+
+# Tool endpoints
+tools:
+  database:
+    file: .gemini/tools/db-tool.md
+    requires_approval: true
+  api:
+    file: .gemini/tools/api-tool.md
+    requires_approval: false
+  script:
+    file: .gemini/tools/script-tool.md
+    requires_approval: true
+
+# Token optimization
+token_optimization:
+  progressive_disclosure: true   # load skill files on demand
+  max_context_per_agent: 2000    # tokens per subagent context
+  use_structured_io: true        # JSON over prose
+  compress_memory: true          # summarize old entries
+
+# Agent model selection
+model_routing:
+  planner: gemini-2.0-pro        # reasoning-heavy
+  developer: gemini-2.0-flash    # speed-focused
+  tester: gemini-2.0-flash       # speed-focused
+  reviewer: gemini-2.0-pro       # analysis-heavy
