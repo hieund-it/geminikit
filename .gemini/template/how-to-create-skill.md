@@ -10,19 +10,20 @@ Step-by-step workflow for adding a skill to Gemini Kit. Follow in order — do n
 - Does this violate SCR-B1 (single responsibility)? If "analyze AND fix" → split into two skills
 - If both pass → proceed
 
-## Step 2: Copy template
+## Step 2: Create directory and file
 
 ```bash
-cp .gemini/template/skill-template.md .gemini/skills/<skill-name>.md
+mkdir -p .gemini/skills/<skill-name>
+cp .gemini/template/skill-template.md .gemini/skills/<skill-name>/SKILL.md
 ```
 
-File name MUST be kebab-case and match the `name` field you will set in frontmatter.
+Directory name and file name MUST be kebab-case and match the `name` field you will set in frontmatter.
 
 ## Step 3: Fill frontmatter
 
 ```yaml
 ---
-name: <skill-name>          # kebab-case, unique across skills/
+name: gk-<skill-name>       # kebab-case, unique across skills/
 version: "1.0.0"            # semver
 description: "Verb + what + outcome. One sentence."
 ---

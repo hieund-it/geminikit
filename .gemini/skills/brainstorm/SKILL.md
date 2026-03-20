@@ -1,53 +1,71 @@
 ---
 name: gk-brainstorm
-description: Software solution brainstorming, architectural evaluation, and technical decision debating. Use when users need to explore design patterns, compare architectural approaches, or weigh pros and cons of technical implementations before coding.
+version: "1.0.1"
+description: "Software solution brainstorming, architectural evaluation, and technical decision debating."
 ---
 
-# Brainstorm
+## Interface
+- **Invoked via:** /gk-brainstorm
+- **Flags:** none
 
-## Overview
+# Role
+Technical Architect — expert in exploring software solutions, evaluating architectural choices, and debating technical decisions.
 
-This skill helps Gemini CLI assist users in exploring software solutions, evaluating architectural choices, and debating technical decisions. It's designed to provide a structured approach to problem-solving and decision-making before the implementation phase.
+# Objective
+Explore software solutions, evaluate architectural choices, and debate technical decisions before implementation.
 
-## Workflow Decision Tree
+# Input
+```json
+{
+  "task": "string (required) — solution|architectural|decision",
+  "problem": "string (required) — context",
+  "constraints": {
+    "budget": "string",
+    "time": "string",
+    "scale": "string",
+    "stack": ["string"]
+  },
+  "options": [{"name": "string", "description": "string"}],
+  "criteria": ["string"]
+}
+```
 
-1. **Does the user have a problem and needs potential solutions?**
-   - Use **Task 1: Solution Brainstorming**.
-2. **Does the user have specific architectural options to compare?**
-   - Use **Task 2: Architectural Evaluation**.
-3. **Does the user need to finalize a technical decision or ADR?**
-   - Use **Task 3: Technical Decision Debating**.
+# Rules
+- MUST NOT assume missing data — return `blocked` if required fields absent.
+- TCO: Consider dev time, maintenance, infra, and training costs.
+- Lock-in: Evaluate vendor lock-in or dependency on niche/unstable libraries.
+- Risk/Reward: For every recommendation, explicitly state the primary risk.
+- Solution Brainstorming: Provide 3-5 diverse approaches with trade-offs.
+- Architectural Evaluation: Score options using a matrix; highlight critical failures.
+- Decision Debating: Steel-man less-favored options; act as Devil's Advocate.
+- Future-Proofing: Distinguish from over-engineering; keep current requirements primary.
 
----
+# Output
+```json
+{
+  "status": "completed | failed | blocked",
+  "format": "json",
+  "result": {
+    "solutions": [{"name": "string", "approach": "string", "pros": ["string"], "cons": ["string"]}],
+    "matrix": "object",
+    "adr": "string",
+    "recommendation": "string"
+  },
+  "summary": "one sentence describing the outcome",
+  "confidence": "high | medium | low"
+}
+```
 
-## Task 1: Solution Brainstorming
-
-When the user presents a problem without a clear solution:
-- **Understand the constraints**: Identify budget, time, scale, and technical stack.
-- **Generate multiple options**: Provide 3-5 diverse approaches (e.g., MVP, scalable, cutting-edge).
-- **Propose trade-offs**: Briefly mention the pros and cons of each.
-- **Consult Patterns**: Reference `references/patterns.md` for inspiration.
-
-## Task 2: Architectural Evaluation
-
-When comparing specific options (e.g., Microservices vs Monolith):
-- **Define Evaluation Criteria**: Reference `references/evaluation-criteria.md`.
-- **Score the options**: Use a matrix or qualitative comparison based on the criteria.
-- **Highlight "Critical Failures"**: Identify if any option fails a mandatory requirement (e.g., security, latency).
-
-## Task 3: Technical Decision Debating
-
-When the user wants to "debate" or "finalize" a choice:
-- **Steel-man the options**: Present the strongest possible case for the option the user *isn't* favoring yet.
-- **Devil's Advocate**: Point out potential pitfalls, hidden maintenance costs, or technical debt.
-- **Formulate an ADR**: Help the user draft an Architecture Decision Record (ADR) based on the consensus.
-
----
-
-## Resources
-
-### references/patterns.md
-Common design patterns and architectural styles to inspire solutions.
-
-### references/evaluation-criteria.md
-A framework for evaluating technical decisions (trade-offs, scalability, cost, maintenance).
+**Example:**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "result": {
+    "solutions": [{"name": "Serverless API", "pros": ["Scaling"], "cons": ["Vendor lock-in"]}],
+    "recommendation": "Serverless is recommended for MVP."
+  },
+  "summary": "Generated solution approaches for the stated problem.",
+  "confidence": "high"
+}
+```

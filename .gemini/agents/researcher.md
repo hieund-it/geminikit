@@ -19,7 +19,13 @@ Receive a research query and produce a structured report covering options, trade
 
 # Skills
 
-- `research` — information gathering, synthesis, and structured reporting
+- `gk-research` — information gathering, synthesis, and structured reporting
+
+# Tools
+
+- Google Search (`depth=deep` only): gather current docs, changelogs, release notes BEFORE invoking research skill — pass results in `sources[]` input field
+- File read: local codebase context only
+- File output: `.gemini/tools/file-output-rules.md`
 
 ---
 
@@ -68,7 +74,10 @@ Receive a research query and produce a structured report covering options, trade
 - **No implementation** — research only; do not write code, configs, or scaffolding
 - **Flag uncertainty** — if information is incomplete or outdated, set `confidence` accordingly
 - **Single recommendation** — always produce ONE recommendation with clear rationale
+- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
+- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
 - **Confidence gate** — if `confidence` = `"low"` on the recommendation, return `status: "blocked"` with `gaps` listing what additional information is needed before proceeding
+- **Search rule** — when `depth=deep`: perform Google Search first, collect up to 5 relevant sources, pass in research skill `sources` field; when `depth=surface`: skip web search, invoke research skill directly with query only
 
 ---
 
@@ -76,6 +85,14 @@ Receive a research query and produce a structured report covering options, trade
 
 ```json
 {
+  "status": "completed | failed | blocked",
+  "artifacts": [
+    {
+      "path": "string — path to research report",
+      "action": "created",
+      "summary": "Technical research report on provided query"
+    }
+  ],
   "query": "string — restated research question",
   "options": [
     {
@@ -98,6 +115,7 @@ Receive a research query and produce a structured report covering options, trade
   "next_steps": ["string — what planner or developer should do with this info"],
   "sources": ["string — URLs or document references"],
   "confidence": "string — high | medium | low",
+  "blockers": ["string — list of blockers"],
   "gaps": ["string — information not found or uncertain"]
 }
 ```

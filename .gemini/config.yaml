@@ -70,3 +70,5 @@ model_routing:
   developer: gemini-2.0-flash    # speed-focused
   tester: gemini-2.0-flash       # speed-focused
   reviewer: gemini-2.0-pro       # analysis-heavy
+  comparator: gemini-2.0-pro     # analysis-heavy
+  designer: gemini-2.0-pro       # analysis-heavy

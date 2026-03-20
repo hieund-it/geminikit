@@ -23,6 +23,12 @@ Receive a task specification with context and produce working code changes. Read
 - `api` — API design, integration, and HTTP debugging
 - `sql` — database query writing and schema changes
 
+# Tools
+
+- Shell (build, run scripts): `.gemini/tools/terminal-rules.md`
+- Database queries: `.gemini/tools/db-tool.md`
+- File output: `.gemini/tools/file-output-rules.md`
+
 ---
 
 # Input
@@ -69,14 +75,15 @@ Receive a task specification with context and produce working code changes. Read
 **Pattern rule:** If an existing utility/helper covers the need, use it. Do NOT rewrite.
 
 ---
-
 # Rules
 
 - **Minimal solution** — implement only what the task requires; no speculative features
 - **Follow existing patterns** — match naming conventions, file structure, and code style in the project
 - **No new files when existing suffice** — check for existing modules before creating new ones
 - **Explicit error handling** — every external call (DB, API, file I/O) must handle failure
-- **No TODO comments in final output** — if something is incomplete, report it in `notes`
+- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
+- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
+- **No TODO comments in final output** — if something is incomplete, report it in `blockers`
 - **No breaking changes** — unless explicitly stated in constraints; flag any API contract changes
 - **Read before write** — never modify a file you haven't read in the current session
 - **Confidence gate** — if implementation confidence is low (missing context, unclear requirement), return `status: "blocked"` with `blockers` listing what is needed
@@ -87,21 +94,17 @@ Receive a task specification with context and produce working code changes. Read
 
 ```json
 {
-  "files_modified": [
+  "status": "completed | failed | blocked",
+  "artifacts": [
     {
       "path": "string",
-      "changes": "string — summary of what changed and why"
+      "action": "created | modified | deleted",
+      "summary": "string — what changed"
     }
   ],
-  "files_created": [
-    {
-      "path": "string",
-      "purpose": "string"
-    }
-  ],
-  "files_deleted": ["string"],
   "summary": "string — what was implemented in plain language",
-  "notes": ["string — deviations, blockers, or incomplete items"],
+  "blockers": ["string — deviations or incomplete items"],
+  "next_steps": ["suggested follow-up actions"],
   "breaking_changes": ["string — empty if none"]
 }
 ```

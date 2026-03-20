@@ -1,0 +1,158 @@
+{
+  "agents": [
+    {
+      "name": "comparator",
+      "file": ".gemini/agents/comparator.md",
+      "specialization": "System Migration Analyst — compares business logic between legacy and new systems"
+    },
+    {
+      "name": "designer",
+      "file": ".gemini/agents/designer.md",
+      "specialization": "UI/UX Designer — produces visual specs pre-implementation and validates UI quality post-implementation"
+    },
+    {
+      "name": "developer",
+      "file": ".gemini/agents/developer.md",
+      "specialization": "Senior Software Engineer — implements solutions, debugs issues, writes code"
+    },
+    {
+      "name": "documenter",
+      "file": ".gemini/agents/documenter.md",
+      "specialization": "Technical Writer — generates and updates project documentation from code and implementation context"
+    },
+    {
+      "name": "planner",
+      "file": ".gemini/agents/planner.md",
+      "specialization": "Senior Technical Architect — analyzes requests, breaks down tasks, creates execution plans"
+    },
+    {
+      "name": "researcher",
+      "file": ".gemini/agents/researcher.md",
+      "specialization": "Research Engineer — gathers, synthesizes, and reports technical information before planning or implementation"
+    },
+    {
+      "name": "reviewer",
+      "file": ".gemini/agents/reviewer.md",
+      "specialization": "Senior Code Reviewer & Security Analyst — reviews code quality, security, performance"
+    },
+    {
+      "name": "tester",
+      "file": ".gemini/agents/tester.md",
+      "specialization": "Senior QA Engineer — validates implementations, writes tests, reports coverage"
+    }
+  ],
+  "skills": [
+    {
+      "name": "analyze",
+      "agent": "reviewer",
+      "command": "/gk-analyze",
+      "flags": "--deep | --security | --perf",
+      "description": "Analyze code or system structure and report findings on complexity, dependencies, and risks."
+    },
+    {
+      "name": "api",
+      "agent": "reviewer",
+      "command": "agent-only (developer, reviewer)",
+      "flags": "none",
+      "description": "Design, review, or debug an API based on provided spec and context."
+    },
+    {
+      "name": "ask",
+      "agent": "(self)",
+      "command": "/gk-ask",
+      "flags": "--deep | --quick",
+      "description": "Expert assistant for answering technical and general questions with grounded context."
+    },
+    {
+      "name": "brainstorm",
+      "agent": "researcher",
+      "command": "/gk-brainstorm",
+      "flags": "none",
+      "description": "Software solution brainstorming, architectural evaluation, and technical decision debating."
+    },
+    {
+      "name": "compare-logic",
+      "agent": "comparator",
+      "command": "/gk-compare-logic",
+      "flags": "none",
+      "description": "Compares business logic between a legacy system and a new, migrated system by analyzing their source code."
+    },
+    {
+      "name": "debug",
+      "agent": "developer",
+      "command": "/gk-debug",
+      "flags": "--trace | --deep",
+      "description": "Identify root cause of a software error and recommend a precise fix."
+    },
+    {
+      "name": "document",
+      "agent": "documenter",
+      "command": "agent-only (documenter)",
+      "flags": "none",
+      "description": "Generate accurate technical documentation from provided code content and context."
+    },
+    {
+      "name": "git",
+      "agent": "developer",
+      "command": "agent-only (developer)",
+      "flags": "--dry-run",
+      "description": "Execute git operations: commit, branch, status, PR prep, and conflict detection."
+    },
+    {
+      "name": "onboard",
+      "agent": "researcher",
+      "command": "/gk-onboard",
+      "flags": "--deep",
+      "description": "Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential."
+    },
+    {
+      "name": "plan",
+      "agent": "planner",
+      "command": "/gk-plan",
+      "flags": "--fast | --deep | --parallel | --from <path> | --dry-run | --phase <id>",
+      "description": "Break down a complex task into structured, executable subtasks with dependencies and effort estimates."
+    },
+    {
+      "name": "research",
+      "agent": "planner",
+      "command": "agent-only (planner, orchestrator)",
+      "flags": "none",
+      "description": "Gather, compare, and synthesize technical options into a structured recommendation report."
+    },
+    {
+      "name": "review",
+      "agent": "reviewer",
+      "command": "/gk-review",
+      "flags": "--strict | --quick",
+      "description": "Review code for quality, security, performance, and correctness with a scored, actionable report."
+    },
+    {
+      "name": "skill-creator",
+      "agent": "developer",
+      "command": "/gk-create",
+      "flags": "- `--skill`: Generate a new skill component at `.gemini/skills/<name>/SKILL.md`",
+      "description": "Generate agent and skill files following Gemini Kit templates and rules."
+    },
+    {
+      "name": "sql",
+      "agent": "developer",
+      "command": "agent-only (developer)",
+      "flags": "none",
+      "description": "Optimize a SQL query for performance while preserving its logical result."
+    },
+    {
+      "name": "summarize",
+      "agent": "developer",
+      "command": "agent-only (orchestrator)",
+      "flags": "none",
+      "description": "Compress conversation history or agent output into a structured, token-efficient summary."
+    },
+    {
+      "name": "ui",
+      "agent": "designer",
+      "command": "/gk-design",
+      "flags": "--spec | --review",
+      "description": "Generate precise visual component specs or review implemented UI for design quality and accessibility compliance."
+    }
+  ]
+}

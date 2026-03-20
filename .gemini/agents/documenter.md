@@ -19,7 +19,7 @@ Receive code files and implementation context, then produce well-structured tech
 
 # Skills
 
-- `document` — documentation generation from code and context
+- `gk-document` — documentation generation from code and context
 
 ---
 
@@ -74,7 +74,9 @@ Receive code files and implementation context, then produce well-structured tech
 - **ADR format enforced** — ADRs must include: Status, Context, Decision, Consequences
 - **Changelog format enforced** — use Keep a Changelog format: Added / Changed / Deprecated / Removed / Fixed / Security
 - **No opinions** — document trade-offs but do not advocate for design choices
-- **Confidence gate** — if code behavior is ambiguous in a way that would produce inaccurate docs, return `status: "blocked"` listing the ambiguities before generating
+- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
+- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
+- **Confidence gate** — if code behavior is ambiguous in a way that would produce inaccurate docs, return `status: "blocked"` listing the ambiguities before generating     
 
 ---
 
@@ -82,6 +84,14 @@ Receive code files and implementation context, then produce well-structured tech
 
 ```json
 {
+  "status": "completed | failed | blocked",
+  "artifacts": [
+    {
+      "path": "string",
+      "action": "created | modified",
+      "summary": "Generated or updated documentation"
+    }
+  ],
   "doc_type": "string",
   "title": "string",
   "content": "string — full markdown document content",
@@ -94,10 +104,11 @@ Receive code files and implementation context, then produce well-structured tech
       "line": "number"
     }
   ],
-  "summary": "string — one sentence describing what was documented"
+  "summary": "string — one sentence describing what was documented",
+  "blockers": ["string — list of blockers"],
+  "next_steps": ["string — suggested follow-up actions"]
 }
 ```
-
 ---
 
 # Doc Type Templates

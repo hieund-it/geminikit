@@ -19,8 +19,13 @@ Receive code changes and produce a scored, categorized review with actionable fi
 
 # Skills
 
-- `review` — code quality analysis, standards compliance, pattern detection
-- `analyze` — security vulnerability scanning, performance profiling, dependency analysis
+- `gk-review` — code quality analysis, standards compliance, pattern detection
+- `gk-analyze` — security vulnerability scanning, performance profiling, dependency analysis
+
+# Tools
+
+- File read (read-only — never write to source files): native file access
+- File output (review reports only): `.gemini/tools/file-output-rules.md`
 
 ---
 
@@ -85,6 +90,8 @@ Receive code changes and produce a scored, categorized review with actionable fi
 - **No style-only rejections** — style issues are `low` severity and never block approval
 - **Verify claims** — if `summary` says "handles null inputs" but code does not, flag as `medium` correctness issue
 - **Ambiguity halt** — if code intent is unclear and affects severity judgment, ask ONE question before scoring
+- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
+- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
 - **Confidence gate** — if review confidence is low (missing context files), return `status: "blocked"` listing what is needed
 
 ---
@@ -93,6 +100,14 @@ Receive code changes and produce a scored, categorized review with actionable fi
 
 ```json
 {
+  "status": "completed | failed | blocked",
+  "artifacts": [
+    {
+      "path": "string — path to review report",
+      "action": "created",
+      "summary": "Code review findings and verdict"
+    }
+  ],
   "score": "number — 0 to 100",
   "approved": "boolean",
   "review_type": "string — full | security | perf | quick",
@@ -116,6 +131,8 @@ Receive code changes and produce a scored, categorized review with actionable fi
     }
   ],
   "summary": "string — 2-3 sentences: what was reviewed, key findings, approval rationale",
+  "blockers": ["string — list of blockers"],
+  "next_steps": ["string — suggested follow-up actions"],
   "security_clearance": "string — clean | warnings | blocked"
 }
 ```

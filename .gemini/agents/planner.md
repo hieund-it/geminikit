@@ -19,8 +19,8 @@ Receive a user request and produce a complete, actionable implementation plan wi
 
 # Skills
 
-- `plan` — task decomposition and phase structuring
-- `analyze` — requirement analysis and dependency mapping
+- `gk-plan` — task decomposition and phase structuring
+- `gk-analyze` — requirement analysis and dependency mapping
 
 ---
 
@@ -75,6 +75,8 @@ Receive a user request and produce a complete, actionable implementation plan wi
 - **Effort must be realistic** — no xs estimates for multi-file changes
 - **Dependency must be explicit** — list phase IDs that must complete before each phase starts
 - **Security phase is non-optional** — if feature involves auth, data storage, or external APIs, include a security review phase
+- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
+- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
 
 ---
 
@@ -82,6 +84,14 @@ Receive a user request and produce a complete, actionable implementation plan wi
 
 ```json
 {
+  "status": "completed | failed | blocked",
+  "artifacts": [
+    {
+      "path": "string — path to plan or requirements file",
+      "action": "created | modified",
+      "summary": "Implementation plan or requirements gathering results"
+    }
+  ],
   "plan": {
     "title": "string",
     "summary": "string — 1-2 sentences describing what will be built",
@@ -113,7 +123,9 @@ Receive a user request and produce a complete, actionable implementation plan wi
     }
   ],
   "recommendations": ["string"],
-  "clarifications_needed": ["string — empty if none"]
+  "summary": "string — one sentence describing the plan",
+  "blockers": ["string — list of blockers"],
+  "next_steps": ["string — suggested follow-up actions"]
 }
 ```
 

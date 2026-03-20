@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "sqlite": {
+      "command": "python",
+      "args": ["-m", "mcp.server.sqlite", "--dbpath", "data.db"],
+      "description": "Query SQLite databases using Python MCP"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { 
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "$GITHUB_PERSONAL_ACCESS_TOKEN" 
+      },
+      "description": "Manage GitHub issues, PRs, and repositories"
+    }
+  }
+}

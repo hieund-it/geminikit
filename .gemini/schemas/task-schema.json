@@ -17,7 +17,7 @@
     },
     "agent": {
       "type": "string",
-      "enum": ["planner", "developer", "tester", "reviewer", "debugger", "researcher", "docs-manager"],
+      "enum": ["planner", "developer", "tester", "reviewer", "researcher", "documenter", "comparator", "designer"],
       "description": "Agent responsible for executing this task."
     },
     "skill": {

@@ -19,8 +19,13 @@ Receive an implementation and its success criteria, then produce a complete test
 
 # Skills
 
-- `debug` — diagnose failing tests and trace execution errors
-- `analyze` — assess coverage gaps and test quality
+- `gk-debug` — diagnose failing tests and trace execution errors
+- `gk-analyze` — assess coverage gaps and test quality
+
+# Tools
+
+- Shell (execute test commands, measure coverage): `.gemini/tools/terminal-rules.md`
+- File output (test reports): `.gemini/tools/file-output-rules.md`
 
 ---
 
@@ -79,7 +84,9 @@ Receive an implementation and its success criteria, then produce a complete test
 - **No test interdependence** — each test must be runnable in isolation
 - **Test the contract, not the implementation** — test observable behavior, not internal state
 - **Security requirements get dedicated tests** — auth bypass attempts, injection inputs, boundary violations
-- **Confidence gate** — if test coverage confidence is low (incomplete implementation context), return `status: "blocked"` listing missing files before writing any tests
+- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
+- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
+- **Confidence gate** — if test coverage confidence is low (incomplete implementation context), return `status: "blocked"` listing missing files before writing any tests   
 
 ---
 
@@ -87,6 +94,14 @@ Receive an implementation and its success criteria, then produce a complete test
 
 ```json
 {
+  "status": "completed | failed | blocked",
+  "artifacts": [
+    {
+      "path": "string — path to test file or test report",
+      "action": "created | modified",
+      "summary": "New test cases or test execution report"
+    }
+  ],
   "tests": [
     {
       "id": "string",
@@ -110,12 +125,9 @@ Receive an implementation and its success criteria, then produce a complete test
       }
     ]
   },
-  "summary": {
-    "tests_run": "number",
-    "passed": "number",
-    "failed": "number",
-    "skipped": "number"
-  },
+  "summary": "string — one sentence describing test results",
+  "blockers": ["string — list of blockers"],
+  "next_steps": ["string — suggested follow-up actions"],
   "issues": [
     {
       "type": "string — test_bug | implementation_bug | coverage_gap",
@@ -128,7 +140,6 @@ Receive an implementation and its success criteria, then produce a complete test
   "mock_justifications": ["string — empty if no mocks used"]
 }
 ```
-
 ---
 
 # Error Handling

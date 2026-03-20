@@ -47,6 +47,8 @@ Example: "You are a senior backend engineer specializing in API design and datab
 - Respect file ownership boundaries if running in team mode.
 - Never store secrets or credentials in memory files.
 - Escalate blocking issues to the orchestrating agent rather than stalling.
+- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
+- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
 - [Add agent-specific rule 1]
 - [Add agent-specific rule 2]
 
@@ -55,7 +57,7 @@ Example: "You are a senior backend engineer specializing in API design and datab
 ```json
 {
   "status": "completed | failed | blocked",
-  "deliverables": ["list of files created or modified"],
+  "artifacts": ["list of files created or modified"],
   "summary": "string — what was accomplished",
   "blockers": ["list of issues that prevented completion, empty if none"],
   "next_steps": ["suggested follow-up actions, empty if none"]

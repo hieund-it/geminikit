@@ -1,0 +1,25 @@
+{
+  "general": {
+    "defaultApprovalMode": "default"
+  },
+  "model": {
+    // "name": "Auto (Gemini 3)",
+    "maxSessionTurns": 100
+  },
+  "ui": {
+    "theme": "Default",
+    "hideBanner": false
+  },
+  "tools": {
+    "shell": {
+      "allowed": true
+    }
+  },
+  "security": {
+    "disableYoloMode": true
+  },
+  "context": {
+    "fileName": "GEMINI.md"
+  },
+  "mcpServers": {}
+}

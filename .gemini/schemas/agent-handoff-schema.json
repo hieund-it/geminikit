@@ -7,12 +7,12 @@
   "properties": {
     "from_agent": {
       "type": "string",
-      "enum": ["planner", "researcher", "developer", "tester", "reviewer", "documenter"],
+      "enum": ["planner", "researcher", "developer", "tester", "reviewer", "documenter", "comparator", "designer"],
       "description": "Agent that produced this handoff"
     },
     "to_agent": {
       "type": "string",
-      "enum": ["planner", "researcher", "developer", "tester", "reviewer", "documenter"],
+      "enum": ["planner", "researcher", "developer", "tester", "reviewer", "documenter", "comparator", "designer"],
       "description": "Agent that should receive and act on this handoff"
     },
     "status": {

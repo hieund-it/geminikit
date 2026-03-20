@@ -15,7 +15,7 @@ Produce precise visual specifications for developers before implementation, and 
 
 # Skills
 
-- `ui` — visual spec generation and UI quality review
+- `gk-ui` — visual spec generation and UI quality review
 
 ---
 
@@ -59,6 +59,8 @@ Produce precise visual specifications for developers before implementation, and 
 - `review` mode: flag visual inconsistency, poor contrast, missing states, accessibility gaps
 - MUST flag accessibility issues as `high` severity minimum
 - MUST NOT set `approved: true` if: color contrast < 4.5:1 (WCAG AA) or interactive elements lack focus states
+- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
+- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
 - Confidence gate: if design requirements ambiguous → `status: "blocked"` with `gaps`
 - File output: → See `.gemini/tools/file-output-rules.md`
 
@@ -68,42 +70,46 @@ Produce precise visual specifications for developers before implementation, and 
 
 ```json
 {
-  "mode": "spec | review",
-  "spec": {
-    "components": [
-      {
-        "name": "string",
-        "layout": "string",
-        "tokens": { "color": "string", "spacing": "string", "typography": "string" },
-        "states": ["default", "hover", "focus", "disabled", "error"],
-        "accessibility": ["string"]
-      }
-    ],
-    "page_layout": "string",
-    "breakpoints": ["string"]
-  },
-  "review": {
-    "score": "number — 0 to 100",
-    "approved": "boolean",
-    "issues": [
-      {
-        "severity": "critical|high|medium|low",
-        "category": "contrast|spacing|typography|consistency|accessibility|states",
-        "location": "string",
-        "description": "string",
-        "fix": "string"
-      }
-    ]
-  }
-}
-```
-
-**Response envelope:**
-```json
-{
   "status": "completed | failed | blocked",
-  "result": { /* fields above */ },
-  "summary": "one sentence describing design output"
+  "artifacts": [
+    {
+      "path": "string — path to spec or review report",
+      "action": "created | modified",
+      "summary": "Visual specification or UI review findings"
+    }
+  ],
+  "result": {
+    "mode": "spec | review",
+    "spec": {
+      "components": [
+        {
+          "name": "string",
+          "layout": "string",
+          "tokens": { "color": "string", "spacing": "string", "typography": "string" },
+          "states": ["default", "hover", "focus", "disabled", "error"],
+          "accessibility": ["string"]
+        }
+      ],
+      "page_layout": "string",
+      "breakpoints": ["string"]
+    },
+    "review": {
+      "score": "number — 0 to 100",
+      "approved": "boolean",
+      "issues": [
+        {
+          "severity": "critical|high|medium|low",
+          "category": "contrast|spacing|typography|consistency|accessibility|states",
+          "location": "string",
+          "description": "string",
+          "fix": "string"
+        }
+      ]
+    }
+  },
+  "summary": "one sentence describing design output",
+  "blockers": ["string — list of blockers"],
+  "next_steps": ["string — suggested follow-up actions"]
 }
 ```
 

@@ -9,7 +9,7 @@ description: "One sentence: what this skill does (action-oriented)"
 <!-- See: .gemini/template/mode-template.md for mode file format -->
 
 ## Interface
-- **Invoked via:** /gk-[command-name] (or "agent-only")
+- **Invoked via:** /gk-[skill-name] (or "agent-only")
 - **Flags:** --flag1 | --flag2 (or "none")
 - **Errors:** ERROR_CODE_1, ERROR_CODE_2
 
@@ -55,6 +55,7 @@ description: "One sentence: what this skill does (action-oriented)"
 ```json
 {
   "status": "completed | failed | blocked",
+  "format": "json | markdown | text",
   "result": {
     // skill-specific result fields here
   },
@@ -67,6 +68,7 @@ description: "One sentence: what this skill does (action-oriented)"
 ```json
 {
   "status": "blocked",
+  "format": "json",
   "missing_fields": ["field_name"],
   "summary": "Cannot proceed: required fields missing"
 }
@@ -76,6 +78,7 @@ description: "One sentence: what this skill does (action-oriented)"
 ```json
 {
   "status": "failed",
+  "format": "json",
   "error": { "code": "ERROR_CODE", "message": "description" },
   "summary": "one sentence"
 }
@@ -85,6 +88,7 @@ description: "One sentence: what this skill does (action-oriented)"
 ```json
 {
   "status": "completed",
+  "format": "json",
   "result": { "example_field": "example_value" },
   "summary": "Task completed successfully.",
   "confidence": "high"
