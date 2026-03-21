@@ -28,7 +28,7 @@ Commands follow the format: `/gk-<command> [--mode] [task]`
 | `/gk-debug` | developer | `--trace \| --deep` |
 | `agent-only (documenter)` | documenter | `—` |
 | `agent-only (developer)` | developer | `--dry-run` |
-| `/gk-mcp` | mcp-manager | `—` |
+| `/gk-mcp-manager` | mcp-manager | `—` |
 | `/gk-onboard` | researcher | `--deep` |
 | `/gk-plan` | planner | `--fast \| --deep \| --parallel \| --from <path> \| --dry-run \| --phase <id>` |
 | `agent-only (planner, orchestrator)` | planner | `—` |
@@ -88,7 +88,6 @@ Routing table:
 For each subtask, check `.gemini/skills/` for matching skill:
 <!-- GK_SKILL_ROUTING_START -->
 - `analyze/SKILL.md` — Analyze code or system structure and report findings on complexity, dependencies, and risks.
-- `api/SKILL.md` — Design, review, or debug an API based on provided spec and context.
 - `ask/SKILL.md` — Expert assistant for answering technical and general questions with grounded context.
 - `brainstorm/SKILL.md` — Software solution brainstorming, architectural evaluation, and technical decision debating.
 - `compare-logic/SKILL.md` — Compares business logic between a legacy system and a new, migrated system by analyzing their source code.

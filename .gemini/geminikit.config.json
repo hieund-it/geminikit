@@ -20,7 +20,7 @@
     "preferStructuredOutput": true
   },
   "agents": ["planner", "developer", "tester", "reviewer"],
-  "skills": ["debug", "sql", "api", "analyze", "plan", "review"],
+  "skills": ["debug", "sql", "analyze", "plan", "review"],
   "commands": ["plan", "debug", "analyze", "help", "review", "test"],
   "memory": {
     "shortTermPath": ".gemini/memory/short-term.md",

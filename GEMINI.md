@@ -64,6 +64,7 @@ Use artifacts from developer handoff to determine files to stage.
 <!-- GK_AGENT_REGISTRY_START -->
 | Agent | Skills | Specialization |
 |-------|--------|----------------|
+| architect | `gk-brainstorm`, `gk-analyze` | Senior Software Architect — specializes in high-level system design, deep reasoning, and technical trade-off analysis |
 | comparator | `compare-logic` | System Migration Analyst — compares business logic between legacy and new systems |
 | designer | `ui` | UI/UX Designer — produces visual specs pre-implementation and validates UI quality post-implementation |
 | developer | `debug`, `git`, `skill-creator`, `sql`, `summarize` | Senior Software Engineer — implements solutions, debugs issues, writes code |
@@ -71,7 +72,7 @@ Use artifacts from developer handoff to determine files to stage.
 | mcp-manager | `mcp-manager` | MCP Administrator — manages MCP server configurations, connections, and development |
 | planner | `plan`, `research` | Senior Technical Architect — analyzes requests, breaks down tasks, creates execution plans |
 | researcher | `brainstorm`, `onboard` | Research Engineer — gathers, synthesizes, and reports technical information before planning or implementation |
-| reviewer | `analyze`, `api`, `review` | Senior Code Reviewer & Security Analyst — reviews code quality, security, performance |
+| reviewer | `analyze`, `review` | Senior Code Reviewer & Security Analyst — reviews code quality, security, performance |
 | tester | — | Senior QA Engineer — validates implementations, writes tests, reports coverage |
 
 <!-- GK_AGENT_REGISTRY_END -->

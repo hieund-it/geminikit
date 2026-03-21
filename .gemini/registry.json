@@ -106,7 +106,7 @@
     {
       "name": "mcp-manager",
       "agent": "mcp-manager",
-      "command": "/gk-mcp",
+      "command": "/gk-mcp-manager",
       "flags": "none",
       "description": "Manage MCP server configuration, test connections, and scaffold new servers."
     },

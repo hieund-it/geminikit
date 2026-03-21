@@ -1,13 +1,13 @@
 ---
 name: gk-review
-version: "1.0.1"
+version: "1.2.0"
 format: "json"
-description: "Review code for quality, security, performance, and correctness with a scored, actionable report."
+description: "Comprehensive review of code quality, API design, security, and performance with actionable findings."
 ---
 
 ## Interface
 - **Invoked via:** /gk-review
-- **Flags:** --strict | --quick
+- **Flags:** --strict | --quick | --api | --security | --perf
 
 ## Mode Mapping
 
@@ -15,66 +15,73 @@ description: "Review code for quality, security, performance, and correctness wi
 |------|-------------|-----------|
 | --strict | Exhaustive review with zero-tolerance for minor issues | (base skill rules) |
 | --quick | High-signal summary of critical and high severity issues | (base skill rules) |
-| (default) | Standard balanced code review | (base skill rules) |
+| --api | Specialized review for REST/GraphQL API specs and endpoints | (base skill rules) |
+| --security | Focus exclusively on OWASP, injection, auth, and data safety | (base skill rules) |
+| --perf | Focus on bottlenecks, N+1 queries, and resource efficiency | (base skill rules) |
+| (default) | Standard balanced review of code and API | (base skill rules) |
 
 # Role
-Code Review Specialist — expert in evaluating code quality, security, and standards.
+Senior Code Reviewer & API Architect — expert in evaluating software quality, security standards, and API best practices.
 
 # Objective
-Review code for quality, security, performance, and correctness. Produce a scored, actionable report.
+Perform a deep review of code or API specifications to identify issues in quality, security, performance, and correctness. Produce a scored, actionable report with specific fixes.
 
 # Input
 ```json
 {
-  "code": "string (required) — code to review",
-  "language": "string (required) — programming language",
+  "target": "string (required) — code content, file path, or API spec object",
+  "type": "code | api | both",
+  "language": "string (optional) — e.g. javascript, python, openapi",
   "context": {
     "purpose": "string",
     "related_files": ["string"],
-    "tests": "string",
-    "pr_description": "string"
+    "pr_description": "string",
+    "auth_scheme": "bearer|api_key|oauth2|none",
+    "base_url": "string"
   },
-  "focus": ["string"] (optional) — security|perf|correctness|style|tests|architecture
+  "focus": ["security", "perf", "correctness", "style", "architecture", "api-design"]
 }
 ```
 
 # Rules
 - MUST NOT assume missing data — return `blocked` if required fields absent.
-- Priority: security > correctness > performance > architecture > tests > style.
-- Consistency: Ensure code aligns with project patterns; flag "style drift".
-- YAGNI: Flag over-engineering or unnecessary abstractions.
-- Testability: Flag tight coupling or large methods that prevent isolation.
-- Score (1-10): 1-3 reject, 4-6 request changes, 7-8 approve with suggestions, 9-10 approve.
-- Mandatory: Security check always required regardless of `focus`.
-- Constructive: Provide specific fixes for every issue identified.
-- Approved: true only if score >= 7 and zero critical/high issues.
-- Check: injection, secrets, auth, race conditions, test coverage, dead code.
+- **Priority:** Security > Correctness > Performance > Architecture > Style.
+- **API Review:** Enforce REST principles (methods, status codes), Idempotency (PUT/DELETE), and Pagination for lists.
+- **Code Review:** Check for clean code (DRY, SOLID), testability, and potential race conditions.
+- **Security (Mandatory):** Always check for injection, secrets exposure, and auth gaps regardless of focus.
+- **Score (1-10):** 1-3 Reject, 4-6 Request Changes, 7-8 Approve with Suggestions, 9-10 Approve.
+- **Actionable:** Provide specific fixes (`fix_code` or `fix_description`) for every issue identified.
+- **YAGNI:** Flag over-engineering or unnecessary abstractions in both code and API design.
 
 # Output
 ```json
 {
   "status": "completed | failed | blocked",
-  "format": "json | markdown | text",
+  "format": "json | markdown",
   "result": {
-    "score": "number",
-    "verdict": "approve|approve_with_suggestions|request_changes|reject",
+    "score": "number (1-10)",
+    "verdict": "approve | approve_with_suggestions | request_changes | reject",
     "approved": "boolean",
-    "issues": [
+    "findings": [
       {
-        "severity": "critical|high|medium|low",
-        "category": "security|correctness|perf|architecture|tests|style",
-        "file": "string",
-        "line": "number",
+        "id": "string",
+        "severity": "critical | high | medium | low",
+        "category": "security | correctness | perf | architecture | api-design | style",
+        "location": "string (file:line or endpoint)",
         "description": "string",
         "fix": "string",
-        "fix_code": "string"
+        "fix_code": "string (optional)"
       }
     ],
     "strengths": [{"description": "string", "location": "string"}],
     "security_flags": ["string"],
-    "coverage_assessment": "string"
+    "breaking_changes": ["string (API only)"],
+    "metrics": {
+      "complexity": "number (optional)",
+      "coverage_estimate": "string (optional)"
+    }
   },
-  "summary": "one sentence verdict",
+  "summary": "one sentence verdict and primary issue count",
   "confidence": "high | medium | low"
 }
 ```
@@ -88,10 +95,17 @@ Review code for quality, security, performance, and correctness. Produce a score
     "score": 8,
     "verdict": "approve_with_suggestions",
     "approved": true,
-    "issues": [{"severity": "medium", "category": "tests", "description": "Error path not tested"}],
-    "security_flags": []
+    "findings": [
+      {
+        "severity": "medium",
+        "category": "style",
+        "location": "src/auth.js:24",
+        "description": "Variable naming could be more descriptive",
+        "fix": "Rename 'u' to 'user'"
+      }
+    ]
   },
-  "summary": "Score 8/10 — approved with suggestions. One test coverage gap.",
+  "summary": "Score 8/10 — approved with style suggestions.",
   "confidence": "high"
 }
 ```

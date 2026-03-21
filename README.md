@@ -1,190 +1,157 @@
-# Gemini Kit
+# Gemini Kit (gemini-kit)
 
-A multi-agent AI development framework for Gemini CLI. Optimizes token usage and standardizes software engineering workflows through specialized agents, atomic skills, and strict rule enforcement.
-
----
-
-## Architecture
-
-5-layer system — each layer has a single responsibility:
-
-```
-Layer 1: Entry Point   GEMINI.md / AGENT.md       parse commands, complexity check, route
-Layer 2: Agents        planner/developer/tester/reviewer   single-role executors
-Layer 3: Skills        debug/sql/api/analyze/plan/review   atomic, stateless processors
-Layer 4: Tools         db-tool/api-tool/script-tool        external I/O only
-Layer 5: Memory        short-term/execution/long-term      state management
-```
+**Gemini Kit** is a multi-agent AI development framework designed to run inside the **Gemini CLI**. It provides a structured environment for orchestrating specialized AI agents and atomic skills to deliver high-quality software engineering outcomes while optimizing token usage and ensuring strict architectural compliance.
 
 ---
 
-## Execution Flow
+## 🚀 Overview
 
-```
-User Input (/gk:command or natural language)
-       │
-       ▼
-AGENT.md — parse + complexity check
-       │
-       ├─ Simple (explicit /gk: command, single agent, clear scope)
-       │       └── route directly to target agent
-       │
-       └─ Complex (multi-step, /gk:plan, natural language, ambiguous)
-               └── planner agent → plan.phases[] DAG
-                       ├── sequential phases (A depends on B)
-                       └── parallel phases (independent)
-                                   │
-                               skills/ → tools/ → memory/
-                                   │
-                           Structured JSON + markdown summary
-```
+The framework transforms a single AI interaction into a coordinated effort among specialized agents. It follows the **Research → Strategy → Execution** lifecycle, ensuring every task is planned, implemented, and validated with precision.
+
+### Core Principles
+- **YAGNI** (You Ain't Gonna Need It): Focus only on the current task.
+- **KISS** (Keep It Simple, Stupid): Prefer the simplest working solution.
+- **DRY** (Don't Repeat Yourself): Maintain a single source of truth for logic and rules.
+- **Single Responsibility**: Each component (agent, skill, rule) has exactly one job.
+- **No Assumptions**: Ask for clarification instead of guessing.
 
 ---
 
-## Agent Registry
+## ⚙️ Installation
 
-| Agent | Responsibility | Allowed Skills |
-|-------|---------------|----------------|
-| `planner` | Task decomposition, dependency mapping, effort estimation | plan, analyze |
-| `developer` | Implementation, debugging, code generation | debug, api, sql |
-| `tester` | Test execution, validation, coverage | debug, analyze |
-| `reviewer` | Code review, security analysis, quality gates | review, analyze |
+### Requirements
+- [Gemini CLI](https://github.com/google-gemini/gemini-cli) installed
+- Node.js >= 18
 
-Rules: one agent per task, no agent calls another agent directly, all routing through Orchestrator.
-
----
-
-## Command System
-
-> For a full list of commands and flags, see the [Command Reference](docs/COMMANDS_REFERENCE.md).
-
-```
-/gk:<command> [--mode] [task]
-```
-
-| Command | Agent | Mode Flags |
-|---------|-------|------------|
-| `/gk:plan` | planner | `--fast`, `--deep`, `--parallel` |
-| `/gk:debug` | developer | `--trace`, `--deep` |
-| `/gk:analyze` | reviewer | `--deep`, `--security`, `--perf` |
-| `/gk:review` | reviewer | `--strict`, `--quick` |
-| `/gk:test` | tester | `--unit`, `--integration`, `--all` |
-| `/gk:help` | orchestrator | — |
-
-**Examples:**
-```
-/gk:plan build authentication system
-/gk:debug --trace NullPointerException in UserService
-/gk:review --strict src/api/auth.py
-/gk:analyze --security src/
-```
-
----
-
-## Project Structure
-
-```
-.gemini/
-├── AGENT.md              # Orchestrator — parse, complexity check, route, aggregate
-├── CORE_RULES.md         # Master ruleset — all 12 mandatory categories (80 lines)
-├── system.md             # Global rules applied to all components
-├── settings.json         # Gemini CLI runtime config
-├── config.yaml           # Optional project-level overrides
-│
-├── agents/               # Role definitions — loaded on demand
-│   ├── planner.md
-│   ├── developer.md
-│   ├── tester.md
-│   └── reviewer.md
-│
-├── skills/               # Atomic, stateless task executors
-│   ├── debug.md
-│   ├── sql.md
-│   ├── api.md
-│   ├── analyze.md
-│   ├── plan.md
-│   ├── review.md
-│   └── install.sh
-│
-├── commands/             # /gk: command handlers
-│   ├── plan.md, debug.md, analyze.md, review.md, test.md, help.md
-│
-├── rules/                # Constraint and policy files
-│   ├── safety.md               # SAF-1…8: destructive op guards, input validation
-│   ├── orchestrator-rules.md   # OR-1…8: route-only, complexity gate, error escalation
-│   ├── agent-rules.md          # AR-1…6: role lock, I/O contract, no chaining
-│   ├── context-rules.md        # CR-1…6: progressive disclosure, token budget, memory
-│   ├── output-contract.md      # OC-1…7: response schema, per-agent contracts
-│   ├── skill-creation-rules.md # SCR-S/B/V/C: structure, behavior, validation
-│   ├── skill-invocation-rules.md  # SIR-1…6: runtime invocation protocol
-│   └── conflict-resolution-rules.md  # PCR-1…6: priority, file ownership, deadlock
-│
-├── hooks/                # Lifecycle handlers
-│   ├── session-init.md, pre-tool.md, post-tool.md
-│
-├── memory/               # Context and state
-│   ├── short-term.md (TTL: session)
-│   ├── execution.md (TTL: task)
-│   └── long-term.md (TTL: persistent)
-│
-├── tools/                # External integration definitions
-│   ├── db-tool.md, api-tool.md, script-tool.md
-│
-├── schemas/              # JSON I/O contracts
-│   ├── task-schema.json, report-schema.json, skill-io-schema.json
-│
-├── prompts/              # Reusable prompt templates
-│   ├── task-decomposition.md, skill-router.md
-│
-└── template/             # Starter templates
-    ├── skill-template.md, agent-template.md, command-template.md
-
-docs/                     # Project documentation
-plans/                    # Implementation plans and reports
-GEMINI.md                 # Framework reference (loaded by Gemini CLI)
-```
-
----
-
-## Rules Catalog
-
-All rules are condensed into 4 key files in `.gemini/rules/`:
-
-| Category | File | Coverage |
-|----------|------|----------|
-| **Core** | `01_core.md` | Foundations, safety, and agent/skill integrity |
-| **Workflow** | `02_workflow.md` | Orchestration hierarchy and execution contracts |
-| **Resource** | `03_resource.md` | Surgical reads, token budget, and checkpointing |
-| **Output** | `04_output.md` | JSON format, delegation with compression, and validation |
-
----
-
-## Quick Start
+### Install via npm (recommended)
 
 ```bash
-# Install (creates .gemini/ subdirectories)
-./.gemini/skills/install.sh
+npm install -g github:hieund-it/geminikit
+```
 
-# First commands
-/gk:help
-/gk:plan <describe your task>
-/gk:debug <error or issue>
+### Initialize in your project
+
+```bash
+cd your-project
+gk init
+```
+
+This scaffolds `.gemini/` and `GEMINI.md` into the current directory.
+
+### Configure API key
+
+```bash
+cp .gemini/.env.example .gemini/.env
+```
+
+Open `.gemini/.env` and add your `GOOGLE_API_KEY`.
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `gk init` | Scaffold `.gemini/` and `GEMINI.md` into current project |
+| `gk list` | List available agents and skills |
+| `gk update` | Update to the latest version |
+
+### Alternative: Clone directly
+
+```bash
+git clone https://github.com/hieund-it/geminikit.git
+cd gemini-kit
+npm install
 ```
 
 ---
 
-## Principles
+## 🏗️ Architecture
 
-- **YAGNI** — don't build what isn't needed now
-- **KISS** — simplest solution that works
-- **DRY** — no logic duplicated across agents, skills, or rules
-- **Single responsibility** — one job per component, no exceptions
-- **No assumption** — ask when data is missing, never infer
-- **Structured output** — JSON between components, markdown for humans
+Gemini Kit operates on a 5-layer responsibility model:
+
+1.  **Layer 1: Entry Point (`GEMINI.md`)**: Command parsing, complexity checking, and initial routing.
+2.  **Layer 2: Agents (`agents/`)**: Specialized executors (e.g., `planner`, `developer`, `tester`).
+3.  **Layer 3: Skills (`skills/`)**: Atomic, stateless processors for specific tasks (e.g., `debug`, `sql`, `plan`).
+4.  **Layer 4: Tools (`tools/`)**: Definitions for external I/O (Database, Scripts).
+5.  **Layer 5: Memory (`memory/`)**: State management (Short-term, Long-term, Execution).
 
 ---
 
-## Documentation
+## 🤖 Agent Registry
 
-- [System Overview](docs/SYSTEM_OVERVIEW.md) — Detailed architecture and workflow.
-- [Command Reference](docs/COMMANDS_REFERENCE.md) — Comprehensive list of commands and flags.
+The framework employs specialized agents for different stages of the development lifecycle:
+
+| Agent | Specialization | Key Skills |
+| :--- | :--- | :--- |
+| **Planner** | Task decomposition & dependency mapping | `plan`, `research` |
+| **Developer** | Implementation & debugging | `debug`, `git`, `sql` |
+| **Tester** | QA, validation & test coverage | `debug`, `analyze` |
+| **Reviewer** | Code quality & security auditing | `review`, `analyze` |
+| **Architect** | High-level system design | `brainstorm`, `analyze` |
+| **Researcher** | Technical research & onboarding | `brainstorm`, `onboard` |
+| **Documenter** | Technical writing & documentation | `document` |
+| **MCP Manager** | Model Context Protocol administration | `mcp-manager` |
+
+---
+
+## 🛠️ Commands & Usage
+
+Commands follow the `/gk:<command>` syntax:
+
+- `/gk:plan [task]` - Decompose a complex task into an executable plan.
+- `/gk:debug [issue]` - Trace and fix bugs or performance issues.
+- `/gk:analyze [path]` - Perform security, performance, or architectural analysis.
+- `/gk:review [file]` - Conduct a strict code review based on project standards.
+- `/gk:test [scope]` - Run unit, integration, or full system tests.
+- `/gk:help` - Display command and framework help.
+
+---
+
+## ⚙️ Configuration & Settings
+
+The framework is highly configurable through files in the `.gemini/` directory:
+
+### Runtime Settings (`settings.json`)
+- **Default Model**: `gemini-3-flash-preview`
+- **Session Limits**: 100 turns max.
+- **Security**: YOLO mode disabled by default.
+
+### Extended Configuration (`config.yaml`)
+- **Model Routing**: 
+    - Reasoning-heavy tasks (Planner, Reviewer): `gemini-2.0-pro`
+    - Speed-focused tasks (Developer, Tester): `gemini-2.0-flash`
+- **Token Optimization**: 
+    - Progressive disclosure (load skills on demand).
+    - Max context per agent: 2000 tokens.
+    - Compressed memory and structured (JSON) I/O.
+- **Memory Management**: 
+    - Short-term (session-scoped).
+    - Long-term (persistent across sessions).
+    - Execution (task-scoped).
+
+### Framework Metadata (`geminikit.config.json`)
+Defines the internal registry of available agents, skills, and command triggers used by the framework's orchestration logic.
+
+---
+
+## 📂 Project Structure
+
+```text
+.gemini/
+├── agents/       # Agent role definitions
+├── skills/       # Atomic task executors
+├── rules/        # Strict behavioral guidelines (01_core...06_documentation)
+├── hooks/        # Lifecycle triggers (session-init, pre/post-tool)
+├── memory/       # State persistence layers
+├── schemas/      # JSON I/O contracts
+├── tools/        # External integration definitions
+├── prompts/      # Reusable prompt templates
+└── AGENT.md      # Framework Orchestrator core
+```
+
+---
+
+## 🚦 Safety & Validation
+
+- **No destructive operations** without explicit user confirmation.
+- **Zero-leak policy**: No credentials or PII ever logged or committed.
+- **Mandatory Validation**: Every implementation must be verified with tests before completion.
