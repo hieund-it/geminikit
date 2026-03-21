@@ -109,3 +109,26 @@ In `.gemini/rules/agent-rules.md` AR-1, add the skill to the agent's allowed lis
 | Rules | 8–15 |
 | Output (schema + envelope + examples) | 25–35 |
 | **Total** | **≤ 200** |
+
+## Python Skills (Optional)
+
+If your skill requires Python logic:
+
+1.  **Script Location:** Place your script in `.gemini/skills/<skill-name>/scripts/<script_name>.py`.
+2.  **Dependencies:** Add required libraries to `.gemini/requirements.txt`.
+3.  **Execution Rule:** NEVER call `python` directly. Always resolve the local runtime path from `.gemini/settings.json`.
+
+**Node.js Wrapper Example:**
+```javascript
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+// Load settings to find local python runtime
+const settingsPath = path.join(process.cwd(), '.gemini', 'settings.json');
+const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+
+// Execute script using the isolated environment
+const scriptPath = path.join(__dirname, 'scripts', 'myscript.py');
+execSync(`"${settings.python_path}" "${scriptPath}"`, { stdio: 'inherit' });
+```
