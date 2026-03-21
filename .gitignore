@@ -17,7 +17,6 @@ ENV/
 # Claude kit
 .claude
 .opencode
-docs
 
 # npm
 node_modules/
