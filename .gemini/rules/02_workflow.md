@@ -13,6 +13,7 @@
   1. Determine if the task requires external integrations (DB, API, Repo).
   2. If yes, execute MCP Bridge discovery (`python .gemini/scripts/mcp_bridge.py`).
   3. Incorporate discovered tools from `temp_mcp_manifest.json` into the implementation plan.
+- **Confirmation Gate:** Upon completion of the Strategy Phase (Planning), the Orchestrator MUST present the plan to the user and **wait for explicit confirmation** (e.g., "Plan approved", "Proceed") before proceeding to the Execution Phase.
 - A task is considered complete ONLY after the result has been verified (Validation is the final mandatory step).
 
 ## 3. Priority & Conflict Resolution
@@ -29,5 +30,3 @@
   - Hard-blocked patterns: `rm -rf /`, `format C:`, `dd if=`.
 - **Output Capture:** Capture stdout and stderr separately; truncate streams at 10KB if exceeded.
 - **Path Handling:** Use backslashes `\` for Windows paths or properly quote paths containing spaces.
-
-

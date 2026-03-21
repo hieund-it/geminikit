@@ -19,3 +19,7 @@
 - **Malformed Data:** If output fails validation, BẮT BUỘC trả về `status: "failed"` và không được chuyển giao cho thành phần kế tiếp.
 - **Circuit Breaker:** 3 liên tiếp lỗi từ cùng một thành phần → Tự động báo cáo `disabled` và dừng tác vụ.
 
+## 5. Localization
+- **Reasoning:** MUST always be in English to ensure logic consistency.
+- **Final Output:** MUST be in the language defined by `OUTPUT_LANGUAGE` in `.env`.
+- If `OUTPUT_LANGUAGE` is missing, default to English.

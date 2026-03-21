@@ -3,7 +3,7 @@
     "defaultApprovalMode": "default"
   },
   "model": {
-    // "name": "Auto (Gemini 3)",
+    "name": "gemini-3-flash-preview",
     "maxSessionTurns": 100
   },
   "ui": {

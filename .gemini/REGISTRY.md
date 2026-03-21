@@ -17,8 +17,8 @@ This file is automatically managed by `sync_registry.py`. ALWAYS reference this 
 | `/gk-debug [--trace \| --deep] <args>` | developer | gk-debug | Identify root cause of a software error and recommend a precise fix. |
 | `agent-only (documenter)` | documenter | gk-document | Generate accurate technical documentation from provided code content and context. |
 | `agent-only (developer) [--dry-run] <args>` | developer | gk-git | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
+| `/gk-mcp` | mcp-manager | gk-mcp-manager | Manage MCP server configuration, test connections, and scaffold new servers. |
 | `/gk-onboard [--deep] <args>` | researcher | gk-onboard | Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential. |
-| `/gk-export-session` | developer | gk-export-session | Exports the current session state and conversation summary for continuation. |
 | `/gk-plan [--fast \| --deep \| --parallel \| --from <path> \| --dry-run \| --phase <id>] <args>` | planner | gk-plan | Break down a complex task into structured, executable subtasks with dependencies and effort estimates. |
 | `agent-only (planner, orchestrator)` | planner | gk-research | Gather, compare, and synthesize technical options into a structured recommendation report. |
 | `/gk-review [--strict \| --quick] <args>` | reviewer | gk-review | Review code for quality, security, performance, and correctness with a scored, actionable report. |
@@ -43,8 +43,8 @@ This file is automatically managed by `sync_registry.py`. ALWAYS reference this 
 | compare-logic | `.gemini/skills/compare-logic/SKILL.md` | `deep`, `quick` | Compares business logic between a legacy system and a new, migrated system by analyzing their source code. |
 | debug | `.gemini/skills/debug/SKILL.md` | `deep`, `trace` | Identify root cause of a software error and recommend a precise fix. |
 | document | `.gemini/skills/document/SKILL.md` | — | Generate accurate technical documentation from provided code content and context. |
-| export-session | `.gemini/skills/export-session/SKILL.md` | — | Exports the current session state and conversation summary for continuation. |
 | git | `.gemini/skills/git/SKILL.md` | — | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
+| mcp-manager | `.gemini/skills/mcp-manager/SKILL.md` | — | Manage MCP server configuration, test connections, and scaffold new servers. |
 | onboard | `.gemini/skills/onboard/SKILL.md` | — | Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential. |
 | plan | `.gemini/skills/plan/SKILL.md` | — | Break down a complex task into structured, executable subtasks with dependencies and effort estimates. |
 | research | `.gemini/skills/research/SKILL.md` | — | Gather, compare, and synthesize technical options into a structured recommendation report. |

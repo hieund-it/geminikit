@@ -56,6 +56,8 @@ Rules: one agent per task, no agent calls another agent directly, all routing th
 
 ## Command System
 
+> For a full list of commands and flags, see the [Command Reference](docs/COMMANDS_REFERENCE.md).
+
 ```
 /gk:<command> [--mode] [task]
 ```
@@ -146,18 +148,14 @@ GEMINI.md                 # Framework reference (loaded by Gemini CLI)
 
 ## Rules Catalog
 
-All rules condensed in `.gemini/CORE_RULES.md`. Full rule files in `.gemini/rules/`:
+All rules are condensed into 4 key files in `.gemini/rules/`:
 
 | Category | File | Coverage |
 |----------|------|----------|
-| Safety | `safety.md` | Input validation, destructive op gates, file boundaries |
-| Orchestration | `orchestrator-rules.md` | Route-only, complexity check, error escalation |
-| Agent behavior | `agent-rules.md` | Role lock, I/O contracts, no agent chaining |
-| Token efficiency | `context-rules.md` | Progressive disclosure, token budget, memory layers |
-| Output schema | `output-contract.md` | `{status, result, summary}` for all components |
-| Skill creation | `skill-creation-rules.md` | Structure, validation checklist, 200-line limit |
-| Skill runtime | `skill-invocation-rules.md` | Registry check, JSON input, 30s timeout |
-| Conflicts | `conflict-resolution-rules.md` | Priority order, file ownership, deadlock prevention |
+| **Core** | `01_core.md` | Foundations, safety, and agent/skill integrity |
+| **Workflow** | `02_workflow.md` | Orchestration hierarchy and execution contracts |
+| **Resource** | `03_resource.md` | Surgical reads, token budget, and checkpointing |
+| **Output** | `04_output.md` | JSON format, delegation with compression, and validation |
 
 ---
 
@@ -183,3 +181,10 @@ All rules condensed in `.gemini/CORE_RULES.md`. Full rule files in `.gemini/rule
 - **Single responsibility** — one job per component, no exceptions
 - **No assumption** — ask when data is missing, never infer
 - **Structured output** — JSON between components, markdown for humans
+
+---
+
+## Documentation
+
+- [System Overview](docs/SYSTEM_OVERVIEW.md) — Detailed architecture and workflow.
+- [Command Reference](docs/COMMANDS_REFERENCE.md) — Comprehensive list of commands and flags.

@@ -21,6 +21,11 @@
       "specialization": "Technical Writer — generates and updates project documentation from code and implementation context"
     },
     {
+      "name": "mcp-manager",
+      "file": ".gemini/agents/mcp-manager.md",
+      "specialization": "MCP Administrator — manages MCP server configurations, connections, and development"
+    },
+    {
       "name": "planner",
       "file": ".gemini/agents/planner.md",
       "specialization": "Senior Technical Architect — analyzes requests, breaks down tasks, creates execution plans"
@@ -97,6 +102,13 @@
       "command": "agent-only (developer)",
       "flags": "--dry-run",
       "description": "Execute git operations: commit, branch, status, PR prep, and conflict detection."
+    },
+    {
+      "name": "mcp-manager",
+      "agent": "mcp-manager",
+      "command": "/gk-mcp",
+      "flags": "none",
+      "description": "Manage MCP server configuration, test connections, and scaffold new servers."
     },
     {
       "name": "onboard",

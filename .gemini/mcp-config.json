@@ -1,9 +1,9 @@
 {
   "mcpServers": {
     "sqlite": {
-      "command": "python",
-      "args": ["-m", "mcp.server.sqlite", "--dbpath", "data.db"],
-      "description": "Query SQLite databases using Python MCP"
+      "command": "mcp-server-sqlite",
+      "args": ["--db-path", "data.db"],
+      "description": "Query SQLite databases using mcp-server-sqlite"
     },
     "github": {
       "command": "npx",

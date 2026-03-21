@@ -68,6 +68,7 @@ Use artifacts from developer handoff to determine files to stage.
 | designer | `ui` | UI/UX Designer — produces visual specs pre-implementation and validates UI quality post-implementation |
 | developer | `debug`, `git`, `skill-creator`, `sql`, `summarize` | Senior Software Engineer — implements solutions, debugs issues, writes code |
 | documenter | `document` | Technical Writer — generates and updates project documentation from code and implementation context |
+| mcp-manager | `mcp-manager` | MCP Administrator — manages MCP server configurations, connections, and development |
 | planner | `plan`, `research` | Senior Technical Architect — analyzes requests, breaks down tasks, creates execution plans |
 | researcher | `brainstorm`, `onboard` | Research Engineer — gathers, synthesizes, and reports technical information before planning or implementation |
 | reviewer | `analyze`, `api`, `review` | Senior Code Reviewer & Security Analyst — reviews code quality, security, performance |
@@ -83,6 +84,8 @@ Refer to `.gemini/rules/01_core.md` for foundational principles and safety.
 Refer to `.gemini/rules/02_workflow.md` for orchestration and execution logic.
 Refer to `.gemini/rules/03_resource.md` for token and context optimization.
 Refer to `.gemini/rules/04_output.md` for communication and handoff protocols.
+Refer to `.gemini/rules/05_development.md` for coding standards and task execution.
+Refer to `.gemini/rules/06_documentation.md` for documentation management.
 
 1. **Never assume** missing information — ask when data is absent.
 2. **Never expand scope** — only solve the assigned task.

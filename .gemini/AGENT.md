@@ -28,6 +28,7 @@ Commands follow the format: `/gk-<command> [--mode] [task]`
 | `/gk-debug` | developer | `--trace \| --deep` |
 | `agent-only (documenter)` | documenter | `—` |
 | `agent-only (developer)` | developer | `--dry-run` |
+| `/gk-mcp` | mcp-manager | `—` |
 | `/gk-onboard` | researcher | `--deep` |
 | `/gk-plan` | planner | `--fast \| --deep \| --parallel \| --from <path> \| --dry-run \| --phase <id>` |
 | `agent-only (planner, orchestrator)` | planner | `—` |
@@ -94,6 +95,7 @@ For each subtask, check `.gemini/skills/` for matching skill:
 - `debug/SKILL.md` — Identify root cause of a software error and recommend a precise fix.
 - `document/SKILL.md` — Generate accurate technical documentation from provided code content and context.
 - `git/SKILL.md` — Execute git operations: commit, branch, status, PR prep, and conflict detection.
+- `mcp-manager/SKILL.md` — Manage MCP server configuration, test connections, and scaffold new servers.
 - `onboard/SKILL.md` — Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential.
 - `plan/SKILL.md` — Break down a complex task into structured, executable subtasks with dependencies and effort estimates.
 - `research/SKILL.md` — Gather, compare, and synthesize technical options into a structured recommendation report.
