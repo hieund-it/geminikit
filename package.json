@@ -49,7 +49,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hieund-it/geminikit"
+    "url": "https://github.com/hieund-it/geminikit.git"
   },
   "keywords": [
     "gemini",
