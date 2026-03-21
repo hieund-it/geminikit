@@ -1,0 +1,18 @@
+# Dev tooling — not needed in distributed package
+# Note: package.json#files controls what IS included (bin/, src/, .gemini/, GEMINI.md)
+.claude/
+.opencode/
+plans/
+docs/
+.env*
+*.log
+node_modules/
+.git/
+.gitignore
+.npmignore
+
+# Exclude runtime/session state and secrets from .gemini/
+.gemini/memory/
+.gemini/temp_mcp_manifest.json
+.gemini/.env
+**/.env

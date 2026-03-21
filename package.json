@@ -1,0 +1,69 @@
+{
+  "name": "gemini-kit",
+  "version": "1.0.0",
+  "description": "Multi-agent AI development framework for Gemini CLI",
+  "bin": {
+    "gk": "./bin/gk.js"
+  },
+  "pkg": {
+    "assets": [
+      ".gemini/**/*",
+      "src/**/*",
+      "GEMINI.md"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "dist"
+  },
+  "scripts": {
+    "build": "pkg .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    ".gemini/agents/",
+    ".gemini/skills/",
+    ".gemini/rules/",
+    ".gemini/hooks/",
+    ".gemini/tools/",
+    ".gemini/template/",
+    ".gemini/schemas/",
+    ".gemini/prompts/",
+    ".gemini/commands/",
+    ".gemini/AGENT.md",
+    ".gemini/REGISTRY.md",
+    ".gemini/system.md",
+    ".gemini/settings.json",
+    ".gemini/mcp-config.json",
+    ".gemini/registry.json",
+    ".gemini/.env.example",
+    ".gemini/geminikit.config.json",
+    ".gemini/config.yaml",
+    "GEMINI.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hieund-it/geminikit"
+  },
+  "keywords": [
+    "gemini",
+    "ai",
+    "cli",
+    "agents",
+    "multi-agent"
+  ],
+  "dependencies": {
+    "commander": "^12.0.0",
+    "fs-extra": "^11.0.0",
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  }
+}
