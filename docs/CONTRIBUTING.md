@@ -17,9 +17,19 @@ We welcome contributions! Please follow these guidelines to ensure consistency a
 
 ## Coding Standards
 
-- **Language**: TypeScript/JavaScript for logic, Markdown for docs/prompts.
-- **Style**: Follow existing patterns. Use `camelCase` for variables, `PascalCase` for classes.
-- **Documentation**: All new features must include documentation in `docs/` and docstrings in code.
+### Languages
+
+| Language | Usage |
+|----------|-------|
+| **TypeScript / JavaScript** | CLI (`bin/`, `src/`), Node.js logic, skill scripts |
+| **Python** | Automation scripts (`.gemini/scripts/`) |
+| **Markdown** | Agent definitions, skill prompts, documentation |
+
+### Style
+- Variables: `camelCase` (JS/TS), `snake_case` (Python)
+- Classes: `PascalCase` (all languages)
+- Files: `kebab-case` for JS/TS/Python; respect existing conventions
+- **Documentation**: All new features must include docs in `docs/` and docstrings in code.
 - **Testing**: Add unit tests for logic-heavy components.
 
 ## Adding New Skills
@@ -28,6 +38,14 @@ We welcome contributions! Please follow these guidelines to ensure consistency a
 2.  Create `SKILL.md` following the standard schema.
 3.  Update `.gemini/REGISTRY.md` to register the new skill.
 4.  Add a corresponding command if applicable.
+
+## License
+
+By contributing to Gemini Kit, you agree that your contributions will be licensed under the [MIT License](../LICENSE) that covers this project.
+
+You retain copyright of your own contributions. By submitting a pull request, you confirm that:
+- You have the right to submit the work under the MIT License.
+- You understand your contribution may be distributed under the MIT License.
 
 ## Reporting Bugs
 
