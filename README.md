@@ -1,157 +1,78 @@
-# Gemini Kit (gemini-kit)
+# Gemini Kit
 
-**Gemini Kit** is a multi-agent AI development framework designed to run inside the **Gemini CLI**. It provides a structured environment for orchestrating specialized AI agents and atomic skills to deliver high-quality software engineering outcomes while optimizing token usage and ensuring strict architectural compliance.
+**Gemini Kit** is a multi-agent AI development framework designed to run inside the **Gemini CLI**. It orchestrates specialized agents and atomic skills to deliver high-quality software engineering outcomes, ensuring strict adherence to architectural standards and efficient token usage.
 
----
+## 🚀 Quick Start
 
-## 🚀 Overview
+### Prerequisites
+- **Gemini CLI** installed.
+- **Node.js** (v18+) and **Python** (v3.10+) available.
 
-The framework transforms a single AI interaction into a coordinated effort among specialized agents. It follows the **Research → Strategy → Execution** lifecycle, ensuring every task is planned, implemented, and validated with precision.
+### Installation
 
-### Core Principles
-- **YAGNI** (You Ain't Gonna Need It): Focus only on the current task.
-- **KISS** (Keep It Simple, Stupid): Prefer the simplest working solution.
-- **DRY** (Don't Repeat Yourself): Maintain a single source of truth for logic and rules.
-- **Single Responsibility**: Each component (agent, skill, rule) has exactly one job.
-- **No Assumptions**: Ask for clarification instead of guessing.
-
----
-
-## ⚙️ Installation
-
-### Requirements
-- [Gemini CLI](https://github.com/google-gemini/gemini-cli) installed
-- Node.js >= 18
-
-### Install via npm (recommended)
+**Option A — Install globally via npm (recommended for client machines)**
 
 ```bash
 npm install -g github:hieund-it/geminikit
 ```
 
-### Initialize in your project
+This installs the `gk` CLI globally from GitHub and registers it in your PATH. Once installed, scaffold Gemini Kit into any project:
 
 ```bash
-cd your-project
-gk init
+cd my-project
+gk init        # Scaffold .gemini/ structure and GEMINI.md
+gk list        # List available agents and skills
+gk update      # Pull the latest version from GitHub
+gk uninstall   # Remove Gemini Kit from the current project
 ```
 
-This scaffolds `.gemini/` and `GEMINI.md` into the current directory.
-
-### Configure API key
+**Option B — Clone and run locally (for contributors)**
 
 ```bash
-cp .gemini/.env.example .gemini/.env
-```
-
-Open `.gemini/.env` and add your `GOOGLE_API_KEY`.
-
-### Commands
-
-| Command | Description |
-|---------|-------------|
-| `gk init` | Scaffold `.gemini/` and `GEMINI.md` into current project |
-| `gk list` | List available agents and skills |
-| `gk update` | Update to the latest version |
-
-### Alternative: Clone directly
-
-```bash
+# Clone the repository
 git clone https://github.com/hieund-it/geminikit.git
-cd gemini-kit
+cd geminikit
+
+# Install dependencies
 npm install
+
+# Setup environment
+cp .gemini/.env.example .env
+# Edit .env to add your API keys
 ```
 
----
+For detailed setup instructions, see the [Setup Guide](docs/SETUP_GUIDE.md).
 
-## 🏗️ Architecture
+## 📚 Documentation
 
-Gemini Kit operates on a 5-layer responsibility model:
+Detailed documentation is available in the `docs/` directory:
 
-1.  **Layer 1: Entry Point (`GEMINI.md`)**: Command parsing, complexity checking, and initial routing.
-2.  **Layer 2: Agents (`agents/`)**: Specialized executors (e.g., `planner`, `developer`, `tester`).
-3.  **Layer 3: Skills (`skills/`)**: Atomic, stateless processors for specific tasks (e.g., `debug`, `sql`, `plan`).
-4.  **Layer 4: Tools (`tools/`)**: Definitions for external I/O (Database, Scripts).
-5.  **Layer 5: Memory (`memory/`)**: State management (Short-term, Long-term, Execution).
+- **[System Architecture](docs/ARCHITECTURE.md)**: Understand how the Orchestrator, Agents, and Skills work together.
+- **[Agent Registry](docs/AGENTS_REGISTRY.md)**: Detailed profiles of all available agents (Architect, Developer, Reviewer, etc.).
+- **[Commands Reference](docs/COMMANDS_REFERENCE.md)**: Guide to using `/gk-` commands.
+- **[Skills Guide](docs/SKILLS_GUIDE.md)**: List of atomic capabilities available to agents.
+- **[Onboarding](docs/ONBOARDING.md)**: A quick introduction for new developers.
+- **[Contributing](docs/CONTRIBUTING.md)**: Guidelines for contributing to the project.
+- **[Python Runtime](docs/PYTHON_RUNTIME.md)**: How the local Python environment is managed.
 
----
-
-## 🤖 Agent Registry
-
-The framework employs specialized agents for different stages of the development lifecycle:
-
-| Agent | Specialization | Key Skills |
-| :--- | :--- | :--- |
-| **Planner** | Task decomposition & dependency mapping | `plan`, `research` |
-| **Developer** | Implementation & debugging | `debug`, `git`, `sql` |
-| **Tester** | QA, validation & test coverage | `debug`, `analyze` |
-| **Reviewer** | Code quality & security auditing | `review`, `analyze` |
-| **Architect** | High-level system design | `brainstorm`, `analyze` |
-| **Researcher** | Technical research & onboarding | `brainstorm`, `onboard` |
-| **Documenter** | Technical writing & documentation | `document` |
-| **MCP Manager** | Model Context Protocol administration | `mcp-manager` |
-
----
-
-## 🛠️ Commands & Usage
-
-Commands follow the `/gk:<command>` syntax:
-
-- `/gk:plan [task]` - Decompose a complex task into an executable plan.
-- `/gk:debug [issue]` - Trace and fix bugs or performance issues.
-- `/gk:analyze [path]` - Perform security, performance, or architectural analysis.
-- `/gk:review [file]` - Conduct a strict code review based on project standards.
-- `/gk:test [scope]` - Run unit, integration, or full system tests.
-- `/gk:help` - Display command and framework help.
-
----
-
-## ⚙️ Configuration & Settings
-
-The framework is highly configurable through files in the `.gemini/` directory:
-
-### Runtime Settings (`settings.json`)
-- **Default Model**: `gemini-3-flash-preview`
-- **Session Limits**: 100 turns max.
-- **Security**: YOLO mode disabled by default.
-
-### Extended Configuration (`config.yaml`)
-- **Model Routing**: 
-    - Reasoning-heavy tasks (Planner, Reviewer): `gemini-2.0-pro`
-    - Speed-focused tasks (Developer, Tester): `gemini-2.0-flash`
-- **Token Optimization**: 
-    - Progressive disclosure (load skills on demand).
-    - Max context per agent: 2000 tokens.
-    - Compressed memory and structured (JSON) I/O.
-- **Memory Management**: 
-    - Short-term (session-scoped).
-    - Long-term (persistent across sessions).
-    - Execution (task-scoped).
-
-### Framework Metadata (`geminikit.config.json`)
-Defines the internal registry of available agents, skills, and command triggers used by the framework's orchestration logic.
-
----
-
-## 📂 Project Structure
+## 🧩 Project Structure
 
 ```text
 .gemini/
 ├── agents/       # Agent role definitions
-├── skills/       # Atomic task executors
-├── rules/        # Strict behavioral guidelines (01_core...06_documentation)
-├── hooks/        # Lifecycle triggers (session-init, pre/post-tool)
+├── skills/       # Atomic task executors (GK Skills)
+├── rules/        # Strict behavioral guidelines
 ├── memory/       # State persistence layers
 ├── schemas/      # JSON I/O contracts
-├── tools/        # External integration definitions
-├── prompts/      # Reusable prompt templates
-└── AGENT.md      # Framework Orchestrator core
+└── tools/        # External tool definitions
+src/              # CLI source code
+docs/             # Project documentation
 ```
 
----
+## 🤝 Contributing
 
-## 🚦 Safety & Validation
+We welcome contributions! Please see [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details on how to submit pull requests, report issues, and propose new features.
 
-- **No destructive operations** without explicit user confirmation.
-- **Zero-leak policy**: No credentials or PII ever logged or committed.
-- **Mandatory Validation**: Every implementation must be verified with tests before completion.
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
