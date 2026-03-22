@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Multi-agent AI development framework for Gemini CLI",
   "bin": {
-    "gk": "./bin/gk.js"
+    "gk": "./src/commands/gk.js"
   },
   "pkg": {
     "assets": [
