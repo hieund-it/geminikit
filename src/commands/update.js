@@ -49,38 +49,44 @@ module.exports = async function update() {
       if (confirmed) {
         console.log(pc.blue('\nUpdating project-local .gemini/ folder...'))
         
-        // Strategy: Preserve memory/ and runtime/ while updating everything else
         const geminiSource = path.join(pkgRoot, 'scaffold')
         const geminiMdSource = path.join(pkgRoot, 'GEMINI.md')
         
-        // 1. Move current .gemini/ to a temp folder to protect it
+        // 1. Move current .gemini/ to a temp folder to protect it (The Backup)
         const tempDir = path.join(targetDir, '.gemini_backup_' + Date.now())
         await fse.move(geminiTarget, tempDir)
         
-        // 2. Perform fresh init
-        await init.performInit(geminiSource, geminiTarget, targetDir, geminiMdSource)
-        
-        // 3. Restore memory/ and runtime/ from backup
-        const memoryDir = path.join(tempDir, 'memory')
-        const runtimeDir = path.join(tempDir, 'runtime')
-        const envFile = path.join(tempDir, '.env')
-        
-        if (await fse.pathExists(memoryDir)) {
-          await fse.remove(path.join(geminiTarget, 'memory'))
-          await fse.move(memoryDir, path.join(geminiTarget, 'memory'))
+        try {
+          // 2. Prepare new folder and restore existing data first
+          await fse.ensureDir(geminiTarget)
+          
+          const memoryDir = path.join(tempDir, 'memory')
+          const runtimeDir = path.join(tempDir, 'runtime')
+          const envFile = path.join(tempDir, '.env')
+          
+          if (await fse.pathExists(memoryDir)) {
+            await fse.move(memoryDir, path.join(geminiTarget, 'memory'))
+          }
+          if (await fse.pathExists(runtimeDir)) {
+            await fse.move(runtimeDir, path.join(geminiTarget, 'runtime'))
+          }
+          if (await fse.pathExists(envFile)) {
+            await fse.copy(envFile, path.join(geminiTarget, '.env'), { overwrite: true })
+          }
+          
+          // 3. Perform init with overwrite=true (it will see the restored runtime)
+          await init.performInit(geminiSource, geminiTarget, targetDir, geminiMdSource, true)
+          
+          // 4. Cleanup backup
+          await fse.remove(tempDir)
+          console.log(pc.green('Project update completed. Existing libraries and data were preserved.'))
+        } catch (initErr) {
+          // ROLLBACK: If init failed, restore the backup
+          console.log(pc.yellow('\nâš™  Project update failed. Restoring from backup...'))
+          if (await fse.pathExists(geminiTarget)) await fse.remove(geminiTarget)
+          await fse.move(tempDir, geminiTarget)
+          console.log(pc.green('âœ“ Project restored to its previous state.'))
         }
-        if (await fse.pathExists(runtimeDir)) {
-          await fse.remove(path.join(geminiTarget, 'runtime'))
-          await fse.move(runtimeDir, path.join(geminiTarget, 'runtime'))
-        }
-        if (await fse.pathExists(envFile)) {
-          await fse.copy(envFile, path.join(geminiTarget, '.env'), { overwrite: true })
-        }
-        
-        // 4. Cleanup backup
-        await fse.remove(tempDir)
-        
-        console.log(pc.green('Project update completed. Your memory and local runtime were preserved.'))
       } else {
         console.log(pc.gray('\nProject update skipped.'))
       }

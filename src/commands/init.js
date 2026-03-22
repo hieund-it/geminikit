@@ -103,16 +103,32 @@ async function setupVenv(systemPython, targetDir) {
 }
 
 /**
+ * Gets the existing python path if available
+ */
+async function getExistingPython(geminiTarget) {
+  const paths = [
+    path.join(geminiTarget, 'runtime', 'venv', 'Scripts', 'python.exe'), // Win Venv
+    path.join(geminiTarget, 'runtime', 'venv', 'bin', 'python'),        // Linux/Mac Venv
+    path.join(geminiTarget, 'runtime', 'python', 'python.exe'),       // Win Embeddable
+  ]
+
+  for (const p of paths) {
+    if (await fse.pathExists(p)) return p
+  }
+  return null
+}
+
+/**
  * The main initialization logic, exported for reuse by 'update' command
  */
-async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource) {
+async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource, overwrite = false) {
   const spinner = new Spinner('Scaffolding Gemini Kit framework...')
   spinner.start()
   
   try {
     // 1. Copy framework files
     await fse.copy(geminiSource, geminiTarget, {
-      overwrite: false,
+      overwrite: overwrite,
       filter: (src) => {
         const relative = path.relative(geminiSource, src)
         return !relative.startsWith('memory') && !relative.startsWith('runtime') && !src.endsWith('.env')
@@ -120,16 +136,18 @@ async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource
     })
     
     if (await fse.pathExists(geminiMdSource)) {
-      await fse.copy(geminiMdSource, path.join(targetDir, 'GEMINI.md'), { overwrite: false })
+      await fse.copy(geminiMdSource, path.join(targetDir, 'GEMINI.md'), { overwrite: overwrite })
     }
     
-    spinner.stop('Framework files copied.')
+    spinner.stop('Framework files processed.')
 
     // 2. Setup Python Runtime
-    let pythonPath = null
+    let pythonPath = await getExistingPython(geminiTarget)
     const systemPython = getSystemPython()
 
-    if (systemPython) {
+    if (pythonPath) {
+      spinner.update('Existing Python runtime detected. Reusing...')
+    } else if (systemPython) {
       spinner.update(`Creating virtual environment with system ${systemPython}...`)
       pythonPath = await setupVenv(systemPython, geminiTarget)
     } else if (process.platform === 'win32') {
@@ -143,7 +161,8 @@ async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource
     if (pythonPath) {
       const reqFile = path.join(geminiTarget, 'requirements.txt')
       if (await fse.pathExists(reqFile)) {
-        spinner.update('Installing Python dependencies locally...')
+        spinner.update('Updating Python dependencies...')
+        // Pip will automatically skip already satisfied requirements
         execSync(`"${pythonPath}" -m pip install -r "${reqFile}" --quiet`)
       }
 
@@ -158,9 +177,9 @@ async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource
     console.log(`  - Local Python: ${pc.cyan(pythonPath || 'Not found')}`)
     console.log(`  - Config file:  ${pc.cyan('GEMINI.md')}\n`)
   } catch (err) {
-    spinner.stop('Initialization failed.', true)
-    console.error(pc.red('\nâœ— Error: ' + err.message))
-    process.exit(1)
+    if (spinner) spinner.stop('Initialization failed.', true)
+    console.error(pc.red('\nâœ— Error during initialization: ' + err.message))
+    throw err // Re-throw to allow caller to handle rollback
   }
 }
 
