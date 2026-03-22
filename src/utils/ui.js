@@ -10,6 +10,15 @@ class Spinner {
 
   start() {
     process.stdout.write('\x1B[?25l'); // áº¨n con trá» chuá»™t
+    
+    // Restore cursor on exit/interrupt
+    const cleanup = () => {
+      process.stdout.write('\x1B[?25h');
+      process.exit();
+    };
+    process.on('SIGINT', cleanup);
+    process.on('SIGTERM', cleanup);
+
     this.timer = setInterval(() => {
       const frame = pc.cyan(this.frames[this.frameIndex]);
       process.stdout.write(`\r${frame} ${this.message}`);
