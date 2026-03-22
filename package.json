@@ -21,26 +21,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
-    "bin/",
     "src/",
-    ".gemini/agents/",
-    ".gemini/skills/",
-    ".gemini/rules/",
-    ".gemini/hooks/",
-    ".gemini/tools/",
-    ".gemini/template/",
-    ".gemini/schemas/",
-    ".gemini/prompts/",
-    ".gemini/commands/",
-    ".gemini/AGENT.md",
-    ".gemini/REGISTRY.md",
-    ".gemini/system.md",
-    ".gemini/settings.json",
-    ".gemini/mcp-config.json",
-    ".gemini/registry.json",
-    ".gemini/.env.example",
-    ".gemini/geminikit.config.json",
-    ".gemini/config.yaml",
+    ".gemini/",
     "GEMINI.md"
   ],
   "engines": {
