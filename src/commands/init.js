@@ -12,6 +12,7 @@ const pc = require('picocolors')
 const https = require('https')
 const { execSync } = require('child_process')
 const readline = require('readline')
+const { Spinner } = require('../utils/ui')
 
 /**
  * Interactive confirmation prompt
@@ -56,7 +57,6 @@ async function setupEmbeddablePython(targetDir) {
   const pythonDir = path.join(targetDir, 'runtime', 'python')
   if (await fse.pathExists(pythonDir)) return path.join(pythonDir, 'python.exe')
 
-  console.log(pc.blue('âš™  No system Python found. Downloading local Python (Windows)...'))
   await fse.ensureDir(pythonDir)
 
   const pythonUrl = 'https://www.python.org/ftp/python/3.11.9/python-3.11.9-embed-amd64.zip'
@@ -69,15 +69,13 @@ async function setupEmbeddablePython(targetDir) {
       file.on('finish', () => {
         file.close()
         try {
-          console.log(pc.blue('   Extracting local Python...'))
           execSync(`powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${pythonDir}' -Force"`)
           fse.removeSync(zipPath)
           
           // Setup pip for embeddable python (required for dependencies)
-          console.log(pc.blue('   Setting up local pip...'))
           const getPipPath = path.join(pythonDir, 'get-pip.py')
           execSync(`powershell -Command "Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile '${getPipPath}'"`)
-          execSync(`"${path.join(pythonDir, 'python.exe')}" "${getPipPath}" --no-warn-script-location`)
+          execSync(`"${path.join(pythonDir, 'python.exe')}" "${getPipPath}" --no-warn-script-location`, { stdio: 'ignore' })
           fse.removeSync(getPipPath)
           
           resolve(path.join(pythonDir, 'python.exe'))
@@ -92,16 +90,14 @@ async function setupEmbeddablePython(targetDir) {
  */
 async function setupVenv(systemPython, targetDir) {
   const venvDir = path.join(targetDir, 'runtime', 'venv')
-  console.log(pc.blue(`âš™  Creating local virtual environment using system ${systemPython}...`))
   
   try {
-    execSync(`"${systemPython}" -m venv "${venvDir}"`)
+    execSync(`"${systemPython}" -m venv "${venvDir}"`, { stdio: 'ignore' })
     const venvPython = process.platform === 'win32' 
       ? path.join(venvDir, 'Scripts', 'python.exe')
       : path.join(venvDir, 'bin', 'python')
     return venvPython
   } catch (err) {
-    console.error(pc.red('âœ— Failed to create venv: ' + err.message))
     return null
   }
 }
@@ -110,9 +106,11 @@ async function setupVenv(systemPython, targetDir) {
  * The main initialization logic, exported for reuse by 'update' command
  */
 async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource) {
+  const spinner = new Spinner('Scaffolding Gemini Kit framework...')
+  spinner.start()
+  
   try {
     // 1. Copy framework files
-    console.log(pc.blue('âš™  Scaffolding Gemini Kit framework...'))
     await fse.copy(geminiSource, geminiTarget, {
       overwrite: false,
       filter: (src) => {
@@ -124,26 +122,29 @@ async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource
     if (await fse.pathExists(geminiMdSource)) {
       await fse.copy(geminiMdSource, path.join(targetDir, 'GEMINI.md'), { overwrite: false })
     }
+    
+    spinner.stop('Framework files copied.')
 
     // 2. Setup Python Runtime
     let pythonPath = null
     const systemPython = getSystemPython()
 
     if (systemPython) {
+      spinner.update(`Creating virtual environment with system ${systemPython}...`)
       pythonPath = await setupVenv(systemPython, geminiTarget)
     } else if (process.platform === 'win32') {
+      spinner.update('No system Python found. Downloading local Python (Windows)...')
       pythonPath = await setupEmbeddablePython(geminiTarget)
     } else {
-      console.log(pc.red('âœ— No Python found. Please install Python 3 to use Gemini Kit skills.'))
+      console.log(pc.red('\nâœ— No Python found. Please install Python 3 to use Gemini Kit skills.'))
     }
 
     // 3. Install dependencies locally
     if (pythonPath) {
       const reqFile = path.join(geminiTarget, 'requirements.txt')
       if (await fse.pathExists(reqFile)) {
-        console.log(pc.blue('âš™  Installing Python dependencies locally...'))
+        spinner.update('Installing Python dependencies locally...')
         execSync(`"${pythonPath}" -m pip install -r "${reqFile}" --quiet`)
-        console.log(pc.green('   Dependencies installed.'))
       }
 
       // Update settings.json with the project-local python path
@@ -157,7 +158,8 @@ async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource
     console.log(`  - Local Python: ${pc.cyan(pythonPath || 'Not found')}`)
     console.log(`  - Config file:  ${pc.cyan('GEMINI.md')}\n`)
   } catch (err) {
-    console.error(pc.red('âœ— Init failed: ' + err.message))
+    spinner.stop('Initialization failed.', true)
+    console.error(pc.red('\nâœ— Error: ' + err.message))
     process.exit(1)
   }
 }
