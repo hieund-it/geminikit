@@ -42,4 +42,29 @@ program
   .description('Remove Gemini Kit and its local runtime from the current project')
   .action(() => require('../src/commands/uninstall')())
 
+const { bridgeInit, bridgeStart, bridgeStatus, bridgeReset } = require('../src/commands/bridge')
+const bridge = program.command('bridge').description('Claude-Gemini bridge pipeline')
+
+bridge
+  .command('init')
+  .description('Create .bridge/ structure and generate task queue from a plan')
+  .option('--plan <path>', 'Path to plan.md (auto-detected if omitted)')
+  .action((options) => bridgeInit(options))
+
+bridge
+  .command('start')
+  .description('Launch the orchestrator and stream pipeline progress')
+  .action(() => bridgeStart())
+
+bridge
+  .command('status')
+  .description('Show pipeline state and per-task status table')
+  .action(() => bridgeStatus())
+
+bridge
+  .command('reset')
+  .description('Reset tasks to pending for retry')
+  .option('--failed-only', 'Only reset failed tasks (default: reset all)')
+  .action((options) => bridgeReset(options))
+
 program.parse()
