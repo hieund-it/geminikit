@@ -1,33 +1,45 @@
-const fs = require('fs-extra');
+const fs = require('fs');
 const path = require('path');
 
-const src = path.join(__dirname, '../.gemini');
-const dest = path.join(__dirname, '../scaffold');
+const src = path.join(__dirname, '../../.gemini');
+const dest = path.join(__dirname, '../../scaffold');
 
-async function sync() {
+function sync() {
   try {
-    // 1. Dọn dẹp scaffold cũ nếu có
-    if (await fs.pathExists(dest)) {
-      await fs.remove(dest);
+    console.log('âš™  Generating scaffold from .gemini...');
+    
+    // 1. Ensure source exists
+    if (!fs.existsSync(src)) {
+      console.warn('âš   Warning: .gemini directory not found. Skipping scaffold generation.');
+      return;
+    }
+
+    // 2. Clean up old scaffold (Using Node 18+ rmSync)
+    if (fs.existsSync(dest)) {
+      fs.rmSync(dest, { recursive: true, force: true });
     }
     
-    // 2. Tạo thư mục scaffold mới
-    await fs.ensureDir(dest);
+    // 3. Create fresh scaffold directory
+    fs.mkdirSync(dest, { recursive: true });
     
-    // 3. Sao chép nội dung từ .gemini sang scaffold (loại bỏ rác)
-    await fs.copy(src, dest, {
+    // 4. Copy content with native filter (Using Node 18+ cpSync)
+    fs.cpSync(src, dest, {
+      recursive: true,
       filter: (srcPath) => {
+        if (srcPath === src) return true;
+        
         const relative = path.relative(src, srcPath);
         const isTrash = relative.startsWith('memory') || 
                         relative.startsWith('runtime') || 
-                        srcPath.endsWith('.env');
+                        path.basename(srcPath).startsWith('.env');
+        
         return !isTrash;
       }
     });
     
-    console.log('âœ“ Scaffold generated successfully from .gemini');
+    console.log('âœ“ Scaffold generated successfully.');
   } catch (err) {
-    console.error('âœ— Sync failed:', err);
+    console.error('âœ— Sync failed:', err.message);
     process.exit(1);
   }
 }
