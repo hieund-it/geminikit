@@ -39,4 +39,12 @@ class Spinner {
   }
 }
 
-module.exports = { Spinner };
+/** Returns an ASCII progress bar: [████████░░░░] 66% */
+function renderProgressBar(current, total, width = 20) {
+  const pct = total > 0 ? current / total : 1
+  const filled = Math.round(pct * width)
+  const bar = pc.green('█'.repeat(filled)) + pc.gray('░'.repeat(width - filled))
+  return `[${bar}] ${Math.round(pct * 100)}%`
+}
+
+module.exports = { Spinner, renderProgressBar };

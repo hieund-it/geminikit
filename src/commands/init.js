@@ -1,28 +1,21 @@
 /**
- * gk init — copies .gemini/ and GEMINI.md from the installed package
- * into the current working directory to initialize a new project.
- *
- * No separate scaffold/ directory needed — the package's own .gemini/
- * IS the scaffold, keeping a single source of truth.
+ * gk init — scaffolds .gemini/ and GEMINI.md into the current project
+ * from the installed package's scaffold/ directory.
  */
 
 const fse = require('fs-extra')
 const path = require('path')
 const pc = require('picocolors')
-const https = require('https')
-const { execSync } = require('child_process')
+const { execSync, spawnSync } = require('child_process')
 const readline = require('readline')
-const { Spinner } = require('../utils/ui')
+const { Spinner, renderProgressBar } = require('../utils/ui')
+const { getSystemPython, setupEmbeddablePython, setupVenv, getExistingPython } = require('../utils/python-setup')
 
 /**
- * Interactive confirmation prompt
+ * Interactive confirmation prompt — returns true if user answers y/yes
  */
 function askConfirmation(query) {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  })
-
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
   return new Promise((resolve) => rl.question(query, (answer) => {
     rl.close()
     resolve(answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes')
@@ -30,156 +23,124 @@ function askConfirmation(query) {
 }
 
 /**
- * Checks if a command exists in the system PATH
+ * Recursively collects all file paths from dir, skipping entries where filterFn returns false.
+ * The filter receives the full path and applies to both files and directories.
  */
-function commandExists(cmd) {
-  try {
-    execSync(`${cmd} --version`, { stdio: 'ignore' })
-    return true
-  } catch {
-    return false
+async function walkFiles(dir, filterFn) {
+  const files = []
+  const walk = async (cur) => {
+    for (const e of await fse.readdir(cur, { withFileTypes: true })) {
+      const full = path.join(cur, e.name)
+      if (filterFn && !filterFn(full)) continue
+      e.isDirectory() ? await walk(full) : files.push(full)
+    }
+  }
+  await walk(dir)
+  return files
+}
+
+/**
+ * Copies files one by one with verbose output (→ filename per line).
+ * Shows each relative path as it copies.
+ */
+async function copyFilesVerbose(files, srcBase, destBase, overwrite) {
+  for (const src of files) {
+    const rel = path.relative(srcBase, src)
+    const dest = path.join(destBase, rel)
+    await fse.ensureDir(path.dirname(dest))
+    await fse.copy(src, dest, { overwrite })
+    console.log(`  ${pc.gray('→')} ${rel}`)
   }
 }
 
 /**
- * Gets the available system python command
+ * Parses requirements.txt, lists all packages, then installs them in one batch.
+ * Using batch install avoids Windows shell escaping issues with version specifiers (>=, <=, ~=).
+ * Returns the number of packages installed.
  */
-function getSystemPython() {
-  if (commandExists('python3')) return 'python3'
-  if (commandExists('python')) return 'python'
-  return null
-}
+async function installPackagesVerbose(pythonPath, reqFile) {
+  const pkgs = (await fse.readFile(reqFile, 'utf8'))
+    .split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'))
+  if (pkgs.length === 0) return 0
 
-/**
- * Downloads and extracts Python Embeddable for Windows
- */
-async function setupEmbeddablePython(targetDir) {
-  const pythonDir = path.join(targetDir, 'runtime', 'python')
-  if (await fse.pathExists(pythonDir)) return path.join(pythonDir, 'python.exe')
-
-  await fse.ensureDir(pythonDir)
-
-  const pythonUrl = 'https://www.python.org/ftp/python/3.11.9/python-3.11.9-embed-amd64.zip'
-  const zipPath = path.join(targetDir, 'runtime', 'python.zip')
-
-  return new Promise((resolve, reject) => {
-    const file = fse.createWriteStream(zipPath)
-    https.get(pythonUrl, (response) => {
-      response.pipe(file)
-      file.on('finish', () => {
-        file.close()
-        try {
-          execSync(`powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${pythonDir}' -Force"`)
-          fse.removeSync(zipPath)
-          
-          // Setup pip for embeddable python (required for dependencies)
-          const getPipPath = path.join(pythonDir, 'get-pip.py')
-          execSync(`powershell -Command "Invoke-WebRequest -Uri 'https://bootstrap.pypa.io/get-pip.py' -OutFile '${getPipPath}'"`)
-          execSync(`"${path.join(pythonDir, 'python.exe')}" "${getPipPath}" --no-warn-script-location`, { stdio: 'ignore' })
-          fse.removeSync(getPipPath)
-          
-          resolve(path.join(pythonDir, 'python.exe'))
-        } catch (err) { reject(err) }
-      })
-    }).on('error', (err) => { reject(err) })
-  })
-}
-
-/**
- * Creates a Virtual Environment using system Python
- */
-async function setupVenv(systemPython, targetDir) {
-  const venvDir = path.join(targetDir, 'runtime', 'venv')
-  
-  try {
-    execSync(`"${systemPython}" -m venv "${venvDir}"`, { stdio: 'ignore' })
-    const venvPython = process.platform === 'win32' 
-      ? path.join(venvDir, 'Scripts', 'python.exe')
-      : path.join(venvDir, 'bin', 'python')
-    return venvPython
-  } catch (err) {
-    return null
+  // Pre-list packages before installing
+  for (const pkg of pkgs) {
+    console.log(`  ${pc.gray('→')} ${pc.cyan(pkg)}`)
   }
+
+  // Use spawnSync (no shell) to avoid cmd.exe escaping issues with paths and version specifiers
+  const spinner = new Spinner('Installing...')
+  spinner.start()
+  const result = spawnSync(pythonPath, ['-m', 'pip', 'install', '-r', reqFile, '--quiet'], { encoding: 'utf8' })
+  if (result.status !== 0) throw new Error(result.stderr || result.error?.message || 'pip install failed')
+  spinner.stop(`${pkgs.length} packages installed`)
+  return pkgs.length
 }
 
 /**
- * Gets the existing python path if available
- */
-async function getExistingPython(geminiTarget) {
-  const paths = [
-    path.join(geminiTarget, 'runtime', 'venv', 'Scripts', 'python.exe'), // Win Venv
-    path.join(geminiTarget, 'runtime', 'venv', 'bin', 'python'),        // Linux/Mac Venv
-    path.join(geminiTarget, 'runtime', 'python', 'python.exe'),       // Win Embeddable
-  ]
-
-  for (const p of paths) {
-    if (await fse.pathExists(p)) return p
-  }
-  return null
-}
-
-/**
- * The main initialization logic, exported for reuse by 'update' command
+ * The main initialization logic, exported for reuse by 'update' command.
+ * Runs 3 steps: copy files → setup Python → install packages.
  */
 async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource, overwrite = false) {
-  const spinner = new Spinner('Scaffolding Gemini Kit framework...')
-  spinner.start()
-  
-  try {
-    // 1. Copy framework files
-    await fse.copy(geminiSource, geminiTarget, {
-      overwrite: overwrite,
-      filter: (src) => {
-        const relative = path.relative(geminiSource, src)
-        return !relative.startsWith('memory') && !relative.startsWith('runtime') && !src.endsWith('.env')
-      }
-    })
-    
-    if (await fse.pathExists(geminiMdSource)) {
-      await fse.copy(geminiMdSource, path.join(targetDir, 'GEMINI.md'), { overwrite: overwrite })
-    }
-    
-    spinner.stop('Framework files processed.')
+  const startTime = Date.now()
 
-    // 2. Setup Python Runtime
+  try {
+    // Step 1: Copy framework files
+    const filterFn = (src) => {
+      const rel = path.relative(geminiSource, src)
+      return !rel.startsWith('memory') && !rel.startsWith('runtime') && !src.endsWith('.env')
+    }
+    console.log(`${pc.cyan('[1/3]')} ${pc.bold('Copying framework files...')}`)
+    const files = await walkFiles(geminiSource, filterFn)
+    await copyFilesVerbose(files, geminiSource, geminiTarget, overwrite)
+    if (await fse.pathExists(geminiMdSource)) {
+      await fse.copy(geminiMdSource, path.join(targetDir, 'GEMINI.md'), { overwrite })
+    }
+    console.log(`${pc.cyan('[1/3]')} ${pc.green('✓')} Copied ${files.length} files ${renderProgressBar(1, 1)}`)
+
+    // Step 2: Setup Python Runtime
     let pythonPath = await getExistingPython(geminiTarget)
     const systemPython = getSystemPython()
 
     if (pythonPath) {
-      spinner.update('Existing Python runtime detected. Reusing...')
+      console.log(`\n${pc.cyan('[2/3]')} ${pc.green('✓')} Existing Python runtime reused`)
     } else if (systemPython) {
-      spinner.update(`Creating virtual environment with system ${systemPython}...`)
+      const spinner = new Spinner(`[2/3] Creating Python venv with ${systemPython}...`)
+      spinner.start()
       pythonPath = await setupVenv(systemPython, geminiTarget)
+      spinner.stop(`[2/3] Python venv ready`)
     } else if (process.platform === 'win32') {
-      spinner.update('No system Python found. Downloading local Python (Windows)...')
+      const spinner = new Spinner('[2/3] Downloading Python (Windows embeddable)...')
+      spinner.start()
       pythonPath = await setupEmbeddablePython(geminiTarget)
+      spinner.stop(`[2/3] Python embeddable ready`)
     } else {
-      console.log(pc.red('\nâœ— No Python found. Please install Python 3 to use Gemini Kit skills.'))
+      console.log(pc.red('\n[2/3] ✗ No Python found. Install Python 3 to use Gemini Kit skills.'))
     }
 
-    // 3. Install dependencies locally
+    // Step 3: Install Python packages
     if (pythonPath) {
       const reqFile = path.join(geminiTarget, 'requirements.txt')
       if (await fse.pathExists(reqFile)) {
-        spinner.update('Updating Python dependencies...')
-        // Pip will automatically skip already satisfied requirements
-        execSync(`"${pythonPath}" -m pip install -r "${reqFile}" --quiet`)
+        console.log(`\n${pc.cyan('[3/3]')} ${pc.bold('Installing Python packages...')}`)
+        const count = await installPackagesVerbose(pythonPath, reqFile)
+        console.log(`${pc.cyan('[3/3]')} ${pc.green('✓')} ${count} packages installed ${renderProgressBar(1, 1)}`)
       }
 
-      // Update settings.json with the project-local python path
+      // Persist python path to settings
       const settingsPath = path.join(geminiTarget, 'settings.json')
       const settings = await fse.readJson(settingsPath).catch(() => ({}))
       settings.python_path = pythonPath
       await fse.writeJson(settingsPath, settings, { spaces: 2 })
     }
 
-    console.log(pc.green('\nâœ“ Gemini Kit initialized successfully!'))
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1)
+    console.log(pc.green(`\n✓ Gemini Kit initialized successfully! (${elapsed}s)`))
     console.log(`  - Local Python: ${pc.cyan(pythonPath || 'Not found')}`)
     console.log(`  - Config file:  ${pc.cyan('GEMINI.md')}\n`)
   } catch (err) {
-    if (spinner) spinner.stop('Initialization failed.', true)
-    console.error(pc.red('\nâœ— Error during initialization: ' + err.message))
-    throw err // Re-throw to allow caller to handle rollback
+    console.error(pc.red('\n✗ Error during initialization: ' + err.message))
+    throw err
   }
 }
 
@@ -193,7 +154,7 @@ module.exports = async function init() {
   // Validation: Ensure source directory exists (now using 'scaffold/' for stability)
   if (!(await fse.pathExists(geminiSource))) {
     console.error(pc.red(`âœ— Source error: Could not find framework files in ${geminiSource}`))
-    console.error(pc.yellow('  Try reinstalling with: npm install -g github:hieund-it/geminikit --force'))
+    console.error(pc.yellow('  Try reinstalling with: npm install -g geminicli-kit --force'))
     process.exit(1)
   }
 

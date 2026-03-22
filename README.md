@@ -1,6 +1,6 @@
 # Gemini Kit
 
-**Gemini Kit** is a multi-agent AI development framework designed to run inside the **Gemini CLI**. It orchestrates specialized agents and atomic skills to deliver high-quality software engineering outcomes, ensuring strict adherence to architectural standards and efficient token usage.
+**Gemini Kit** is a multi-agent AI development framework that runs inside the **Gemini CLI**. It orchestrates specialized AI agents and atomic skills to deliver high-quality software engineering outcomes with a focus on architectural integrity and token efficiency.
 
 ## 🚀 Quick Start
 
@@ -10,64 +10,45 @@
 
 ### Installation
 
-**Option A — Install globally via npm (recommended for client machines)**
-
+**1. Install CLI (Recommended)**
 ```bash
-npm install -g github:hieund-it/geminikit
+npm install -g geminicli-kit
 ```
-
-This installs the `gk` CLI globally from GitHub and registers it in your PATH. Once installed, scaffold Gemini Kit into any project:
-
+This installs the `gk` command globally. You can then scaffold Gemini Kit into any project:
 ```bash
 cd my-project
-gk init        # Scaffold .gemini/ structure and GEMINI.md
-gk list        # List available agents and skills
-gk update      # Pull the latest version from GitHub
-gk uninstall   # Remove Gemini Kit from the current project
+gk init      # Scaffold .gemini/ structure, agents, and skills
+gk list      # List available agents and skills
+gk update    # Pull the latest framework updates
 ```
 
-**Option B — Clone and run locally (for contributors)**
-
+**2. Clone for Contribution**
 ```bash
-# Clone the repository
 git clone https://github.com/hieund-it/geminikit.git
 cd geminikit
-
-# Install dependencies
 npm install
-
-# Setup environment
-cp .gemini/.env.example .env
-# Edit .env to add your API keys
 ```
+For more details, see the [Setup Guide](docs/SETUP_GUIDE.md).
 
-For detailed setup instructions, see the [Setup Guide](docs/SETUP_GUIDE.md).
+## 📚 Core Documentation
 
-## 📚 Documentation
+All documentation is located in the `docs/` directory:
 
-Detailed documentation is available in the `docs/` directory:
+- **[Onboarding Guide](docs/ONBOARDING.md)**: The best place to start. A rapid introduction to the framework.
+- **[System Architecture](docs/ARCHITECTURE.md)**: Explains how the Orchestrator, Agents, and Skills work together.
+- **[Agent Registry](docs/AGENTS_REGISTRY.md)**: A complete list of all available agents and their specializations.
+- **[Commands Reference](docs/COMMANDS_REFERENCE.md)**: A guide to using the `/gk-` commands to interact with agents.
+- **[Skills Guide](docs/SKILLS_GUIDE.md)**: A reference for all atomic skills available to agents.
 
-- **[System Architecture](docs/ARCHITECTURE.md)**: Understand how the Orchestrator, Agents, and Skills work together.
-- **[Agent Registry](docs/AGENTS_REGISTRY.md)**: Detailed profiles of all available agents (Architect, Developer, Reviewer, etc.).
-- **[Commands Reference](docs/COMMANDS_REFERENCE.md)**: Guide to using `/gk-` commands.
-- **[Skills Guide](docs/SKILLS_GUIDE.md)**: List of atomic capabilities available to agents.
-- **[Onboarding](docs/ONBOARDING.md)**: A quick introduction for new developers.
-- **[Contributing](docs/CONTRIBUTING.md)**: Guidelines for contributing to the project.
-- **[Python Runtime](docs/PYTHON_RUNTIME.md)**: How the local Python environment is managed.
+## 🧩 Core Concepts
 
-## 🧩 Project Structure
+The framework is built around a few key ideas:
 
-```text
-.gemini/
-├── agents/       # Agent role definitions
-├── skills/       # Atomic task executors (GK Skills)
-├── rules/        # Strict behavioral guidelines
-├── memory/       # State persistence layers
-├── schemas/      # JSON I/O contracts
-└── tools/        # External tool definitions
-src/              # CLI source code
-docs/             # Project documentation
-```
+- **Orchestrator**: The central brain that parses commands and delegates tasks.
+- **Agents**: Specialized, role-based AIs (e.g., `Developer`, `Reviewer`) that own specific domains.
+- **Skills**: Atomic, reusable tools (e.g., `gk-debug`, `gk-git`) that agents use to execute tasks.
+
+This structure ensures that tasks are handled by the most qualified agent, promoting modularity, reusability, and clear separation of concerns.
 
 ## 🤝 Contributing
 
