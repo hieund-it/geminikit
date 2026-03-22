@@ -1,39 +1,29 @@
 # Onboarding to Gemini Kit
 
-Welcome to the Gemini Kit project! This guide will help you quickly understand the project and get started.
+Welcome to the Gemini Kit project! This guide provides a rapid introduction to the framework.
 
-## What is Gemini Kit?
+## 1. What is Gemini Kit?
 
-Gemini Kit is a multi-agent AI framework designed to orchestrate specialized "Agents" (like Developers, Planners, Reviewers) to complete complex software engineering tasks autonomously but safely.
+Gemini Kit is a multi-agent AI framework that orchestrates specialized AI "Agents" (like Developers, Planners, and Reviewers) to autonomously yet safely complete complex software engineering tasks.
 
-## Key Concepts
+## 2. Core Concepts
 
-- **Orchestrator**: The central brain that receives user commands, decomposes them, and delegates to agents.
-- **Agents**: Specialized roles defined in `.gemini/agents/`. Each agent has a specific persona and responsibility.
-- **Skills**: Atomic capabilities (e.g., `gk-git`, `gk-debug`) that agents use to perform actions.
-- **Registry**: The single source of truth for all commands and skills (`.gemini/REGISTRY.md`).
+- **Orchestrator**: The central brain that parses user commands, decomposes tasks, and delegates work to the appropriate agent.
+- **Agents**: Specialized roles defined in `.gemini/agents/`. Each agent has a specific persona, set of skills, and responsibility. See the [Agent Registry](AGENTS_REGISTRY.md) for a full list.
+- **Skills**: Atomic capabilities (e.g., `gk-git`, `gk-debug`, `gk-plan`) that agents use to perform actions. These are the building blocks of the system.
+- **Registry**: The single source of truth for all commands and skills, located at `.gemini/REGISTRY.md`.
 
-## Tech Stack
+## 3. How to Get Started
 
-- **Core**: Node.js / Python (depending on specific skill implementations).
-- **Environment**: Gemini CLI (orchestrator runtime).
-- **Configuration**: YAML/JSON for agent/skill definitions.
-- **Communication**: JSON-based message passing between agents.
+1.  **Read the Architecture**: Start with the [System Architecture](ARCHITECTURE.md) document to understand how the components fit together.
+2.  **Review the Commands**: Check the [Commands Reference](COMMANDS_REFERENCE.md) to learn how to interact with the system using `/gk-...` commands.
+3.  **Try a Command**:
+    - Use `/gk-ask "What is the purpose of the researcher agent?"` to query the system about itself.
+    - Use `/gk-plan "Refactor the login logic to use a new authentication service"` to see how the Planner agent breaks down a task.
 
-## Getting Started
+## 4. Key Files & Directories
 
-1.  **Read the Architecture**: Start with [System Architecture](./ARCHITECTURE.md) to understand how pieces fit together.
-2.  **Explore Agents**: Check out [Agent Registry](./AGENTS_REGISTRY.md) to know who does what.
-3.  **Learn Commands**: Review [Commands Reference](./COMMANDS_REFERENCE.md) to interact with the system.
-4.  **Try a Task**: Use `/gk-ask` to query the codebase or `/gk-plan` to break down a simple task.
-
-## Project Structure
-
-- `.gemini/`: Core framework configuration, agents, skills, and rules.
-- `src/`: Source code for CLI commands and core logic.
-- `docs/`: Project documentation (you are here!).
-
-## Where to find help?
-
-- **Issues**: Check the GitHub Issues tab.
-- **Questions**: Use the `/gk-ask` command to ask the system itself about its own codebase!
+- **`.gemini/`**: The heart of the framework, containing all agents, skills, rules, and configuration.
+- **`src/`**: The source code for the `gk` command-line interface (CLI).
+- **`docs/`**: Project documentation (you are here!).
+- **`GEMINI.md`**: The root configuration and entry point for the Orchestrator.

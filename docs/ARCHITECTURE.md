@@ -7,61 +7,65 @@ Gemini Kit is a multi-agent AI development framework designed to run inside the 
 
 ```
 [Layer 1] ENTRY POINT
-User Input (/gk:...) ──► GEMINI.md / AGENT.md
+User Input (/gk-...) ──► .gemini/GEMINI.md
                            │
                            ▼
                   Parse & Complexity Check
                            │
                            ▼
 [Layer 2]      ┌──────────────────────────────┐
-AGENTS         │     ORCHESTRATOR      │
+AGENTS         │         ORCHESTRATOR         │
 (Role)         └───────────┬──────────┘
                            │ Route
-           ┌──────┬────────┼───────┬─────────┬─────────┐
-           ▼      ▼        ▼       ▼         ▼         ▼
-      Planner  Developer Tester Reviewer Documenter Researcher
-          │       │        │       │         │         │
-          │       │        │       │         │         │
-[Layer 3] ▼       ▼        ▼       ▼         ▼         ▼
-SKILLS   plan    debug    test   review    document  onboard
-(Action) analyze  sql            analyze             brainstorm
-         research git              api
-                  │        │       │         │         │
-                  └────────┴───────┴─────────┴─────────┘
-                                   │
-                                   ▼
+           ┌──────┬────────┼──────────┬──────────┬─────────┐
+           ▼      ▼        ▼          ▼          ▼         ▼
+      Planner  Developer  Reviewer   Researcher  Designer  ... (etc.)
+          │        │         │          │           │
+          │        │         │          │           │
+[Layer 3] ▼        ▼         ▼          ▼           ▼
+SKILLS  plan     debug     review     onboard       ui
+        research git       analyze    brainstorm
+                 sql
+                 ...
+          │        │         │          │           │
+          └────────┴─────────┴──────────┴───────────┘
+                           │
+                           ▼
 [Layer 4] TOOLS   Files • Shell • Search • Database • API
-                                   │
-                                   ▼
+                           │
+                           ▼
 [Layer 5] MEMORY  Short-Term • Execution State • Long-Term
 ```
 
 The system is built on a 5-layer architecture, ensuring separation of concerns and scalability:
-1.  **Entry Point:** `GEMINI.md` / `AGENT.md` - Responsible for parsing commands, checking complexity, and routing to the appropriate agent.
-2.  **Agents:** Specialized executors with single roles (e.g., `planner`, `developer`).
-3.  **Skills:** Atomic, stateless processors that perform specific tasks (e.g., `debug`, `plan`).
-4.  **Tools:** External I/O interfaces.
+1.  **Entry Point:** `GEMINI.md` - Responsible for parsing commands, checking complexity, and routing to the appropriate agent.
+2.  **Agents:** Specialized executors with defined roles (e.g., `planner`, `developer`). See the [Agent Registry](AGENTS_REGISTRY.md) for a complete list.
+3.  **Skills:** Atomic, stateless processors that perform specific tasks (e.g., `gk-debug`, `gk-plan`).
+4.  **Tools:** External I/O interfaces for interacting with the environment.
 5.  **Memory:** State management for short-term and long-term context.
 
 ## Core Components
 
 ### 1. Orchestrator
 The central brain of the system. Its primary responsibilities are:
-- **Parsing**: Detecting commands and user intent.
-- **Decomposition**: Breaking down complex requests into manageable subtasks (max 5 per request).
-- **Delegation**: Selecting the right Agent for each task.
+- **Parsing**: Detecting commands and user intent from `/gk-...` inputs.
+- **Decomposition**: Breaking down complex requests into manageable subtasks.
+- **Delegation**: Selecting the right Agent for each task based on the [Agent Registry](AGENTS_REGISTRY.md).
 - **Aggregation**: Summarizing results from various agents into a cohesive response.
 
 ### 2. Agents
-Specialized entities with defined roles and rules (located in `.gemini/agents/`). See [Agent Registry](AGENTS_REGISTRY.md) for details.
+Specialized entities with defined roles and rules (located in `.gemini/agents/`). They are the "who" in the system, responsible for executing tasks within their domain. Key agents include:
 - **Planner**: Creates execution roadmaps for complex tasks.
 - **Developer**: Implements code, fixes bugs, and manages Git.
 - **Reviewer**: Analyzes code quality, security, and performance.
 - **Researcher**: Gathers information and performs brainstorming.
 - **Documenter**: Generates technical documentation.
+- **Designer**: Produces and validates UI/UX specifications.
+
+A complete list of agents and their skills is available in the [Agent Registry](AGENTS_REGISTRY.md).
 
 ### 3. Skills
-Atomic, reusable units of functionality (located in `.gemini/skills/`). Skills follow a strict Input/Output schema and perform one specific job (e.g., `gk-summarize`, `gk-analyze`, `gk-git`).
+Atomic, reusable units of functionality (located in `.gemini/skills/`). Skills are the "what" — they follow a strict Input/Output schema and perform one specific job (e.g., `gk-summarize`, `gk-analyze`, `gk-git`). They are the building blocks that agents use to accomplish their goals.
 
 ## Operational Workflow
 

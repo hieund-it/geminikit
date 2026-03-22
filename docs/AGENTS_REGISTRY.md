@@ -31,12 +31,13 @@ This document details the specialized agents within the Gemini Kit framework, th
 
 ## 4. Developer (`developer`)
 **Role:** Senior Software Engineer
-**Specialization:** Implementation, debugging, and git operations.
-**Key Skills:** `gk-debug`, `gk-git`, `gk-sql`, `gk-skill-creator`, `gk-summarize`
+**Specialization:** Implementation, debugging, and system operations.
+**Key Skills:** `gk-debug`, `gk-bug-fixer`, `gk-git`, `gk-sql`, `gk-skill-creator`, `gk-summarize`
 **Responsibility:**
 - Implements features and fixes bugs.
 - Executes Git operations (commit, branch, PR).
 - Optimizes SQL queries and creates new skills.
+- Manages codebase state and summarization.
 
 ## 5. Documenter (`documenter`)
 **Role:** Technical Writer
@@ -58,7 +59,7 @@ This document details the specialized agents within the Gemini Kit framework, th
 ## 7. Planner (`planner`)
 **Role:** Senior Technical Architect & Task Planner
 **Specialization:** Task decomposition and execution planning.
-**Key Skills:** `gk-plan`, `gk-analyze`
+**Key Skills:** `gk-plan`, `gk-research`
 **Responsibility:**
 - Decomposes complex requests into executable subtasks.
 - Defines dependencies and effort estimates.
@@ -67,11 +68,11 @@ This document details the specialized agents within the Gemini Kit framework, th
 ## 8. Researcher (`researcher`)
 **Role:** Research Engineer
 **Specialization:** Information gathering and synthesis.
-**Key Skills:** `gk-research`, `gk-brainstorm`, `gk-onboard`
+**Key Skills:** `gk-onboard`, `gk-brainstorm`
 **Responsibility:**
 - Gathers technical info to support decision-making.
 - Compares options and trade-offs.
-- Produces structured research reports.
+- Produces structured research reports and onboarding guides.
 
 ## 9. Reviewer (`reviewer`)
 **Role:** Senior Code Reviewer & Security Analyst
@@ -79,14 +80,14 @@ This document details the specialized agents within the Gemini Kit framework, th
 **Key Skills:** `gk-review`, `gk-analyze`
 **Responsibility:**
 - Reviews code for correctness, security, and performance.
-- Enforcing coding standards.
+- Enforces coding standards and security protocols.
 - Provides scored, actionable feedback.
 
 ## 10. Tester (`tester`)
 **Role:** Senior QA Engineer
 **Specialization:** Validation, test writing, and coverage reporting.
-**Key Skills:** `gk-debug` (for diagnosing failures)
 **Responsibility:**
 - Writes and executes comprehensive test cases.
 - Measures and reports test coverage.
 - Validates that implementations meet requirements.
+- Collaborates with `developer` to diagnose failures.

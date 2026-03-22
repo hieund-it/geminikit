@@ -10,7 +10,6 @@ This file is automatically managed by `sync_registry.py`. ALWAYS reference this 
 | Command | Agent | Skills | Description |
 |---------|-------|--------|-------------|
 | `/gk-analyze [--deep \| --security \| --perf] <args>` | reviewer | gk-analyze | Analyze code or system structure and report findings on complexity, dependencies, and risks. |
-| `agent-only (developer, reviewer)` | reviewer | gk-api | Design, review, or debug an API based on provided spec and context. |
 | `/gk-ask [--deep \| --quick] <args>` | (self) | gk-ask | Expert assistant for answering technical and general questions with grounded context. |
 | `/gk-brainstorm` | researcher | gk-brainstorm | Software solution brainstorming, architectural evaluation, and technical decision debating. |
 | `/gk-compare-logic` | comparator | gk-compare-logic | Compares business logic between a legacy system and a new, migrated system by analyzing their source code. |
@@ -38,7 +37,6 @@ This file is automatically managed by `sync_registry.py`. ALWAYS reference this 
 | Skill | File | Modes | Use for |
 |-------|------|-------|---------|
 | analyze | `.gemini/skills/analyze/SKILL.md` | `deep`, `perf`, `security` | Analyze code or system structure and report findings on complexity, dependencies, and risks. |
-| api | `.gemini/skills/api/SKILL.md` | — | Design, review, or debug an API based on provided spec and context. |
 | ask | `.gemini/skills/ask/SKILL.md` | — | Expert assistant for answering technical and general questions with grounded context. |
 | brainstorm | `.gemini/skills/brainstorm/SKILL.md` | — | Software solution brainstorming, architectural evaluation, and technical decision debating. |
 | compare-logic | `.gemini/skills/compare-logic/SKILL.md` | `deep`, `quick` | Compares business logic between a legacy system and a new, migrated system by analyzing their source code. |

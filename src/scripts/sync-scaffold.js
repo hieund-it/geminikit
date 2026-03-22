@@ -39,8 +39,8 @@ function sync() {
     
     console.log('âœ“ Scaffold generated successfully.');
   } catch (err) {
-    console.error('âœ— Sync failed:', err.message);
-    process.exit(1);
+    console.warn('âš   Scaffold generation warning:', err.message);
+    console.warn('    Run "npm run build" manually if scaffold is missing.');
   }
 }
 
