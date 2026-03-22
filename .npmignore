@@ -1,5 +1,5 @@
 # Dev tooling — not needed in distributed package
-# Note: package.json#files controls what IS included (bin/, src/, .gemini/, GEMINI.md)
+# Note: package.json#files controls what IS included (src/, scaffold/, GEMINI.md)
 .claude/
 .opencode/
 plans/
@@ -10,6 +10,7 @@ node_modules/
 .git/
 .gitignore
 .npmignore
+.gemini/
 
 # Exclude runtime/session state and secrets from .gemini/
 .gemini/memory/

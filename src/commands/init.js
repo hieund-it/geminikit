@@ -92,10 +92,17 @@ async function setupVenv(systemPython, targetDir) {
 
 module.exports = async function init() {
   const pkgRoot = path.join(__dirname, '../..')
-  const geminiSource = path.join(pkgRoot, '.gemini')
+  const geminiSource = path.join(pkgRoot, 'scaffold')
   const geminiMdSource = path.join(pkgRoot, 'GEMINI.md')
   const targetDir = process.cwd()
   const geminiTarget = path.join(targetDir, '.gemini')
+
+  // Validation: Ensure source directory exists (now using 'scaffold/' for stability)
+  if (!(await fse.pathExists(geminiSource))) {
+    console.error(pc.red(`âœ— Source error: Could not find framework files in ${geminiSource}`))
+    console.error(pc.yellow('  Try reinstalling with: npm install -g github:hieund-it/geminikit --force'))
+    process.exit(1)
+  }
 
   if (await fse.pathExists(geminiTarget)) {
     console.log(pc.yellow('âš   .gemini/ already exists. Remove it manually to reinitialize.'))
@@ -104,11 +111,18 @@ module.exports = async function init() {
 
   try {
     // 1. Copy framework files
+    console.log(pc.blue('âš™  Scaffolding Gemini Kit framework...'))
     await fse.copy(geminiSource, geminiTarget, {
       overwrite: false,
-      filter: (src) => !src.includes(`${path.sep}memory${path.sep}`) && !src.includes(`${path.sep}runtime${path.sep}`) && !src.endsWith('.env')
+      filter: (src) => {
+        const relative = path.relative(geminiSource, src)
+        return !relative.startsWith('memory') && !relative.startsWith('runtime') && !src.endsWith('.env')
+      }
     })
-    await fse.copy(geminiMdSource, path.join(targetDir, 'GEMINI.md'), { overwrite: false })
+    
+    if (await fse.pathExists(geminiMdSource)) {
+      await fse.copy(geminiMdSource, path.join(targetDir, 'GEMINI.md'), { overwrite: false })
+    }
 
     // 2. Setup Python Runtime
     let pythonPath = null

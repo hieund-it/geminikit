@@ -17,12 +17,13 @@
     "outputPath": "dist"
   },
   "scripts": {
-    "build": "pkg .",
+    "build": "node src/scripts/sync-scaffold.js",
+    "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
     "src/",
-    ".gemini/",
+    "scaffold/",
     "GEMINI.md"
   ],
   "engines": {

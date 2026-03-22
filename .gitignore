@@ -21,6 +21,7 @@ ENV/
 # npm
 node_modules/
 package-lock.json
+scaffold/
 
 # scaffold runtime exclusions (scaffold/ itself IS tracked)
 scaffold/.gemini/memory/
