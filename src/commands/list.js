@@ -6,12 +6,15 @@
 const fs = require('fs')
 const path = require('path')
 const pc = require('picocolors')
+const { intro, outro, log } = require('@clack/prompts')
 
 module.exports = function list() {
   const geminiDir = path.join(process.cwd(), '.gemini')
 
+  intro('[>] GeminiKit CLI - List')
+
   if (!fs.existsSync(geminiDir)) {
-    console.log(pc.yellow('No .gemini/ found in this directory. Run gk init first.'))
+    log.warn('No .gemini/ found in this directory. Run gk init first.')
     return
   }
 
@@ -36,7 +39,10 @@ module.exports = function list() {
   const skillsDir = path.join(geminiDir, 'skills')
   if (fs.existsSync(skillsDir)) {
     const skills = fs.readdirSync(skillsDir)
-      .filter(f => fs.statSync(path.join(skillsDir, f)).isDirectory())
+      .filter(f => {
+        try { return fs.lstatSync(path.join(skillsDir, f)).isDirectory() }
+        catch { return false }
+      })
       .sort()
 
     if (skills.length > 0) {
@@ -47,9 +53,9 @@ module.exports = function list() {
   }
 
   if (!found) {
-    console.log(pc.yellow('No agents or skills found in .gemini/'))
+    log.warn('No agents or skills found in .gemini/')
     return
   }
 
-  console.log()
+  outro('Done')
 }

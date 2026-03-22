@@ -1,6 +1,6 @@
 {
   "name": "geminicli-kit",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Multi-agent AI development framework for Gemini CLI",
   "bin": {
     "gk": "./bin/gk.js"
@@ -43,6 +43,7 @@
     "multi-agent"
   ],
   "dependencies": {
+    "@clack/prompts": "^1.1.0",
     "commander": "^12.0.0",
     "fs-extra": "^11.0.0",
     "picocolors": "^1.0.0"

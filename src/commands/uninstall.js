@@ -1,37 +1,52 @@
+/**
+ * gk uninstall — removes .gemini/ and GEMINI.md from the current project.
+ */
+
 const fse = require('fs-extra')
 const path = require('path')
-const pc = require('picocolors')
+const { intro, outro, confirm, log, cancel, isCancel } = require('@clack/prompts')
 
 module.exports = async function uninstall() {
   const targetDir = process.cwd()
   const geminiDir = path.join(targetDir, '.gemini')
   const geminiMd = path.join(targetDir, 'GEMINI.md')
 
-  console.log(pc.blue('ðŸ—‘  Cleaning up Gemini Kit from current project...'))
+  intro('[>] GeminiKit CLI - Uninstall')
+
+  const geminiExists = await fse.pathExists(geminiDir)
+  const geminiMdExists = await fse.pathExists(geminiMd)
+
+  if (!geminiExists && !geminiMdExists) {
+    log.warn('No Gemini Kit project found in this directory.')
+    outro('Nothing to remove.')
+    return
+  }
+
+  // Require explicit confirmation before destroying project files
+  const shouldRemove = await confirm({
+    message: 'Remove .gemini/ and GEMINI.md from this project? This cannot be undone.',
+  })
+
+  if (isCancel(shouldRemove) || !shouldRemove) {
+    cancel('Uninstall cancelled.')
+    return
+  }
 
   try {
-    let cleaned = false
-    if (await fse.pathExists(geminiDir)) {
+    if (geminiExists) {
       await fse.remove(geminiDir)
-      console.log(pc.green('   Removed .gemini/ directory (including local Python runtime).'))
-      cleaned = true
+      log.success('Removed .gemini/ directory (including local Python runtime).')
     }
-    if (await fse.pathExists(geminiMd)) {
+    if (geminiMdExists) {
       await fse.remove(geminiMd)
-      console.log(pc.green('   Removed GEMINI.md file.'))
-      cleaned = true
+      log.success('Removed GEMINI.md file.')
     }
 
-    if (!cleaned) {
-      console.log(pc.yellow('   No Gemini Kit project found in this directory.'))
-    } else {
-      console.log(pc.green('\nâœ“ Project cleaned successfully.'))
-    }
-
-    console.log(pc.cyan('\nTo completely uninstall Gemini Kit from your system, run:'))
-    console.log(pc.white('   npm uninstall -g gemini-kit'))
+    log.info('To completely remove GeminiKit from your system, run:')
+    log.info('  npm uninstall -g geminicli-kit')
+    outro('Project cleaned successfully.')
   } catch (err) {
-    console.error(pc.red('âœ— Uninstall failed: ' + err.message))
+    log.error('Uninstall failed: ' + err.message)
     process.exit(1)
   }
 }
