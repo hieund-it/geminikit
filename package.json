@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Multi-agent AI development framework for Gemini CLI",
   "bin": {
-    "gk": "./src/commands/gk.js"
+    "gk": "./bin/gk.js"
   },
   "pkg": {
     "assets": [
@@ -22,6 +22,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
+    "bin/",
     "src/",
     "scaffold/",
     "GEMINI.md"
