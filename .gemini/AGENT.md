@@ -26,6 +26,7 @@ Commands follow the format: `/gk-<command> [--mode] [task]`
 | `/gk-brainstorm` | researcher | `—` |
 | `/gk-compare-logic` | comparator | `—` |
 | `/gk-debug` | developer | `--trace \| --deep` |
+| `/gk-fix-bug` | developer | `--verify \| --deep` |
 | `agent-only (documenter)` | documenter | `—` |
 | `agent-only (developer)` | developer | `--dry-run` |
 | `/gk-mcp-manager` | mcp-manager | `—` |
@@ -88,10 +89,12 @@ Routing table:
 For each subtask, check `.gemini/skills/` for matching skill:
 <!-- GK_SKILL_ROUTING_START -->
 - `analyze/SKILL.md` — Analyze code or system structure and report findings on complexity, dependencies, and risks.
+- `api/SKILL.md` — Design, review, or debug an API based on provided spec and context.
 - `ask/SKILL.md` — Expert assistant for answering technical and general questions with grounded context.
 - `brainstorm/SKILL.md` — Software solution brainstorming, architectural evaluation, and technical decision debating.
 - `compare-logic/SKILL.md` — Compares business logic between a legacy system and a new, migrated system by analyzing their source code.
 - `debug/SKILL.md` — Identify root cause of a software error and recommend a precise fix.
+- `bug-fixer/SKILL.md` — Automatically analyze error logs to identify the root cause and generate a verified code fix.
 - `document/SKILL.md` — Generate accurate technical documentation from provided code content and context.
 - `git/SKILL.md` — Execute git operations: commit, branch, status, PR prep, and conflict detection.
 - `mcp-manager/SKILL.md` — Manage MCP server configuration, test connections, and scaffold new servers.

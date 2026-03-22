@@ -90,6 +90,13 @@
       "description": "Identify root cause of a software error and recommend a precise fix."
     },
     {
+      "name": "bug-fixer",
+      "agent": "developer",
+      "command": "/gk-fix-bug",
+      "flags": "--verify | --deep",
+      "description": "Automatically analyze error logs to identify the root cause and generate a verified code fix."
+    },
+    {
       "name": "document",
       "agent": "documenter",
       "command": "agent-only (documenter)",
