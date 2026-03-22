@@ -16,6 +16,13 @@ program
   .version(version)
 
 program
+  .command('version')
+  .description('Show the current version of gemini-kit')
+  .action(() => {
+    console.log(`gemini-kit v${version}`)
+  })
+
+program
   .command('init')
   .description('Scaffold .gemini/ and GEMINI.md into the current project')
   .action(() => require('./init')())

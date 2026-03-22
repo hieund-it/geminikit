@@ -4,10 +4,14 @@
  */
 
 const { execSync } = require('child_process')
+const path = require('path')
+const fse = require('fs-extra')
 const pc = require('picocolors')
 
-module.exports = function update() {
-  const pkg = require('../../package.json')
+module.exports = async function update() {
+  const pkgRoot = path.join(__dirname, '../..')
+  const pkg = require(path.join(pkgRoot, 'package.json'))
+  const init = require('./init')
 
   // Resolve repository URL from package.json
   const repoRaw = pkg.repository?.url || pkg.repository
@@ -30,6 +34,33 @@ module.exports = function update() {
     execSync(`npm install -g ${repoUrl}`, { stdio: 'inherit' })
     console.log()
     console.log(pc.green('✓ gemini-kit updated successfully!'))
+    
+    // Check if current directory is a Gemini Kit project
+    const targetDir = process.cwd()
+    const geminiTarget = path.join(targetDir, '.gemini')
+    
+    if (await fse.pathExists(geminiTarget)) {
+      console.log(pc.cyan('\nDetected an existing .gemini/ folder in this project.'))
+      console.log(pc.yellow('Would you like to update your project-local framework files to the latest version?'))
+      console.log(pc.red('WARNING: This will overwrite default framework files but preserve your memory/runtime data.'))
+      
+      const confirmed = await init.askConfirmation(pc.bold('Confirm project update? (y/N): '))
+      
+      if (confirmed) {
+        console.log(pc.blue('\nUpdating project-local .gemini/ folder...'))
+        
+        // Remove old files but we'll be careful in performInit (which already filters memory/runtime)
+        // To be safe, we just call performInit after confirming overwrite intent
+        await fse.remove(geminiTarget)
+        
+        const geminiSource = path.join(pkgRoot, 'scaffold')
+        const geminiMdSource = path.join(pkgRoot, 'GEMINI.md')
+        
+        await init.performInit(geminiSource, geminiTarget, targetDir, geminiMdSource)
+      } else {
+        console.log(pc.gray('\nProject update skipped.'))
+      }
+    }
   } catch (err) {
     console.error()
     console.error(pc.red('✗ Update failed. Try manually:'))

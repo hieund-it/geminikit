@@ -11,6 +11,22 @@ const path = require('path')
 const pc = require('picocolors')
 const https = require('https')
 const { execSync } = require('child_process')
+const readline = require('readline')
+
+/**
+ * Interactive confirmation prompt
+ */
+function askConfirmation(query) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  })
+
+  return new Promise((resolve) => rl.question(query, (answer) => {
+    rl.close()
+    resolve(answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes')
+  }))
+}
 
 /**
  * Checks if a command exists in the system PATH
@@ -90,25 +106,10 @@ async function setupVenv(systemPython, targetDir) {
   }
 }
 
-module.exports = async function init() {
-  const pkgRoot = path.join(__dirname, '../..')
-  const geminiSource = path.join(pkgRoot, 'scaffold')
-  const geminiMdSource = path.join(pkgRoot, 'GEMINI.md')
-  const targetDir = process.cwd()
-  const geminiTarget = path.join(targetDir, '.gemini')
-
-  // Validation: Ensure source directory exists (now using 'scaffold/' for stability)
-  if (!(await fse.pathExists(geminiSource))) {
-    console.error(pc.red(`âœ— Source error: Could not find framework files in ${geminiSource}`))
-    console.error(pc.yellow('  Try reinstalling with: npm install -g github:hieund-it/geminikit --force'))
-    process.exit(1)
-  }
-
-  if (await fse.pathExists(geminiTarget)) {
-    console.log(pc.yellow('âš   .gemini/ already exists. Remove it manually to reinitialize.'))
-    process.exit(1)
-  }
-
+/**
+ * The main initialization logic, exported for reuse by 'update' command
+ */
+async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource) {
   try {
     // 1. Copy framework files
     console.log(pc.blue('âš™  Scaffolding Gemini Kit framework...'))
@@ -160,5 +161,40 @@ module.exports = async function init() {
     process.exit(1)
   }
 }
+
+module.exports = async function init() {
+  const pkgRoot = path.join(__dirname, '../..')
+  const geminiSource = path.join(pkgRoot, 'scaffold')
+  const geminiMdSource = path.join(pkgRoot, 'GEMINI.md')
+  const targetDir = process.cwd()
+  const geminiTarget = path.join(targetDir, '.gemini')
+
+  // Validation: Ensure source directory exists (now using 'scaffold/' for stability)
+  if (!(await fse.pathExists(geminiSource))) {
+    console.error(pc.red(`âœ— Source error: Could not find framework files in ${geminiSource}`))
+    console.error(pc.yellow('  Try reinstalling with: npm install -g github:hieund-it/geminikit --force'))
+    process.exit(1)
+  }
+
+  if (await fse.pathExists(geminiTarget)) {
+    console.log(pc.yellow(`âš   .gemini/ already exists in this project.`))
+    console.log(pc.red('   WARNING: Initializing will OVERWRITE your current configuration and custom settings!'))
+    console.log(pc.cyan('   Please back up your changes (e.g. settings.json, custom agents) before proceeding.\n'))
+    
+    const confirmed = await askConfirmation(pc.bold('   Are you sure you want to continue? (y/N): '))
+    if (!confirmed) {
+      console.log(pc.gray('\nâš™  Initialization cancelled. Your files were not changed.'))
+      process.exit(0)
+    }
+    
+    console.log(pc.blue('   Removing existing .gemini/ to reinitialize...'))
+    await fse.remove(geminiTarget)
+  }
+
+  await performInit(geminiSource, geminiTarget, targetDir, geminiMdSource)
+}
+
+module.exports.performInit = performInit
+module.exports.askConfirmation = askConfirmation
 
 
