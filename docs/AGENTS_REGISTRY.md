@@ -39,7 +39,16 @@ This document details the specialized agents within the Gemini Kit framework, th
 - Optimizes SQL queries and creates new skills.
 - Manages codebase state and summarization.
 
-## 5. Documenter (`documenter`)
+## 5. DevOps (`devops`)
+**Role:** Senior DevOps Engineer
+**Specialization:** CI/CD, infrastructure, and deployment automation.
+**Key Skills:** `gk-deploy`, `gk-infra`
+**Responsibility:**
+- Manages infrastructure as code (Docker, K8s, Terraform).
+- Executes build and deployment pipelines.
+- Automates release processes.
+
+## 6. Documenter (`documenter`)
 **Role:** Technical Writer
 **Specialization:** Generating technical documentation from code.
 **Key Skills:** `gk-document`
@@ -47,7 +56,7 @@ This document details the specialized agents within the Gemini Kit framework, th
 - Generates READMEs, API references, ADRs, and Changelogs.
 - Ensures documentation accurately reflects the actual code behavior ("Code is truth").
 
-## 6. MCP Manager (`mcp-manager`)
+## 7. MCP Manager (`mcp-manager`)
 **Role:** MCP Administrator
 **Specialization:** Managing Model Context Protocol servers.
 **Key Skills:** `gk-mcp-manager`
@@ -56,7 +65,16 @@ This document details the specialized agents within the Gemini Kit framework, th
 - Tests and scaffolds MCP servers.
 - Debugs connection issues.
 
-## 7. Planner (`planner`)
+## 8. Maintenance (`maintenance`)
+**Role:** Senior Maintenance Engineer
+**Specialization:** Code health, technical debt, and system evolution.
+**Key Skills:** `gk-refactor`, `gk-migrate`
+**Responsibility:**
+- Refactors legacy code for maintainability.
+- Manages database schema migrations.
+- Identifies and resolves technical debt.
+
+## 9. Planner (`planner`)
 **Role:** Senior Technical Architect & Task Planner
 **Specialization:** Task decomposition and execution planning.
 **Key Skills:** `gk-plan`, `gk-research`
@@ -65,7 +83,7 @@ This document details the specialized agents within the Gemini Kit framework, th
 - Defines dependencies and effort estimates.
 - Creates detailed implementation plans.
 
-## 8. Researcher (`researcher`)
+## 10. Researcher (`researcher`)
 **Role:** Research Engineer
 **Specialization:** Information gathering and synthesis.
 **Key Skills:** `gk-onboard`, `gk-brainstorm`
@@ -74,7 +92,7 @@ This document details the specialized agents within the Gemini Kit framework, th
 - Compares options and trade-offs.
 - Produces structured research reports and onboarding guides.
 
-## 9. Reviewer (`reviewer`)
+## 11. Reviewer (`reviewer`)
 **Role:** Senior Code Reviewer & Security Analyst
 **Specialization:** Code quality, security, and performance review.
 **Key Skills:** `gk-review`, `gk-analyze`
@@ -83,7 +101,25 @@ This document details the specialized agents within the Gemini Kit framework, th
 - Enforces coding standards and security protocols.
 - Provides scored, actionable feedback.
 
-## 10. Tester (`tester`)
+## 12. Security (`security`)
+**Role:** Senior Security Engineer
+**Specialization:** Vulnerability analysis and compliance.
+**Key Skills:** `gk-audit`
+**Responsibility:**
+- Audits dependencies and static code for vulnerabilities.
+- Ensures license compliance.
+- Performs threat modeling.
+
+## 13. Support (`support`)
+**Role:** Senior Support Engineer
+**Specialization:** Runtime troubleshooting and incident response.
+**Key Skills:** `gk-monitor`, `gk-debug`
+**Responsibility:**
+- Analyzes system logs and metrics.
+- Monitors application health and performance.
+- Detects anomalies and alerts on critical issues.
+
+## 14. Tester (`tester`)
 **Role:** Senior QA Engineer
 **Specialization:** Validation, test writing, and coverage reporting.
 **Responsibility:**

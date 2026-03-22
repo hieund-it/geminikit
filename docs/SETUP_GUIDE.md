@@ -50,6 +50,8 @@ cd geminikit
 ```
 
 **2. Install Dependencies**
+
+Install the project's development dependencies defined in `package.json`. This is required to run the local version of the framework and its scripts.
 ```bash
 npm install
 ```
@@ -64,7 +66,7 @@ You will need to edit this `.env` file to add your own API keys for services lik
 
 **4. Run Commands Locally**
 
-From the root of the `geminikit` directory, you can now use the AI commands directly:
+Open the **Gemini CLI application** in the root of the `geminikit` directory. You can now use the AI commands directly within the chat interface:
 ```bash
 /gk-ask "What is the status of the system?"
 ```

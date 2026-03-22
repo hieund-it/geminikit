@@ -1,5 +1,6 @@
 ---
 name: gk-skill-creator
+agent: developer
 version: "1.0.0"
 description: "Generate agent and skill files following Gemini Kit templates and rules."
 ---

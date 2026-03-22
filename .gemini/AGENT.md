@@ -21,22 +21,29 @@ Commands follow the format: `/gk-<command> [--mode] [task]`
 | Command | Agent | Mode flags |
 |---------|-------|------------|
 | `/gk-analyze` | reviewer | `--deep \| --security \| --perf` |
-| `agent-only (developer, reviewer)` | reviewer | `—` |
 | `/gk-ask` | (self) | `--deep \| --quick` |
+| `/gk-audit` | security | `--deps \| --static \| --license` |
 | `/gk-brainstorm` | researcher | `—` |
-| `/gk-compare-logic` | comparator | `—` |
-| `/gk-debug` | developer | `--trace \| --deep` |
-| `/gk-fix-bug` | developer | `--verify \| --deep` |
+| `Bridge orchestrator (`orchestrator.py`) — not directly by users` | developer | `—` |
+| `/gk-fix-bug (or "agent-only")` | developer | `--verify \| --deep` |
+| `/gk-compare-logic` | comparator | `--deep \| --quick` |
+| `/gk-debug` | support | `--trace \| --deep` |
+| `/gk-deploy` | devops | `--staging \| --production \| --dry-run` |
 | `agent-only (documenter)` | documenter | `—` |
+| `/gk-export-session` | developer | `—` |
 | `agent-only (developer)` | developer | `--dry-run` |
+| `/gk-infra` | devops | `--docker \| --k8s \| --terraform` |
 | `/gk-mcp-manager` | mcp-manager | `—` |
+| `/gk-migrate` | maintenance | `--generate \| --apply \| --rollback` |
+| `/gk-monitor` | support | `--logs \| --metrics \| --alerts` |
 | `/gk-onboard` | researcher | `--deep` |
 | `/gk-plan` | planner | `--fast \| --deep \| --parallel \| --from <path> \| --dry-run \| --phase <id>` |
+| `/gk-refactor` | maintenance | `--pattern \| --modernize \| --cleanup` |
 | `agent-only (planner, orchestrator)` | planner | `—` |
-| `/gk-review` | reviewer | `--strict \| --quick` |
+| `/gk-review` | reviewer | `--strict \| --quick \| --api \| --security \| --perf` |
 | `/gk-create` | developer | `- `--skill`: Generate a new skill component at `.gemini/skills/<name>/SKILL.md`` |
 | `agent-only (developer)` | developer | `—` |
-| `agent-only (orchestrator)` | developer | `—` |
+| `agent-only (orchestrator)` | (self) | `—` |
 | `/gk-design` | designer | `--spec \| --review` |
 
 <!-- GK_COMMAND_TABLE_END -->
@@ -89,19 +96,26 @@ Routing table:
 For each subtask, check `.gemini/skills/` for matching skill:
 <!-- GK_SKILL_ROUTING_START -->
 - `analyze/SKILL.md` — Analyze code or system structure and report findings on complexity, dependencies, and risks.
-- `api/SKILL.md` — Design, review, or debug an API based on provided spec and context.
 - `ask/SKILL.md` — Expert assistant for answering technical and general questions with grounded context.
+- `audit/SKILL.md` — Audit dependencies and static code for security vulnerabilities and license compliance
 - `brainstorm/SKILL.md` — Software solution brainstorming, architectural evaluation, and technical decision debating.
+- `bridge-task-runner/SKILL.md` — Execute a bridge pipeline task and signal completion by updating the task JSON status.
+- `bug-fixer/SKILL.md` — Identify root cause from error logs and generate a verified code fix with regression tests.
 - `compare-logic/SKILL.md` — Compares business logic between a legacy system and a new, migrated system by analyzing their source code.
 - `debug/SKILL.md` — Identify root cause of a software error and recommend a precise fix.
-- `bug-fixer/SKILL.md` — Automatically analyze error logs to identify the root cause and generate a verified code fix.
+- `deploy/SKILL.md` — Execute build and deployment pipelines to various environments
 - `document/SKILL.md` — Generate accurate technical documentation from provided code content and context.
+- `export-session/SKILL.md` — Exports the current session state and conversation summary for continuation.
 - `git/SKILL.md` — Execute git operations: commit, branch, status, PR prep, and conflict detection.
-- `mcp-manager/SKILL.md` — Manage MCP server configuration, test connections, and scaffold new servers.
+- `infra/SKILL.md` — Manage infrastructure as code (Docker, K8s, Terraform configurations)
+- `mcp-manager/SKILL.md` — Manage MCP server configuration, test connections, and scaffold new servers. Use this skill to add/edit/remove MCP servers or to troubleshoot connectivity.
+- `migrate/SKILL.md` — Manage database schema changes and data migrations
+- `monitor/SKILL.md` — Analyze system logs and monitor performance metrics to detect anomalies
 - `onboard/SKILL.md` — Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential.
 - `plan/SKILL.md` — Break down a complex task into structured, executable subtasks with dependencies and effort estimates.
+- `refactor/SKILL.md` — Improve code structure and maintainability without changing external behavior
 - `research/SKILL.md` — Gather, compare, and synthesize technical options into a structured recommendation report.
-- `review/SKILL.md` — Review code for quality, security, performance, and correctness with a scored, actionable report.
+- `review/SKILL.md` — Comprehensive review of code quality, API design, security, and performance with actionable findings.
 - `skill-creator/SKILL.md` — Generate agent and skill files following Gemini Kit templates and rules.
 - `sql/SKILL.md` — Optimize a SQL query for performance while preserving its logical result.
 - `summarize/SKILL.md` — Compress conversation history or agent output into a structured, token-efficient summary.

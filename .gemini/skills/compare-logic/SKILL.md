@@ -1,5 +1,6 @@
 ---
 name: gk-compare-logic
+agent: comparator
 version: "1.0.0"
 description: "Compares business logic between a legacy system and a new, migrated system by analyzing their source code."
 ---

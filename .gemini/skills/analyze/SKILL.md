@@ -1,5 +1,6 @@
 ---
 name: gk-analyze
+agent: reviewer
 version: "1.0.1"
 description: "Analyze code or system structure and report findings on complexity, dependencies, and risks."
 ---

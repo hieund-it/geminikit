@@ -1,5 +1,6 @@
 ---
 name: gk-plan
+agent: planner
 version: "1.0.1"
 format: "json"
 description: "Break down a complex task into structured, executable subtasks with dependencies and effort estimates."

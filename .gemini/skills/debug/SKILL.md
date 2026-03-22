@@ -1,5 +1,6 @@
 ---
 name: gk-debug
+agent: support
 version: "1.0.1"
 format: "json"
 description: "Identify root cause of a software error and recommend a precise fix."

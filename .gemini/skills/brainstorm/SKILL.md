@@ -1,5 +1,6 @@
 ---
 name: gk-brainstorm
+agent: researcher
 version: "1.0.1"
 description: "Software solution brainstorming, architectural evaluation, and technical decision debating."
 ---

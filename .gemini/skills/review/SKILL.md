@@ -1,5 +1,6 @@
 ---
 name: gk-review
+agent: reviewer
 version: "1.2.0"
 format: "json"
 description: "Comprehensive review of code quality, API design, security, and performance with actionable findings."

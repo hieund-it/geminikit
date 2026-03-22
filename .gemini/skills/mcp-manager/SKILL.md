@@ -1,5 +1,6 @@
 ---
 name: gk-mcp-manager
+agent: mcp-manager
 description: Manage MCP server configuration, test connections, and scaffold new servers. Use this skill to add/edit/remove MCP servers or to troubleshoot connectivity.
 ---
 

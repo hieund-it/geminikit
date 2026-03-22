@@ -1,5 +1,6 @@
 ---
 name: gk-sql
+agent: developer
 version: "1.0.1"
 description: "Optimize a SQL query for performance while preserving its logical result."
 ---

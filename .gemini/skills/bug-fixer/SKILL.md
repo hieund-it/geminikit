@@ -1,5 +1,6 @@
 ---
 name: gk-bug-fixer
+agent: developer
 version: "1.0.0"
 description: "Identify root cause from error logs and generate a verified code fix with regression tests."
 ---

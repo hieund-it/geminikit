@@ -1,5 +1,6 @@
 ---
 name: gk-document
+agent: documenter
 version: "1.0.1"
 format: "json"
 description: "Generate accurate technical documentation from provided code content and context."

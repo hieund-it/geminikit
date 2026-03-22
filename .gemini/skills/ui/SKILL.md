@@ -1,5 +1,6 @@
 ---
 name: gk-ui
+agent: designer
 version: "1.0.1"
 format: "json"
 description: "Generate precise visual component specs or review implemented UI for design quality and accessibility compliance."

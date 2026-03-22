@@ -1,5 +1,6 @@
 ---
 name: gk-onboard
+agent: researcher
 version: "1.2.0"
 format: "json"
 description: "Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential."

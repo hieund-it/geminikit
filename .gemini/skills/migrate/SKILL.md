@@ -1,5 +1,6 @@
 ---
 name: gk-migrate
+agent: maintenance
 version: "1.0.0"
 description: "Manage database schema changes and data migrations"
 ---

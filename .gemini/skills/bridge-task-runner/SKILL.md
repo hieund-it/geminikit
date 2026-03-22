@@ -1,5 +1,6 @@
 ---
 name: gk-bridge-task-runner
+agent: developer
 version: "1.0.0"
 description: "Execute a bridge pipeline task and signal completion by updating the task JSON status."
 ---

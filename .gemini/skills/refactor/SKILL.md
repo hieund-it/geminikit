@@ -1,5 +1,6 @@
 ---
 name: gk-refactor
+agent: maintenance
 version: "1.0.0"
 description: "Improve code structure and maintainability without changing external behavior"
 ---

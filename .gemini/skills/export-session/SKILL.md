@@ -1,5 +1,6 @@
 ---
 name: gk-export-session
+agent: developer
 version: "1.0.0"
 format: "markdown"
 description: "Exports the current session state and conversation summary for continuation."

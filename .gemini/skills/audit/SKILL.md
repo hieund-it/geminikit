@@ -1,5 +1,6 @@
 ---
 name: gk-audit
+agent: security
 version: "1.0.0"
 description: "Audit dependencies and static code for security vulnerabilities and license compliance"
 ---

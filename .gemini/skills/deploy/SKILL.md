@@ -1,5 +1,6 @@
 ---
 name: gk-deploy
+agent: devops
 version: "1.0.0"
 description: "Execute build and deployment pipelines to various environments"
 ---

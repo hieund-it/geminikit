@@ -1,5 +1,6 @@
 ---
 name: gk-summarize
+agent: (self)
 version: "1.0.1"
 format: "json"
 description: "Compress conversation history or agent output into a structured, token-efficient summary."

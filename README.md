@@ -21,6 +21,8 @@ gk init      # Scaffold .gemini/ structure, agents, and skills
 gk list      # List available agents and skills
 gk update    # Pull the latest framework updates
 gk uninstall # Remove Gemini Kit from the current project
+gk bridge    # Manage Claude-Gemini bridge pipeline
+gk version   # Show installed Gemini Kit version
 ```
 
 **2. Clone for Contribution**

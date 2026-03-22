@@ -1,5 +1,6 @@
 ---
 name: gk-monitor
+agent: support
 version: "1.0.0"
 description: "Analyze system logs and monitor performance metrics to detect anomalies"
 ---

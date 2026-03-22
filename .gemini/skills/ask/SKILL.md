@@ -1,5 +1,6 @@
 ---
 name: gk-ask
+agent: (self)
 version: "1.0.1"
 description: "Expert assistant for answering technical and general questions with grounded context."
 ---

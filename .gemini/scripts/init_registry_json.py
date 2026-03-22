@@ -60,16 +60,14 @@ def parse_skill(skill_dir):
     if flags_match:
         flags = flags_match.group(1).strip()
 
-    # 3. Determine Default Agent
+    # 3. Determine Agent — read from frontmatter `agent:` field (source of truth)
+    # Falls back to "developer" if not specified in SKILL.md frontmatter
     agent = "developer"
-    if "ask" in command or "summarize" in command: agent = "(self)"
-    elif "plan" in command: agent = "planner"
-    elif "research" in command or "onboard" in command or "brainstorm" in command: agent = "researcher"
-    elif "analyze" in command or "review" in command: agent = "reviewer"
-    elif "ui" in command or "design" in command: agent = "designer"
-    elif "doc" in command: agent = "documenter"
-    elif "compare" in command: agent = "comparator"
-    elif "test" in command: agent = "tester"
+    if fm_match:
+        for line in fm_match.group(1).split('\n'):
+            if line.startswith('agent:'):
+                agent = line.split(':', 1)[1].strip().strip('"')
+                break
 
     return {
         "name": name,

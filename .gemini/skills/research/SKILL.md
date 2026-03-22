@@ -1,5 +1,6 @@
 ---
 name: gk-research
+agent: planner
 version: "1.0.1"
 format: "json"
 description: "Gather, compare, and synthesize technical options into a structured recommendation report."

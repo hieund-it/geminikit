@@ -1,5 +1,6 @@
 ---
 name: gk-git
+agent: developer
 version: "1.0.1"
 description: "Execute git operations: commit, branch, status, PR prep, and conflict detection."
 ---

@@ -39,9 +39,13 @@ def main():
         data = json.load(f)
 
     # Pre-process: Group skills by agent
+    valid_agent_names = {a["name"] for a in data["agents"]}
     agent_to_skills = {}
     for skill in data["skills"]:
         agent = skill["agent"]
+        if agent not in valid_agent_names:
+            print(f"Warning: skill '{skill['name']}' references unknown agent '{agent}' — omitted from registry table.")
+            continue
         if agent not in agent_to_skills:
             agent_to_skills[agent] = []
         agent_to_skills[agent].append(skill["name"])

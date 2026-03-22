@@ -1,5 +1,6 @@
 ---
 name: gk-infra
+agent: devops
 version: "1.0.0"
 description: "Manage infrastructure as code (Docker, K8s, Terraform configurations)"
 ---
