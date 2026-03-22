@@ -15,6 +15,7 @@ module.exports = function list() {
 
   if (!fs.existsSync(geminiDir)) {
     log.warn('No .gemini/ found in this directory. Run gk init first.')
+    outro('Done')
     return
   }
 
@@ -54,6 +55,7 @@ module.exports = function list() {
 
   if (!found) {
     log.warn('No agents or skills found in .gemini/')
+    outro('Done')
     return
   }
 

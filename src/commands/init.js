@@ -51,11 +51,6 @@ async function installPackagesVerbose(pythonPath, reqFile) {
     .split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'))
   if (pkgs.length === 0) return 0
 
-  // Pre-list packages before installing
-  for (const pkg of pkgs) {
-    console.log(`  ${pc.gray('→')} ${pc.cyan(pkg)}`)
-  }
-
   // Use spawnSync (no shell) to avoid cmd.exe escaping issues with paths and version specifiers
   const s = createSpinner()
   s.start('Installing packages...')
@@ -177,3 +172,4 @@ module.exports = async function init() {
 }
 
 module.exports.performInit = performInit
+module.exports.walkFiles = walkFiles
