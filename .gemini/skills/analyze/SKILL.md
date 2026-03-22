@@ -48,7 +48,15 @@ Analyze provided code/system and report findings on complexity, dependencies, pa
 - Identify code smells: god classes, long methods, feature envy, shotgun surgery, dead code.
 - Circular dependencies are high-severity structural risks.
 - For `surface` depth: identify top-level structure and critical risks only.
-- For `deep` depth: trace all call chains and detect transitive dependencies.
+- For `deep` depth: identify all call chains and detect transitive dependencies.
+
+## Steps
+1. Scan the target file or system structure
+2. Identify core dependencies and entry points
+3. Assess complexity (cyclomatic, LOC) and maintainability
+4. Detect security vulnerabilities and code smells
+5. Map call graph and internal data flows
+6. Summarize findings and metrics
 
 # Output
 ```json

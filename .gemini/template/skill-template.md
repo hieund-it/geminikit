@@ -14,13 +14,13 @@ description: "One sentence: what this skill does (action-oriented)"
 - **Errors:** ERROR_CODE_1, ERROR_CODE_2
 
 ## Mode Mapping
-<!-- Add this section only if skill has modes (YAGNI). -->
+<!-- MANDATORY: If skill has flags, you MUST create a Mode Mapping table. -->
+<!-- MANDATORY: For each flag, you MUST create a corresponding mode file at .gemini/skills/<skill-name>/modes/<mode>.md -->
 <!-- Use plain text paths, NOT @{} syntax — paths are LLM routing hints only. -->
-<!-- Command file handles actual @{} loading of mode files. -->
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --mode-name | What this mode does | ../modes/mode-name.md |
+| --mode-name | What this mode does | ./modes/mode-name.md |
 | (default) | Base skill behavior | (base skill rules) |
 
 # Role

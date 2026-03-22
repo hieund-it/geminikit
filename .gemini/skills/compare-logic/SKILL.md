@@ -4,6 +4,18 @@ version: "1.0.0"
 description: "Compares business logic between a legacy system and a new, migrated system by analyzing their source code."
 ---
 
+## Interface
+- **Invoked via:** /gk-compare-logic
+- **Flags:** --deep | --quick
+
+## Mode Mapping
+
+| Flag | Description | Reference |
+|------|-------------|-----------|
+| --deep | Exhaustive line-by-line comparison and transitive tracing | ./modes/deep.md |
+| --quick | High-signal summary of primary logic blocks and entry points | ./modes/quick.md |
+| (default) | Standard balanced comparison of systems | (base skill rules) |
+
 # Role
 
 You are a meticulous software analyst tasked with identifying and comparing business logic between two different codebases.

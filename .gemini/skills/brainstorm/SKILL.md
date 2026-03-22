@@ -31,6 +31,7 @@ Explore software solutions, evaluate architectural choices, and debate technical
 ```
 
 # Rules
+- File output: → See .gemini/tools/file-output-rules.md
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - TCO: Consider dev time, maintenance, infra, and training costs.
 - Lock-in: Evaluate vendor lock-in or dependency on niche/unstable libraries.
@@ -41,7 +42,6 @@ Explore software solutions, evaluate architectural choices, and debate technical
 - Future-Proofing: Distinguish from over-engineering; keep current requirements primary.
 
 # Output
-```json
 {
   "status": "completed | failed | blocked",
   "format": "json",
@@ -51,6 +51,7 @@ Explore software solutions, evaluate architectural choices, and debate technical
     "adr": "string",
     "recommendation": "string"
   },
+  "output_file": "string",
   "summary": "one sentence describing the outcome",
   "confidence": "high | medium | low"
 }
@@ -65,6 +66,7 @@ Explore software solutions, evaluate architectural choices, and debate technical
     "solutions": [{"name": "Serverless API", "pros": ["Scaling"], "cons": ["Vendor lock-in"]}],
     "recommendation": "Serverless is recommended for MVP."
   },
+  "output_file": "plans/reports/20260322-serverless-api-brainstorm.md",
   "summary": "Generated solution approaches for the stated problem.",
   "confidence": "high"
 }

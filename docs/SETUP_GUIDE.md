@@ -1,53 +1,71 @@
 # Setup Guide
 
-This guide covers the initial setup and configuration of the Gemini Kit environment.
+This guide covers the setup and installation of Gemini Kit.
 
 ## Prerequisites
 
-- **Node.js**: Version 18+ recommended.
-- **Python**: Version 3.10+ (for some skills).
-- **Git**: Installed and configured.
-- **Gemini CLI**: Ensure you have the latest version installed.
+- **Node.js**: Version 18 or higher.
+- **Python**: Version 3.10 or higher.
+- **Gemini CLI**: The latest version must be installed and authenticated.
 
-## Installation
+---
 
-1.  **Clone the Repository**:
-    ```bash
-    git clone https://github.com/google/geminikit.git
-    cd geminikit
-    ```
+## Option 1: Standard Installation (Recommended)
 
-2.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
+This method installs the `gk` command-line tool globally, allowing you to scaffold Gemini Kit into any project on your machine.
 
-3.  **Environment Variables**:
-    Create a `.env` file in the root directory (copy from `.env.example` if available).
-    ```bash
-    cp .gemini/.env.example .env
-    ```
-    Add necessary API keys (e.g., for Google Search, MCP servers).
+**1. Install via npm**
 
-## Configuration
-
-### MCP Servers (`.gemini/mcp-config.json`)
-
-Gemini Kit uses Model Context Protocol (MCP) to connect to external tools.
-To configure servers, edit `.gemini/mcp-config.json` or use the manager:
+Open your terminal and run the following command:
 ```bash
-/gk-mcp-manager
+npm install -g geminicli-kit
 ```
 
-### Agent Customization (`.gemini/agents/*.md`)
+**2. Initialize in Your Project**
 
-You can customize agent behavior by editing their markdown definition files.
-Changes are picked up immediately by the Orchestrator.
+Navigate to your project's root directory and run the init command:
+```bash
+cd /path/to/your/project
+gk init
+```
+This command creates a `.gemini` directory in your project, containing all the necessary agents, skills, and configuration files. It also creates a `GEMINI.md` file, which is the root entry point for the Orchestrator.
 
-## Verification
+**3. Verify Installation**
 
-To verify your installation, run:
+To check that everything is working, you can list the available agents and skills:
+```bash
+gk list
+```
+
+---
+
+## Option 2: Contributor Setup (For Development)
+
+This method is for developers who want to contribute to the Gemini Kit framework itself.
+
+**1. Clone the Repository**
+```bash
+git clone https://github.com/hieund-it/geminikit.git
+cd geminikit
+```
+
+**2. Install Dependencies**
+```bash
+npm install
+```
+
+**3. Set Up Environment Variables**
+
+Create a `.env` file in the root of the cloned repository by copying the example file:
+```bash
+cp .gemini/.env.example .env
+```
+You will need to edit this `.env` file to add your own API keys for services like Google Search or any other integrated tools.
+
+**4. Run Commands Locally**
+
+From the root of the `geminikit` directory, you can now use the AI commands directly:
 ```bash
 /gk-ask "What is the status of the system?"
 ```
-If you receive a response from the Orchestrator, you are good to go!
+If you receive a response, your local development environment is set up correctly.

@@ -44,6 +44,9 @@ Generate a new agent or skill file based on provided templates, ensuring strict 
 
 - MUST use `.gemini/template/skill-template.md` for skills.
 - MUST use `.gemini/template/agent-template.md` for agents.
+- **MANDATORY**: If the skill has flags, MUST include a `Mode Mapping` table in `SKILL.md`.
+- **MANDATORY**: For every flag listed, MUST create a corresponding mode file in the `./modes/` directory.
+- **MANDATORY**: Mode files MUST follow `.gemini/template/mode-template.md` and include `# Extra Rules` and `## Steps` sections.
 - MUST ensure file name is kebab-case.
 - MUST NOT overwrite existing files — return `FILE_EXISTS` if path occupied.
 - MUST save skills to `.gemini/skills/<name>/SKILL.md`.

@@ -13,8 +13,8 @@ description: "Generate precise visual component specs or review implemented UI f
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --spec | Generate visual specifications and tokens | (base skill rules) |
-| --review | Evaluate implementation against design and WCAG | (base skill rules) |
+| --spec | Generate visual specifications and tokens | ./modes/spec.md |
+| --review | Evaluate implementation against design and WCAG | ./modes/review.md |
 | (default) | Context-dependent UI/UX analysis | (base skill rules) |
 
 # Role
@@ -44,6 +44,14 @@ In `spec` mode: produce visual specifications. In `review` mode: evaluate UI qua
 - Inclusive: Ensure touch targets ≥ 44x44px and logical focus management.
 - Standard: Apply 8px spacing grid by default if no system is provided.
 - Quality: MUST NOT mark `approved: true` if critical/high issues exist.
+
+## Steps
+1. Identify primary UI components and layout requirements
+2. Define visual tokens (spacing, typography, colors)
+3. Specify interactive states and transitions
+4. Audit accessibility (contrast, focus, touch targets)
+5. Review implementation against specs and responsive rules
+6. Summarize design/review results
 
 # Output
 ```json

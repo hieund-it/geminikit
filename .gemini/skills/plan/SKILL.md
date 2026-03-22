@@ -13,12 +13,12 @@ description: "Break down a complex task into structured, executable subtasks wit
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --fast | Rapid planning with minimal detail | (base skill rules) |
-| --deep | Comprehensive analysis and detailed decomposition | (base skill rules) |
-| --parallel | Identify maximum concurrent task opportunities | (base skill rules) |
-| --from | Load base plan from existing file path | (base skill rules) |
-| --dry-run | Validate plan logic without committing/saving | (base skill rules) |
-| --phase | Focus on a specific phase by ID | (base skill rules) |
+| --fast | Rapid planning with minimal detail | ./modes/fast.md |
+| --deep | Comprehensive analysis and detailed decomposition | ./modes/deep.md |
+| --parallel | Identify maximum concurrent task opportunities | ./modes/parallel.md |
+| --from | Load base plan from existing file path | ./modes/from.md |
+| --dry-run | Validate plan logic without committing/saving | ./modes/dry-run.md |
+| --phase | Focus on a specific phase by ID | ./modes/phase.md |
 | (default) | Standard task decomposition | (base skill rules) |
 
 # Role
@@ -42,6 +42,8 @@ Break down a complex task into a structured plan of subtasks with deliverables, 
 ```
 
 # Rules
+- File output: → See .gemini/tools/file-output-rules.md
+- Plan File Structure: Plan outputs will be saved as a file named '{plan_name}.md' inside a folder structure of 'plans/{yyyy-mm-dd}-{plan_name}/'. The folder and file will be created if they do not exist.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Max 7 subtasks per plan — group related work into phases if needed.
 - Atomic Subtasks: Each subtask must be independent and verifiable with a single deliverable.
@@ -52,6 +54,14 @@ Break down a complex task into a structured plan of subtasks with deliverables, 
 - Establish Foundation: First subtask should set up environment, schemas, or interfaces.
 - Flag Blockers: Decisions or external dependencies required before work starts.
 - Parallelism: Identify tasks that can run concurrently versus those that share resources.
+
+## Steps
+1. Analyze the primary task and extract core requirements
+2. Group related work into high-level phases
+3. Decompose each phase into atomic, verifiable subtasks
+4. Map dependencies and identify the critical path
+5. Estimate effort (XS-XL) and identify risks
+6. Suggest success criteria and parallel execution lanes
 
 # Output
 ```json
@@ -77,6 +87,7 @@ Break down a complex task into a structured plan of subtasks with deliverables, 
     "clarifications": ["string"],
     "success_criteria": ["string"]
   },
+  "output_file": "string",
   "summary": "one sentence describing the plan",
   "confidence": "high | medium | low"
 }
@@ -89,10 +100,16 @@ Break down a complex task into a structured plan of subtasks with deliverables, 
   "format": "json",
   "result": {
     "subtasks": [{"id": "T1", "name": "Setup DB", "effort": "S", "deliverable": "schema.sql"}],
+    "dependencies": {"critical_path": ["T1"], "parallel_groups": []},
     "total_effort": "S",
-    "critical_path": ["T1"]
+    "blockers": [],
+    "risks": [],
+    "clarifications": [],
+    "success_criteria": []
   },
+  "output_file": "plans/2026-03-22-setup-db/setup-db.md",
   "summary": "Plan produced: 1 subtask, total effort S.",
   "confidence": "high"
 }
 ```
+

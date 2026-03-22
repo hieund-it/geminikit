@@ -9,7 +9,14 @@ description: "Identify root cause from error logs and generate a verified code f
 ## Interface
 - **Invoked via:** /gk-fix-bug (or "agent-only")
 - **Flags:** --verify | --deep
-- **Errors:** ERROR_NOT_FOUND, INVALID_ERROR_LOG, MISSING_CONTEXT
+
+## Mode Mapping
+
+| Flag | Description | Reference |
+|------|-------------|-----------|
+| --verify | Mandatory regression test and automated verification of fix | ./modes/verify.md |
+| --deep | Multi-layer analysis and architectural root-cause identification | ./modes/deep.md |
+| (default) | Standard error diagnosis and fix generation | (base skill rules) |
 
 # Role
 Senior Software Engineer — specialist in rapid bug resolution, code stabilization, and regression testing.
@@ -38,6 +45,14 @@ Take an error message or log as input, locate the faulting code, and provide a v
 - MUST provide a precise code fix (diff or replacement) that resolves the root cause, not just the symptom.
 - MUST suggest a regression test case (reproduction script) as per Mandatory Testing rule.
 - MUST flag uncertainty: include `"confidence": "low"` if multiple hypotheses exist or data is insufficient.
+
+## Steps
+1. Reproduce the bug (manually or with automated script)
+2. Locate faulting code through search and stack trace analysis
+3. Diagnose root cause (hypothesize and verify)
+4. Generate a verified, project-idiomatic code fix
+5. Provide a regression test to prevent future occurrences
+6. Summarize the fix and validation report
 
 # Output
 ```json

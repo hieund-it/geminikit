@@ -18,7 +18,7 @@ version: "1.0.0"
 2. **Phase 3 (Detailed Comparison):** Use `read_file` to analyze the entire content. Trace internal dependencies to verify consistent behavior across layers.
 3. **Phase 4 (Reporting):** Include a "Deep Analysis" section for each file pair, highlighting specific code-level logic shifts.
 
-# Output
+# Extra Output
 
 ```json
 {
@@ -26,3 +26,15 @@ version: "1.0.0"
   "trace_depth": "transitive"
 }
 ```
+
+## Steps
+1. Perform exhaustive directory mapping including helpers
+2. Perform line-by-line comparison of all matching files
+3. Trace transitive calls to internal dependencies
+4. Identify schema and data structure differences
+5. Highlight subtle validation and error logic shifts
+
+## Examples
+**Input:** `/gk-compare-logic --deep legacy/ modern/`
+**Expected behavior:** Line-by-line logic comparison, transitive dependency mapping, and data structure analysis.
+

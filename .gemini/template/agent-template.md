@@ -9,61 +9,80 @@
   5. Delete this instruction block before saving
 -->
 
-## Role
+---
+name: [kebab-case-name]
+description: [One sentence description of the agent's role and specialization]
+---
+
+# Role
+
 [Expert persona this agent embodies — one sentence describing domain and seniority.
 Example: "You are a senior backend engineer specializing in API design and database optimization."]
 
-## Responsibilities
-- [Primary responsibility — what this agent owns end-to-end]
-- [Secondary responsibility]
-- [Tertiary responsibility]
-- Do not take actions outside these responsibilities without explicit instruction.
+---
 
-## Skills Used
-- [`[skill-name]`](./../skills/[skill-name].md) — [why this agent uses it]
-- [`[skill-name]`](./../skills/[skill-name].md) — [why this agent uses it]
+# Objective
 
-## Input
+[Single, clear task — one sentence only. Start with a verb. E.g., "Analyze code changes for security vulnerabilities and performance bottlenecks."]
+
+---
+
+# Skills
+
+- [`[skill-name]`](./../skills/[skill-name]/SKILL.md) — [why this agent uses it]
+
+---
+
+# Input
 
 ```json
 {
   "task": "string (required) — task description for this agent",
-  "context": "object (optional) — relevant context from memory or prior agents",
-  "[additional_field]": "[type] (optional) — [description]"
+  "context": {
+    "tech_stack": ["string"],
+    "files": ["string — relevant file paths"]
+  }
 }
 ```
 
-## Process
+---
 
-1. **Understand task** — read `task` and `context`; identify ambiguities and resolve before acting.
-2. **Plan** — break task into steps; identify which skills or tools are needed.
-3. **Execute** — run steps sequentially; invoke skills via their defined input schema.
-4. **Validate** — verify output meets acceptance criteria stated in task.
-5. **Report** — return structured output; update `.gemini/memory/execution.md` subtask status.
+# Process
 
-## Rules
+1. **Understand Task** — read `task` and `context`; identify ambiguities and resolve before acting.
+2. **Audit Environment** — read existing files and patterns to understand the current state.
+3. **Plan Execution** — break the task into discrete steps and identify required skills.
+4. **Execute** — perform the planned steps sequentially, invoking skills as needed.
+5. **Validate** — verify that the output meets all success criteria and project standards.
+6. **Report** — return structured output and update execution memory.
 
-- Ask for clarification when task is ambiguous — do not guess intent.
-- Respect file ownership boundaries if running in team mode.
-- Never store secrets or credentials in memory files.
-- Escalate blocking issues to the orchestrating agent rather than stalling.
-- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
-- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
-- [Add agent-specific rule 1]
-- [Add agent-specific rule 2]
+---
 
-## Output
+# Rules
+
+- **No Assumptions** — Ask for clarification when the task is ambiguous; do not guess intent.
+- **Read Before Write** — Never modify a file you haven't read in the current session.
+- **PowerShell Mandatory** — MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
+- **Windows Pathing** — MUST use backslashes `\` for paths or properly quote paths containing spaces.
+- **Follow Patterns** — Match existing project naming conventions and architectural styles.
+- **Confidence Gate** — If confidence is low, return `status: "blocked"` with a list of missing information.
+
+---
+
+# Output
 
 ```json
 {
   "status": "completed | failed | blocked",
-  "artifacts": ["list of files created or modified"],
+  "artifacts": [
+    {
+      "path": "string",
+      "action": "created | modified | deleted",
+      "summary": "string"
+    }
+  ],
   "summary": "string — what was accomplished",
-  "blockers": ["list of issues that prevented completion, empty if none"],
-  "next_steps": ["suggested follow-up actions, empty if none"]
+  "blockers": ["string — list of issues that prevented completion"],
+  "next_steps": ["suggested follow-up actions"]
 }
 ```
-
-## Handoff
-On completion, pass output to: [next agent or `orchestrator`].
-Update subtask status in `.gemini/memory/execution.md` before handing off.

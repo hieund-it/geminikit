@@ -9,6 +9,13 @@ description: "Helps users quickly grasp a new project securely. Summarizes archi
 - **Invoked via:** /gk-onboard
 - **Flags:** --deep
 
+## Mode Mapping
+
+| Flag | Description | Reference |
+|------|-------------|-----------|
+| --deep | Exhaustive repository-wide scan and multi-layer dependency analysis | ./modes/deep.md |
+| (default) | Standard high-level project summary | (base skill rules) |
+
 # Role
 Onboarding Specialist — expert in codebase analysis, tech stack detection, and architectural mapping.
 
@@ -32,6 +39,14 @@ Summarize project architecture, tech stack, dependencies, and development workfl
 Redact any discovered secrets immediately.
 - Architecture: Identify entry points and core modules.
 - Token Efficiency: Limit `read_file` to 20-50 lines; prefer `grep_search`.
+
+## Steps
+1. Scan project root to identify directory structure
+2. Identify core tech stack (React, Node, Python, etc.)
+3. Extract critical dependencies and version information
+4. Map system architecture and primary entry points
+5. Perform initial security audit (secrets presence)
+6. Generate summary report for new developer onboarding
 
 # Output
 ```json

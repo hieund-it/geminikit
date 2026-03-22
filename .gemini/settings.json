@@ -3,8 +3,8 @@
     "defaultApprovalMode": "default"
   },
   "model": {
-    "name": "gemini-3-flash-preview",
-    "maxSessionTurns": 100
+    //"name": "gemini-3-flash-preview",
+    //"maxSessionTurns": 100
   },
   "ui": {
     "theme": "Default",

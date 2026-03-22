@@ -13,11 +13,11 @@ description: "Comprehensive review of code quality, API design, security, and pe
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --strict | Exhaustive review with zero-tolerance for minor issues | (base skill rules) |
-| --quick | High-signal summary of critical and high severity issues | (base skill rules) |
-| --api | Specialized review for REST/GraphQL API specs and endpoints | (base skill rules) |
-| --security | Focus exclusively on OWASP, injection, auth, and data safety | (base skill rules) |
-| --perf | Focus on bottlenecks, N+1 queries, and resource efficiency | (base skill rules) |
+| --strict | Exhaustive review with zero-tolerance for minor issues | ./modes/strict.md |
+| --quick | High-signal summary of critical and high severity issues | ./modes/quick.md |
+| --api | Specialized review for REST/GraphQL API specs and endpoints | ./modes/api.md |
+| --security | Focus exclusively on OWASP, injection, auth, and data safety | ./modes/security.md |
+| --perf | Focus on bottlenecks, N+1 queries, and resource efficiency | ./modes/perf.md |
 | (default) | Standard balanced review of code and API | (base skill rules) |
 
 # Role
@@ -52,6 +52,14 @@ Perform a deep review of code or API specifications to identify issues in qualit
 - **Score (1-10):** 1-3 Reject, 4-6 Request Changes, 7-8 Approve with Suggestions, 9-10 Approve.
 - **Actionable:** Provide specific fixes (`fix_code` or `fix_description`) for every issue identified.
 - **YAGNI:** Flag over-engineering or unnecessary abstractions in both code and API design.
+
+## Steps
+1. Perform initial security scan (secrets, injection)
+2. Evaluate code correctness and logic flow
+3. Assess API standards and documentation (if applicable)
+4. Audit architectural patterns and scalability
+5. Check for style, naming, and redundancy
+6. Assign a score and generate specific fixes
 
 # Output
 ```json
