@@ -1,7 +1,7 @@
 ---
 name: gk-export-session
 agent: developer
-version: "1.0.0"
+version: "1.1.0"
 format: "markdown"
 description: "Exports the current session state and conversation summary for continuation."
 ---
@@ -24,6 +24,8 @@ To generate a structured markdown block containing the current task state from `
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST read the content of `.gemini/memory/execution.md`.
 - MUST use the `gk-summarize` skill to summarize the `conversation_history`.
 - The final output MUST be a single, well-formatted markdown block.

@@ -49,9 +49,11 @@ Combine skill outputs into a structured response:
 2. Key results (bullet list)
 3. Next steps
 
-### Step 6 — Memory
-After completion, update `.gemini/memory/execution.md` with task state.
-If execution context exceeds 2000 tokens: invoke `summarize` skill on execution.md before next step.
+### Step 6 — Memory & Auto-Persistence
+- **Execution Update:** After each task, update `.gemini/memory/execution.md` with task state.
+- **Auto-Sync:** Before responding to the user, synchronize the session state to `.gemini/memory/`.
+- **Auto-Summarize:** If the context exceeds 2000 tokens or a Directive is completed, invoke the `summarize` skill to update `long-term.md`.
+- **Implicit Export:** Treat the end of the session interaction as an automatic session export to ensure persistence.
 
 ### Step 7 — Git (after developer phase)
 After developer reports `status: completed`: invoke `git` skill with `operation: commit`.
@@ -80,6 +82,14 @@ Use artifacts from developer handoff to determine files to stage.
 | tester | — | Senior QA Engineer — validates implementations, writes tests, reports coverage |
 
 <!-- GK_AGENT_REGISTRY_END -->
+
+---
+
+## Machine Migration & Persistence
+
+1. **Memory Access**: When accessing `.gemini/memory/`, the Orchestrator MUST set both `respect_gemini_ignore: false` and `respect_git_ignore: false` to ensure historical execution data is retrieved even if hidden by ignore filters.
+2. **External Sync**: If memory files are missing, prompt the user to run `setup-memory-sync.ps1` to restore the environment state.
+3. **No-Git Policy**: Strictly prohibit staging or committing any files within `.gemini/memory/` to prevent leaking session logs or sensitive execution state into source control.
 
 ---
 

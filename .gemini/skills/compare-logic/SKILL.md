@@ -1,7 +1,7 @@
 ---
 name: gk-compare-logic
 agent: comparator
-version: "1.0.0"
+version: "1.1.0"
 description: "Compares business logic between a legacy system and a new, migrated system by analyzing their source code."
 ---
 
@@ -36,6 +36,8 @@ To analyze, compare, and report on the differences in business logic between an 
 
 # Rules
 
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT modify any files in either system. All operations are read-only.
 - MUST perform the analysis step-by-step. Do not assume file or logic correspondence without evidence.
 - MUST document findings in a structured report.

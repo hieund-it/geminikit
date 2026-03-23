@@ -1,5 +1,6 @@
 ---
 name: gk-[skill-name]
+agent: [primary-agent-name]
 version: "1.0.0"
 description: "One sentence: what this skill does (action-oriented)"
 ---
@@ -43,6 +44,8 @@ description: "One sentence: what this skill does (action-oriented)"
 
 # Rules
 
+- **Security Audit** — MUST validate all inputs and redact any potential secrets (API keys, passwords) from the output.
+- **Context Economy** — MUST minimize token usage. Prefer targeted file reads and incremental processing.
 - MUST NOT assume missing data — return `blocked` if required fields absent
 - MUST only perform the task defined in Objective — no scope expansion
 - MUST NOT call tools or access memory not listed in Input

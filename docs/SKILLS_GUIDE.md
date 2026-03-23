@@ -46,5 +46,22 @@ Each skill is defined by a `SKILL.md` file containing:
 - **Process**: Step-by-step execution logic.
 - **Output Schema**: The JSON structure returned by the skill.
 
+## Skill Development Guidelines
+
+All new skills must adhere to the following framework-level requirements:
+
+### 1. Security Audit
+- **Path Validation**: Skills must validate all input paths against the framework's blacklist before execution.
+- **Secret Redaction**: Skills that handle sensitive output (logs, env files) must apply pre-emptive masking before returning data to the Agent.
+- **Tool Scoping**: Use the most restrictive tool subset possible (e.g., prefer `read_file` over `run_shell_command` with `cat`).
+
+### 2. Context Economy
+- **Surgical I/O**: Design inputs and outputs to be as compact as possible. Return specific data points rather than large unstructured blocks.
+- **Token Budgeting**: Avoid redundant summaries or verbose process descriptions in the skill's output.
+- **Incremental Processing**: For large files, skills should support pagination or range-based reading to avoid context overflow.
+
+### 3. State Management
+- **Statelessness**: Skills should be stateless. Any persistent data should be handled via the framework's Memory System (Layer 5).
+
 ## Usage
 Skills are typically invoked by Agents, not directly by users (except via `/gk-` commands which wrap agents).

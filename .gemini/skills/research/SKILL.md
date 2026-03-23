@@ -1,7 +1,7 @@
 ---
 name: gk-research
 agent: planner
-version: "1.0.1"
+version: "1.1.0"
 format: "json"
 description: "Gather, compare, and synthesize technical options into a structured recommendation report."
 ---
@@ -29,6 +29,8 @@ Research the provided query and produce a structured comparison of options with 
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Maturity: Evaluate community support (GitHub), release frequency, and stability.
 - Security: Check CVE history or reputation. Flag unpatched critical vulnerabilities.

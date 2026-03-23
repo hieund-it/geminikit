@@ -1,7 +1,7 @@
 ---
 name: gk-refactor
 agent: maintenance
-version: "1.0.0"
+version: "1.1.0"
 description: "Improve code structure and maintainability without changing external behavior"
 ---
 
@@ -42,7 +42,8 @@ Improve code quality, readability, and maintainability by applying best practice
 ```
 
 # Rules
-
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT change the functional behavior of the code.
 - MUST ensure all existing tests pass after refactoring.
 - MUST follow project-specific coding standards and naming conventions.

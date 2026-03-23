@@ -30,3 +30,17 @@
   - Hard-blocked patterns: `rm -rf /`, `format C:`, `dd if=`.
 - **Output Capture:** Capture stdout and stderr separately; truncate streams at 10KB if exceeded.
 - **Path Handling:** Use backslashes `\` for Windows paths or properly quote paths containing spaces.
+
+## 5. Persistence & Documentation
+- **5.1 Plan Storage (CRITICAL):** ALL plans generated during Research/Strategy (manually or via `enter_plan_mode`) MUST be persisted to the project's `plans/{date}-{slug}/plan.md` directory immediately. NEVER rely on system temporary (tmp) directories for plan storage. This ensures transparency, traceability, and consistency across sessions.
+- **5.2 Memory Updates:** After each completed phase or task, update `.gemini/memory/execution.md` with the current state.
+- **5.3 Auto-Persistence (NEW):**
+  - **Auto-Sync:** At the end of every interaction turn (before the final response to the user), the Orchestrator MUST automatically synchronize the current session state to `.gemini/memory/`.
+  - **Auto-Summarize:** If the current `execution.md` or session context exceeds 2000 tokens, or upon completion of a major Directive, the Orchestrator MUST silently invoke the `summarize` skill to update `long-term.md` and `short-term.md`.
+  - **Implicit Export:** Treat the final response as an implicit `export-session` trigger, ensuring all artifacts and decisions are captured in the project's memory folder.
+
+- **5.4 Concurrency & Locking (NEW):**
+  - **Lock File:** Before any write operation to `.gemini/memory/`, the Orchestrator MUST check for `.gemini/memory/session.lock`.
+  - **Race Prevention:** If a lock exists, retry up to 3 times (500ms intervals). If it persists, log a warning and append to a temporary buffer.
+  - **Atomic Writes:** Always release the lock immediately after a successful write operation.
+

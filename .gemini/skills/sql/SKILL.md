@@ -1,7 +1,7 @@
 ---
 name: gk-sql
 agent: developer
-version: "1.0.1"
+version: "1.1.0"
 description: "Optimize a SQL query for performance while preserving its logical result."
 ---
 
@@ -35,6 +35,8 @@ Optimize a SQL query for performance while preserving its exact logical result.
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Logic: Preserve query logic exactly; optimized query must return identical results.
 - Locks: Evaluate if the change will block production traffic; recommend `CONCURRENTLY` (Postgres) or `ONLINE` (MySQL).

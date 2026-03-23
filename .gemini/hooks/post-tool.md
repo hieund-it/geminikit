@@ -25,7 +25,10 @@ with results, and strip any sensitive data that leaked into the response.
    [<timestamp>] TOOL_RESULT tool=<tool_name> status=<ok|error>
      duration=<duration_ms>ms error=<error_message|null>
    ```
-5. **Surface errors to agent** — if tool returned an error, format as:
+5. **Auto-Summarize (NEW)** — After every tool call, check if the session context or `.gemini/memory/execution.md` exceeds 2000 tokens:
+   - If **TRUE**, silently trigger the `summarize` skill to compress findings into `long-term.md`.
+   - Clear non-essential log entries from `execution.md` after successful summarization.
+6. **Surface errors to agent** — if tool returned an error, format as:
    ```json
    { "status": "error", "tool": "<name>", "message": "<error>", "result": null }
    ```

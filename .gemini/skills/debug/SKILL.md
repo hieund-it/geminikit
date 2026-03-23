@@ -1,7 +1,7 @@
 ---
 name: gk-debug
 agent: support
-version: "1.0.1"
+version: "1.1.0"
 format: "json"
 description: "Identify root cause of a software error and recommend a precise fix."
 ---
@@ -44,6 +44,8 @@ Identify root cause of an error from provided data and recommend a precise, acti
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Hypothesis-Driven: Formulate at least two competing hypotheses before selecting the most likely one.
 - Isolate Symptom: Distinguish between the visible error (symptom) and the state failure (root cause).

@@ -1,7 +1,7 @@
 ---
 name: gk-git
 agent: developer
-version: "1.0.1"
+version: "1.1.0"
 description: "Execute git operations: commit, branch, status, PR prep, and conflict detection."
 ---
 
@@ -28,6 +28,8 @@ Execute specified git operation and return structured results. Report changes on
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Commit Atomicity: Ensure each commit represents a single logical change.
 - Diff Vigilance: Scan for debug logs (console.log), unused imports, or accidental secrets.

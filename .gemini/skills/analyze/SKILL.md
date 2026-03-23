@@ -1,7 +1,7 @@
 ---
 name: gk-analyze
 agent: reviewer
-version: "1.0.1"
+version: "1.1.0"
 description: "Analyze code or system structure and report findings on complexity, dependencies, and risks."
 ---
 
@@ -41,6 +41,8 @@ Analyze provided code/system and report findings on complexity, dependencies, pa
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Quantify complexity: cyclomatic score, LOC, coupling, dependency depth.
 - Assess maintainability (DRY, SOLID) and scalability (O(n) operations, blocking I/O).

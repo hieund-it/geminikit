@@ -7,19 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-03-24
 ### Added
-- Initial project structure.
-- Core agents: Architect, Developer, Reviewer, Planner, Researcher, etc.
-- Skill system with `gk-analyze`, `gk-plan`, `gk-debug`, and more.
-- Command registry and orchestration logic.
-- Documentation structure (`docs/`).
+- **Memory System**: Implementation of auto-persistence, silent summarization, implicit export, and self-healing.
+- **Security Framework**: Agent Permission Matrix, forbidden path blacklisting, tool access control, and pre-emptive secret masking.
+- **Context Economy**: Token optimization as a core system principle across all tools and skills.
 
 ### Changed
-- Standardized agent definitions in `.gemini/agents/`.
-- Updated skill I/O schemas for better consistency.
-
-### Fixed
-- N/A
+- Refactored Layer 5 (Memory) in system architecture to support advanced persistence.
+- Updated `SKILLS_GUIDE.md` with security and economy requirements for skill development.
 
 ## [0.1.0] - 2026-03-21
 ### Added

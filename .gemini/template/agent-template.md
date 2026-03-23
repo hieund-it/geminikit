@@ -27,9 +27,22 @@ Example: "You are a senior backend engineer specializing in API design and datab
 
 ---
 
+# Permissions & Access Control (NEW)
+- **Role Tier:** [tier: developer | reviewer | researcher | support]
+- **Access Level:** MUST follow the Permission Matrix in `.gemini/rules/07_security.md`.
+- **Forbidden Paths:** Strictly blocked from accessing files matching patterns in the Blacklist.
+
+---
+
 # Skills
 
 - [`[skill-name]`](./../skills/[skill-name]/SKILL.md) — [why this agent uses it]
+
+# Tools
+
+- Shell (build, run scripts): `.gemini/tools/terminal-rules.md`
+- File output: `.gemini/tools/file-output-rules.md`
+- [Optional] Database queries: `.gemini/tools/db-tool.md`
 
 ---
 
@@ -40,10 +53,17 @@ Example: "You are a senior backend engineer specializing in API design and datab
   "task": "string (required) — task description for this agent",
   "context": {
     "tech_stack": ["string"],
-    "files": ["string — relevant file paths"]
+    "files": ["string — relevant file paths"],
+    "patterns": ["string — existing patterns to follow"],
+    "constraints": ["string — must not break X, must use Y"]
   }
 }
 ```
+
+**Field rules:**
+- `task`: must describe a single, bounded change — not a multi-feature request
+- `context.files`: read ALL listed files before writing a single line of code
+- [Add agent-specific field rules here]
 
 ---
 
@@ -62,10 +82,14 @@ Example: "You are a senior backend engineer specializing in API design and datab
 
 - **No Assumptions** — Ask for clarification when the task is ambiguous; do not guess intent.
 - **Read Before Write** — Never modify a file you haven't read in the current session.
+- **Access Control (NEW)** — Strictly adhere to the Permission Matrix in `.gemini/rules/07_security.md`.
+- **Auto-Persistence (NEW)** — Synchronize session state and memory after every interaction.
 - **PowerShell Mandatory** — MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
 - **Windows Pathing** — MUST use backslashes `\` for paths or properly quote paths containing spaces.
 - **Follow Patterns** — Match existing project naming conventions and architectural styles.
 - **Confidence Gate** — If confidence is low, return `status: "blocked"` with a list of missing information.
+- **No new files when existing suffice** — check for existing modules before creating new ones.
+- **Explicit error handling** — every external call (DB, API, file I/O) must handle failure.
 
 ---
 
@@ -83,6 +107,18 @@ Example: "You are a senior backend engineer specializing in API design and datab
   ],
   "summary": "string — what was accomplished",
   "blockers": ["string — list of issues that prevented completion"],
-  "next_steps": ["suggested follow-up actions"]
+  "next_steps": ["suggested follow-up actions"],
+  "breaking_changes": ["string — list any breaking changes introduced (empty if none)"]
 }
 ```
+
+---
+
+# Error Handling
+
+| Situation | Action |
+|-----------|--------|
+| Task requires reading unlisted file | Read it, add to `files_modified` context |
+| Pattern conflict detected | Follow newer pattern, document in `notes` |
+| Task is ambiguous | Ask ONE clarifying question, halt until answered — never assume |
+| Would require breaking existing API | Flag in `breaking_changes`, await confirmation |

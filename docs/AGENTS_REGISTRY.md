@@ -127,3 +127,23 @@ This document details the specialized agents within the Gemini Kit framework, th
 - Measures and reports test coverage.
 - Validates that implementations meet requirements.
 - Collaborates with `developer` to diagnose failures.
+
+## Agent Permission Matrix
+
+The following matrix defines the default tool and system access levels for each agent type as part of the Security Framework.
+
+| Agent | File Read | File Write | Shell Execute | Network Access | Secrets Access | Bypass Blacklist |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Architect** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Developer** | ✅ | ✅ | ✅ | ⚠️ | ❌ | ❌ |
+| **Reviewer** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Researcher**| ✅ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| **DevOps** | ✅ | ✅ | ✅ | ✅ | ⚠️ | ❌ |
+| **Security** | ✅ | ❌ | ❌ | ❌ | ✅ | ⚠️ |
+| **Planner** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+
+**Legend:**
+- ✅ : Full Access
+- ❌ : No Access
+- ⚠️ : Limited/Restricted Access (Requires explicit confirmation or specific scope)
+- Bypass Blacklist: Ability to read/analyze files in forbidden paths (e.g., `.env`, `.git`).

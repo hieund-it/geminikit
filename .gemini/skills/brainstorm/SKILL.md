@@ -1,7 +1,7 @@
 ---
 name: gk-brainstorm
 agent: researcher
-version: "1.0.1"
+version: "1.1.0"
 description: "Software solution brainstorming, architectural evaluation, and technical decision debating."
 ---
 
@@ -32,6 +32,8 @@ Explore software solutions, evaluate architectural choices, and debate technical
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - File output: → See .gemini/tools/file-output-rules.md
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - TCO: Consider dev time, maintenance, infra, and training costs.
@@ -43,6 +45,7 @@ Explore software solutions, evaluate architectural choices, and debate technical
 - Future-Proofing: Distinguish from over-engineering; keep current requirements primary.
 
 # Output
+```json
 {
   "status": "completed | failed | blocked",
   "format": "json",

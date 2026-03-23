@@ -18,6 +18,11 @@
 ## 3. Checkpointing & Archiving
 - `execution.md` is the "Single Source of Truth" for task recovery.
 - **Phase Archiving:** Once a task phase is completed, move detailed logs to `long-term.md` and keep only a one-line summary in `execution.md` to prevent context bloat.
+- **Memory Rotation (NEW):**
+  - **Threshold:** If `.gemini/memory/execution.md` exceeds 5000 tokens (approx. 20KB), move the oldest 50% of the content to `.gemini/memory/archive/execution_{date}.log`.
+  - **Exemption:** `.gemini/memory/pinned.md` is EXEMPT from all rotation, archiving, or summarization policies. It MUST remain intact.
+  - **Long-term Cleanup:** Periodically (e.g., every 50 interaction turns), the Orchestrator MUST review `long-term.md` and archive entries older than 3 months into `.gemini/memory/archive/milestones.md`.
+- **Garbage Collection (NEW):** Automatically delete temporary files (e.g., `.lock`, `.tmp`, `temp_mcp_manifest.json`) if they persist for more than 1 hour after creation.
 - Write results to `execution.md` IMMEDIATELY after each sub-task completion.
 - When cleaning context, preserve `execution.md` to rebuild the current state.
 

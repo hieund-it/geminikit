@@ -1,7 +1,7 @@
 ---
 name: gk-bug-fixer
 agent: developer
-version: "1.0.0"
+version: "1.1.0"
 description: "Identify root cause from error logs and generate a verified code fix with regression tests."
 ---
 
@@ -40,6 +40,8 @@ Take an error message or log as input, locate the faulting code, and provide a v
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT guess the root cause without examining the actual source code.
 - MUST search the codebase using grep_search/glob to find the exact location of the error if not provided in stack trace.
 - MUST adhere to `05_DEVELOPMENT.md`: Keep fixes atomic and follow existing project style.

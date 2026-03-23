@@ -35,3 +35,12 @@
 - **Minimalism:** Avoid adding unnecessary dependencies.
 - **Security:** Regularly check for and update vulnerable dependencies.
 - **Lock Files:** Always commit lock files (`package-lock.json`, `yarn.lock`, `Pipfile.lock`, etc.) to ensure consistent installs.
+
+## 6. Artifact & Report Management
+- **6.1 Project-Centric Storage (CRITICAL):** ALL generated artifacts, including but not limited to: security audits, code reviews, architectural analyses, research reports, and session exports, MUST be stored WITHIN the project's workspace.
+- **6.2 Directory Convention:** 
+  - **Reports:** Use `reports/{skill-name}/{date}-{type}.md` (e.g., `reports/audit/260323-security.md`).
+  - **Plans:** Use `plans/{date}-{slug}/` as defined in Rule 02_5.1.
+  - **Documentation:** Use the standard `docs/` or project-specific documentation paths.
+- **6.3 No External Output:** Agents MUST NOT output files to system temporary directories, user home directories, or any path outside the defined workspace directories.
+

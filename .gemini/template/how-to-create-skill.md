@@ -24,6 +24,7 @@ Directory name and file name MUST be kebab-case and match the `name` field you w
 ```yaml
 ---
 name: gk-<skill-name>       # kebab-case, unique across skills/
+agent: <primary-agent>      # primary agent owner (e.g., developer, security)
 version: "1.0.0"            # semver
 description: "Verb + what + outcome. One sentence."
 ---
@@ -70,7 +71,7 @@ Always use this structure:
 Run through `.gemini/rules/skill-creation-rules.md` Section 6 checklist:
 
 ```
-[ ] YAML frontmatter present (name, version, description)
+[ ] YAML frontmatter present (name, agent, version, description)
 [ ] ## Interface section present (Invoked via, Flags, Errors)
 [ ] All 5 sections present in correct order
 [ ] File name matches frontmatter name

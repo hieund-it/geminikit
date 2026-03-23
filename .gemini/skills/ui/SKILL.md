@@ -1,7 +1,7 @@
 ---
 name: gk-ui
 agent: designer
-version: "1.0.1"
+version: "1.1.0"
 format: "json"
 description: "Generate precise visual component specs or review implemented UI for design quality and accessibility compliance."
 ---
@@ -36,6 +36,8 @@ In `spec` mode: produce visual specifications. In `review` mode: evaluate UI qua
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Spec Mode: Define layout, tokens, all interactive states, and accessibility notes.
 - Review Mode: Check contrast (≥4.5:1), focus states, magic values, and consistency.

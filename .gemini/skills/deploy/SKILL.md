@@ -1,7 +1,7 @@
 ---
 name: gk-deploy
 agent: devops
-version: "1.0.0"
+version: "1.1.0"
 description: "Execute build and deployment pipelines to various environments"
 ---
 
@@ -16,7 +16,7 @@ description: "Execute build and deployment pipelines to various environments"
 |------|-------------|-----------|
 | --staging | Deploy to staging environment | ./modes/staging.md |
 | --production | Deploy to production environment | ./modes/production.md |
-| --dry-run | Simulate deployment without changes | ./modes/dry-run.md |
+| --dry-run | Simulation deployment without changes | ./modes/dry-run.md |
 | (default) | Standard deployment pipeline | (base skill rules) |
 
 # Role
@@ -43,6 +43,8 @@ Automate the build, packaging, and deployment process to ensure consistent and r
 
 # Rules
 
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST perform a dry-run or verification before actual deployment.
 - MUST check for build success before attempting deployment.
 - MUST NOT expose secrets in logs or output.

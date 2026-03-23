@@ -139,11 +139,11 @@ Combine all skill/agent outputs into a **compressed structured response**:
 4. **Next Steps**: Actionable items for the user or next agent.
 **Rule**: If raw output is >3 paragraphs, MUST invoke `gk-summarize` before returning to Orchestrator.
 
-### Step 7 — Memory Checkpointing
-After task/subtask completion:
-- **Immediate Update**: Write state to `.gemini/memory/execution.md` (authoritative checkpoint).
-- **Reusable Findings**: Append to `.gemini/memory/long-term.md` if knowledge is project-wide.
-- **Recovery**: If context exceeds threshold, summarize history but preserve `execution.md` to rebuild current state.
+### Step 7 — Memory & Auto-Persistence
+- **Immediate Update**: Write state to `.gemini/memory/execution.md` (authoritative checkpoint) after each subtask.
+- **Auto-Sync**: Before delivering the final response to the user, the Orchestrator MUST synchronize the full session state to `.gemini/memory/`.
+- **Silent Summarization**: If context exceeds 2000 tokens, silently trigger the `summarize` skill to update `long-term.md` and prune `execution.md`.
+- **Implicit Export**: Treat the final response as an automatic session export, ensuring all artifacts and decisions are persisted.
 - **Cleanup**: Clear execution state ONLY when the parent task is fully resolved.
 
 ---
@@ -167,6 +167,7 @@ After task/subtask completion:
 3. **File references**: Reference `.gemini/rules/`, `.gemini/skills/` by path — don't inline
 4. **Structured output**: JSON preferred over prose (50% token savings in parsing)
 5. **Session vars**: Read from `.gemini/memory/short-term.md` instead of re-deriving
+6. **Auto-Summarize (NEW)**: Proactively condense history into memory files to maintain a lean active context window.
 
 ---
 
@@ -175,7 +176,7 @@ After task/subtask completion:
 - System rules: `.gemini/system.md` (always loaded)
 - Agents: `.gemini/agents/` (load on demand)
 - Skills: `.gemini/skills/` (load on demand)
-- Rules: `.gemini/rules/*.md` (01_core, 02_workflow, 03_resource, 04_output)
+- Rules: `.gemini/rules/*.md` (01_core, 02_workflow, 03_resource, 04_output, 05_development, 06_documentation, 07_security)
 - Memory: `.gemini/memory/` (read/write as needed)
 - Commands: `.gemini/commands/` (loaded at command parse)
 - Schemas: `.gemini/schemas/` (load for I/O validation)

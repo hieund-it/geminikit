@@ -1,7 +1,7 @@
 ---
 name: gk-plan
 agent: planner
-version: "1.0.1"
+version: "1.1.0"
 format: "json"
 description: "Break down a complex task into structured, executable subtasks with dependencies and effort estimates."
 ---
@@ -43,6 +43,8 @@ Break down a complex task into a structured plan of subtasks with deliverables, 
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - File output: → See .gemini/tools/file-output-rules.md
 - Plan File Structure: Plan outputs will be saved as a file named '{plan_name}.md' inside a folder structure of 'plans/{yyyy-mm-dd}-{plan_name}/'. The folder and file will be created if they do not exist.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
@@ -113,4 +115,3 @@ Break down a complex task into a structured plan of subtasks with deliverables, 
   "confidence": "high"
 }
 ```
-

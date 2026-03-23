@@ -1,7 +1,7 @@
 ---
 name: gk-bridge-task-runner
 agent: developer
-version: "1.0.0"
+version: "1.1.0"
 description: "Execute a bridge pipeline task and signal completion by updating the task JSON status."
 ---
 
@@ -15,6 +15,21 @@ description: "Execute a bridge pipeline task and signal completion by updating t
 ## Role
 
 Implementation executor for the Claude-Gemini bridge pipeline. You receive a task from the orchestrator, execute the implementation described in it, then update the task file to signal completion.
+
+## Objective
+
+Execute bridge pipeline tasks and maintain task state integrity within the queue.
+
+# Input
+```json
+{
+  "task_path": "string (required) — path to the task JSON file",
+  "context": {
+    "project_root": "string",
+    "environment": "string"
+  }
+}
+```
 
 ## Execution Protocol
 
@@ -31,6 +46,8 @@ When dispatched by the orchestrator, follow these steps **in order**:
 
 ## Rules
 
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST read the task JSON before starting any implementation
 - MUST update the task file (`status`, `gemini_summary`, `updated_at`) before finishing — this is how the orchestrator detects completion
 - MUST NOT skip the status update step even if execution partially fails; set `status: "gemini_done"` and describe the failure in `gemini_summary`
@@ -52,3 +69,18 @@ Write `gemini_summary` as 3–8 concise sentences covering:
 - What files were created or modified
 - The approach taken (key design decisions)
 - Any caveats, partial implementations, or known limitations
+
+# Output
+```json
+{
+  "status": "completed | failed | blocked",
+  "format": "json",
+  "result": {
+    "task_id": "string",
+    "status": "gemini_done",
+    "summary": "string"
+  },
+  "summary": "one sentence describing task completion",
+  "confidence": "high | medium | low"
+}
+```

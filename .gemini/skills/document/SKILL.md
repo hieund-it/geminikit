@@ -1,7 +1,7 @@
 ---
 name: gk-document
 agent: documenter
-version: "1.0.1"
+version: "1.1.0"
 format: "json"
 description: "Generate accurate technical documentation from provided code content and context."
 ---
@@ -32,6 +32,8 @@ Read provided code/diff and generate accurate technical documentation reflecting
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Truth: Code is the source of truth; document actual behavior, not just comments.
 - Update: For `scope=update`, modify only affected sections; preserve others.

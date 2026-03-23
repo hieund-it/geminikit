@@ -42,7 +42,7 @@ The system is built on a 5-layer architecture, ensuring separation of concerns a
 2.  **Agents:** Specialized executors with defined roles (e.g., `planner`, `developer`). See the [Agent Registry](AGENTS_REGISTRY.md) for a complete list.
 3.  **Skills:** Atomic, stateless processors that perform specific tasks (e.g., `gk-debug`, `gk-plan`).
 4.  **Tools:** External I/O interfaces for interacting with the environment.
-5.  **Memory:** State management for short-term and long-term context.
+5.  **Memory System**: State management for short-term and long-term context, featuring auto-persistence, silent summarization, and self-healing.
 
 ## Core Components
 
@@ -52,6 +52,7 @@ The central brain of the system. Its primary responsibilities are:
 - **Decomposition**: Breaking down complex requests into manageable subtasks.
 - **Delegation**: Selecting the right Agent for each task based on the [Agent Registry](AGENTS_REGISTRY.md).
 - **Aggregation**: Summarizing results from various agents into a cohesive response.
+- **Security Control**: Enforcing the Agent Permission Matrix and tool access limits.
 
 ### 2. Agents
 Specialized entities with defined roles and rules (located in `.gemini/agents/`). They are the "who" in the system, responsible for executing tasks within their domain. Key agents include:
@@ -67,7 +68,34 @@ A complete list of agents and their skills is available in the [Agent Registry](
 ### 3. Skills
 Atomic, reusable units of functionality (located in `.gemini/skills/`). Skills are the "what" — they follow a strict Input/Output schema and perform one specific job (e.g., `gk-summarize`, `gk-analyze`, `gk-git`). They are the building blocks that agents use to accomplish their goals.
 
+## Memory System
+
+The Gemini Kit Memory System provides robust state management through:
+- **Auto-Persistence**: Automatic state saving across sessions to ensure continuity.
+- **Silent Summarization**: Background compression of long context windows to maintain model performance without user interruption.
+- **Implicit Export**: Automated backup of critical session data for recovery.
+- **File Locking**: Prevents concurrent modification conflicts during multi-agent execution.
+- **Memory Rotation/Archiving**: Intelligently manages long-term storage and retrieval of past session insights.
+- **Self-Healing**: Automatic detection and recovery from corrupted state files.
+- **Pinned Knowledge**: Persistent facts and user preferences that bypass rotation logic.
+
+## Security Framework
+
+Security is integrated at the core through:
+- **Agent Permission Matrix**: A granular access control table defining which agents can access specific tools and file paths.
+- **Forbidden Paths (Blacklist)**: Built-in protection for sensitive directories and files (e.g., `.env`, `.git`, `.ssh`).
+- **Tool Access Control**: Strict limits on shell command execution, file system modifications, and network requests.
+- **Pre-emptive Secret Masking**: Automated identification and redaction of credentials and secrets before they are processed by the LLM.
+
+## Context Economy
+
+Context Economy is a core system principle focused on token optimization:
+- **Token Efficiency**: Every tool and skill is optimized to minimize input/output tokens.
+- **Context Rotation**: Older or irrelevant context is automatically moved to long-term memory or archived to keep the active window focused.
+- **Surgical Reads**: Tools prefer reading specific line ranges or symbols over entire files to reduce overhead.
+
 ## Operational Workflow
+
 
 Gemini Kit follows a mandatory four-phase lifecycle for every task:
 

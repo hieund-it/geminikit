@@ -51,7 +51,11 @@ The framework is built around a few key ideas:
 - **Agents**: Specialized, role-based AIs (e.g., `Developer`, `Reviewer`) that own specific domains.
 - **Skills**: Atomic, reusable tools (e.g., `gk-debug`, `gk-git`) that agents use to execute tasks.
 
-This structure ensures that tasks are handled by the most qualified agent, promoting modularity, reusability, and clear separation of concerns.
+## ✨ Key Features
+
+- **🧠 Advanced Memory System**: Features auto-persistence, silent summarization, and self-healing state management to ensure seamless long-running sessions.
+- **🛡️ Robust Security Framework**: Implements a strict Agent Permission Matrix, forbidden path blacklisting, and pre-emptive secret masking for safe execution.
+- **📉 Context Economy**: Built-in token optimization and context rotation to minimize costs and maximize model performance.
 
 ## 🤝 Contributing
 

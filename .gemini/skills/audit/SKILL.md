@@ -1,7 +1,7 @@
 ---
 name: gk-audit
 agent: security
-version: "1.0.0"
+version: "1.1.0"
 description: "Audit dependencies and static code for security vulnerabilities and license compliance"
 ---
 
@@ -43,6 +43,8 @@ Identify security vulnerabilities, hardcoded secrets, and license risks within t
 
 # Rules
 
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT ignore "dev" dependencies unless explicitly requested.
 - MUST flag hardcoded secrets (API keys, passwords) as CRITICAL severity.
 - MUST verify if found vulnerabilities have known patches/fixes.

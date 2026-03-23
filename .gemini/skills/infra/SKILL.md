@@ -1,7 +1,7 @@
 ---
 name: gk-infra
 agent: devops
-version: "1.0.0"
+version: "1.1.0"
 description: "Manage infrastructure as code (Docker, K8s, Terraform configurations)"
 ---
 
@@ -44,6 +44,8 @@ Generate, optimize, and validate infrastructure configurations to ensure scalabl
 
 # Rules
 
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT assume cloud provider unless specified (default to cloud-agnostic).
 - MUST follow security best practices (non-root users in Docker, resource limits in K8s).
 - MUST validate syntax before returning the configuration.
@@ -51,7 +53,6 @@ Generate, optimize, and validate infrastructure configurations to ensure scalabl
 - PowerShell Mandatory: MUST use PowerShell-compatible syntax for commands.
 
 # Output
-
 ```json
 {
   "status": "completed | failed | blocked",

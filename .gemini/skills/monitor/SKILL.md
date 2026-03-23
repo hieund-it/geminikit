@@ -1,7 +1,7 @@
 ---
 name: gk-monitor
 agent: support
-version: "1.0.0"
+version: "1.1.0"
 description: "Analyze system logs and monitor performance metrics to detect anomalies"
 ---
 
@@ -42,7 +42,8 @@ Monitor system health, analyze logs for root cause analysis, and detect performa
 ```
 
 # Rules
-
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT expose sensitive user data found in logs.
 - MUST categorize log entries by severity (ERROR, WARN, INFO).
 - MUST correlate spikes in metrics with corresponding log errors.

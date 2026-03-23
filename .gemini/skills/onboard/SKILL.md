@@ -1,7 +1,7 @@
 ---
 name: gk-onboard
 agent: researcher
-version: "1.2.0"
+version: "1.3.0"
 format: "json"
 description: "Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential."
 ---
@@ -32,12 +32,13 @@ Summarize project architecture, tech stack, dependencies, and development workfl
 ```
 
 # Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Discovery: Use `ls` or `glob` to identify directory structure.
 - Surgical Read: Use `grep_search` for tech stack signatures (React, Express, etc.).
 - Dependency Analysis: Extract critical versions from `package.json`, `requirements.txt`, etc.
-- Security: DO NOT read `.env`, `secrets.json`, etc. Report only their presence.
-Redact any discovered secrets immediately.
+- Security: DO NOT read `.env`, `secrets.json`, etc. Report only their presence. Redact any discovered secrets immediately.
 - Architecture: Identify entry points and core modules.
 - Token Efficiency: Limit `read_file` to 20-50 lines; prefer `grep_search`.
 

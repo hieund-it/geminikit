@@ -30,16 +30,20 @@ the context cascade for downstream agents.
    debug_mode: false
    token_budget: 1000000
    ```
-4. **Load long-term memory** — scan `.gemini/memory/long-term.md` for entries
+5. **Load long-term memory** — scan `.gemini/memory/long-term.md` for entries
    tagged with `project_name` and inject the 5 most recent as context hints.
-5. **Log session start** — append entry to `.gemini/memory/execution.md`:
+6. **Integrity & Self-Healing (NEW)** — Check `.gemini/memory/` for file corruption:
+   - If `execution.md` or `long-term.md` is unreadable or malformed, attempt to restore from the latest file in `.gemini/memory/archive/`.
+   - Log any recovery actions in the new session log.
+7. **Load Pinned Knowledge (NEW)** — Always load the full content of `.gemini/memory/pinned.md` as immutable context. This data is exempt from summarization.
+8. **Log session start** — append entry to `.gemini/memory/execution.md`:
    ```
-   [<timestamp>] SESSION_START project=<project_name> type=<project_type>
+   [<timestamp>] SESSION_START project=<project_name> type=<project_type> status=<ok|recovered>
    ```
 
 ## Output
 Initialized session context written to `.gemini/memory/short-term.md`.
-Long-term context hints surfaced to active agent.
+Pinned knowledge and long-term context hints surfaced to active agent.
 
 ## Error Handling
 - If `short-term.md` cannot be written: log warning, continue with in-memory state.

@@ -1,7 +1,7 @@
 ---
 name: gk-migrate
 agent: maintenance
-version: "1.0.0"
+version: "1.1.0"
 description: "Manage database schema changes and data migrations"
 ---
 
@@ -42,7 +42,8 @@ Safely manage the evolution of the database schema while ensuring data integrity
 ```
 
 # Rules
-
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - MUST perform a dry-run/preview before applying migrations in production.
 - MUST include a rollback (down) script for every migration (up) script.
 - MUST flag operations that might cause data loss (e.g., dropping columns).
