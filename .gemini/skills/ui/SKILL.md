@@ -47,6 +47,8 @@ In `spec` mode: produce visual specifications. In `review` mode: evaluate UI qua
 - Inclusive: Ensure touch targets ≥ 44x44px and logical focus management.
 - Standard: Apply 8px spacing grid by default if no system is provided.
 - Quality: MUST NOT mark `approved: true` if critical/high issues exist.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for any shell commands.
+- **Artifact Management (Rule 05_6):** ALL generated UI/UX specs or review reports MUST be stored in `reports/ui/{date}-{type}.md`.
 
 ## Steps
 1. Identify primary UI components and layout requirements

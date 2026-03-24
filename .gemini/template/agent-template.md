@@ -11,6 +11,7 @@
 
 ---
 name: [kebab-case-name]
+tier: [developer | reviewer | researcher | support]
 description: [One sentence description of the agent's role and specialization]
 ---
 

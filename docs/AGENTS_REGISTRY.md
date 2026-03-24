@@ -32,7 +32,7 @@ This document details the specialized agents within the Gemini Kit framework, th
 ## 4. Developer (`developer`)
 **Role:** Senior Software Engineer
 **Specialization:** Implementation, debugging, and system operations.
-**Key Skills:** `gk-debug`, `gk-bug-fixer`, `gk-git`, `gk-sql`, `gk-skill-creator`, `gk-summarize`
+**Key Skills:** `gk-debug`, `gk-bug-fixer`, `gk-export-session`, `gk-git`, `gk-sql`, `gk-skill-creator`, `gk-summarize`
 **Responsibility:**
 - Implements features and fixes bugs.
 - Executes Git operations (commit, branch, PR).
@@ -68,7 +68,7 @@ This document details the specialized agents within the Gemini Kit framework, th
 ## 8. Maintenance (`maintenance`)
 **Role:** Senior Maintenance Engineer
 **Specialization:** Code health, technical debt, and system evolution.
-**Key Skills:** `gk-refactor`, `gk-migrate`
+**Key Skills:** `gk-refactor`, `gk-migrate`, `gk-health-check`
 **Responsibility:**
 - Refactors legacy code for maintainability.
 - Manages database schema migrations.
@@ -86,7 +86,7 @@ This document details the specialized agents within the Gemini Kit framework, th
 ## 10. Researcher (`researcher`)
 **Role:** Research Engineer
 **Specialization:** Information gathering and synthesis.
-**Key Skills:** `gk-onboard`, `gk-brainstorm`
+**Key Skills:** `gk-onboard`, `gk-brainstorm`, `gk-intake`
 **Responsibility:**
 - Gathers technical info to support decision-making.
 - Compares options and trade-offs.

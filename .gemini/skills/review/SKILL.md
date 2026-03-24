@@ -47,6 +47,8 @@ Perform a deep review of code or API specifications to identify issues in qualit
 # Rules
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
+- **Artifact Management (Rule 05_6):** ALL generated review reports MUST be stored in `reports/review/{date}-review.md`.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - **Priority:** Security > Correctness > Performance > Architecture > Style.
 - **API Review:** Enforce REST principles (methods, status codes), Idempotency (PUT/DELETE), and Pagination for lists.

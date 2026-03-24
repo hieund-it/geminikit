@@ -157,11 +157,25 @@
       "description": "Execute git operations: commit, branch, status, PR prep, and conflict detection."
     },
     {
+      "name": "health-check",
+      "agent": "maintenance",
+      "command": "/gk-health-check",
+      "flags": "none",
+      "description": "Validate framework compliance across all agents and skills."
+    },
+    {
       "name": "infra",
       "agent": "devops",
       "command": "/gk-infra",
       "flags": "--docker | --k8s | --terraform",
       "description": "Manage infrastructure as code (Docker, K8s, Terraform configurations)"
+    },
+    {
+      "name": "intake",
+      "agent": "researcher",
+      "command": "/gk-intake",
+      "flags": "--refine | --spec",
+      "description": "Capture, structure, and refine initial user requirements or project ideas."
     },
     {
       "name": "mcp-manager",

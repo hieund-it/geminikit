@@ -39,8 +39,22 @@
   - **Auto-Summarize:** If the current `execution.md` or session context exceeds 2000 tokens, or upon completion of a major Directive, the Orchestrator MUST silently invoke the `summarize` skill to update `long-term.md` and `short-term.md`.
   - **Implicit Export:** Treat the final response as an implicit `export-session` trigger, ensuring all artifacts and decisions are captured in the project's memory folder.
 
-- **5.4 Concurrency & Locking (NEW):**
+- **5.4 Concurrency & Locking:**
   - **Lock File:** Before any write operation to `.gemini/memory/`, the Orchestrator MUST check for `.gemini/memory/session.lock`.
   - **Race Prevention:** If a lock exists, retry up to 3 times (500ms intervals). If it persists, log a warning and append to a temporary buffer.
   - **Atomic Writes:** Always release the lock immediately after a successful write operation.
+
+## 6. Error Recovery Protocol
+- **Mid-execution Failure:** If a phase fails after partially modifying files, the Orchestrator MUST:
+  1. Log the failure state to `.gemini/memory/execution.md` with affected file list.
+  2. Do NOT attempt further writes to partially-modified files.
+  3. Report `status: "blocked"` with `recovery_action: "manual_review"` to the user.
+- **Checkpoint Restore:** If `execution.md` contains a prior checkpoint, the Orchestrator MAY offer to resume from it — but MUST confirm with the user before proceeding.
+- **No Silent Forward-Fix:** Never attempt to auto-fix a failed write without user confirmation.
+
+## 7. API Rate Limit & Retry
+- On HTTP 429 / rate limit error: wait using exponential backoff — 2s, 4s, 8s — max 3 retries.
+- After 3 retries with no success: return `status: "failed"`, `error.code: "RATE_LIMITED"`, and surface to user.
+- On HTTP 5xx from external APIs: treat as transient, apply same backoff. Log each retry to `execution.md`.
+- **Graceful Degradation:** If a skill/agent is unavailable (timeout or load error), fall back to reporting the task as `blocked` — do not silently skip or hallucinate output.
 

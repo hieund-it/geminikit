@@ -41,6 +41,8 @@ Capture raw user ideas and transform them into structured, actionable requiremen
 - MUST identify potential gaps or contradictions in the provided idea.
 - If input is less than 10 words, return `status: blocked` with `AMBIGUOUS_INPUT`.
 - Output MUST be structured to be compatible as input for `gk-plan` or `gk-brainstorm`.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for any shell commands.
+- **Artifact Management (Rule 05_6):** ALL captured requirements or mini-specs MUST be stored in `reports/intake/{date}-intake.md`.
 
 # Output
 ```json

@@ -15,12 +15,14 @@ Skills are atomic units of capability that Agents use to perform specific tasks.
 - **gk-bug-fixer**: Automatically analyzes error logs to identify root causes and generates verified fixes.
 - **gk-debug**: Diagnoses errors and suggests fixes (supports trace mode).
 - **gk-git**: Handles version control operations (commit, branch, status).
+- **gk-health-check**: Validate framework compliance across all agents and skills.
 - **gk-migrate**: Manages database schema changes and data migrations.
 - **gk-refactor**: Improves code structure and maintainability without changing external behavior.
 - **gk-skill-creator**: Scaffolds new Agent and Skill files.
 - **gk-sql**: Optimizes SQL queries for performance.
 
 ### Infrastructure & Operations
+- **gk-bridge-task-runner**: Execute a bridge pipeline task and signal completion.
 - **gk-deploy**: Executes build and deployment pipelines to various environments.
 - **gk-infra**: Manages infrastructure as code (Docker, K8s, Terraform).
 - **gk-mcp-manager**: Manages MCP server configurations and connections.
@@ -29,6 +31,7 @@ Skills are atomic units of capability that Agents use to perform specific tasks.
 ### Planning & Research
 - **gk-ask**: General Q&A assistant with codebase context.
 - **gk-brainstorm**: Facilitates architectural debates and decision making.
+- **gk-intake**: Capture, structure, and refine initial user requirements or project ideas.
 - **gk-onboard**: Summarizes project context for rapid onboarding.
 - **gk-plan**: Decomposes complex tasks into execution phases.
 - **gk-research**: Gathers technical information and synthesizes options.

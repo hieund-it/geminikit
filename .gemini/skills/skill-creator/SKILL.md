@@ -9,10 +9,16 @@ description: "Generate agent and skill files following Gemini Kit templates and 
 
 ## Interface
 - **Invoked via:** /gk-create
-- **Flags:** 
-  - `--skill`: Generate a new skill component at `.gemini/skills/<name>/SKILL.md`
-  - `--agent`: Generate a new agent definition at `.gemini/agents/<name>.md`
+- **Flags:** --skill | --agent
 - **Errors:** INVALID_TYPE, MISSING_NAME, FILE_EXISTS
+
+## Mode Mapping
+
+| Flag | Description | Reference |
+|------|-------------|-----------|
+| --skill | Generate a new skill component at `.gemini/skills/<name>/SKILL.md` | (base skill rules) |
+| --agent | Generate a new agent definition at `.gemini/agents/<name>.md` | (base skill rules) |
+| (default) | Standard generation based on input type | (base skill rules) |
 
 ## References
 - **Skill Creation Guide:** `.gemini/template/how-to-create-skill.md`
@@ -50,12 +56,17 @@ Generate a new agent or skill file based on provided templates, ensuring strict 
 # Rules
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
+- **Artifact Management (Rule 05_6):** ALL generated skill reports MUST be stored in `reports/skill-creator/{date}-skill.md`.
 - **PRE-FLIGHT (CRITICAL):** MUST read `.gemini/template/how-to-create-skill.md` before generating a new skill.
 - **TEMPLATE MANDATE:** MUST use `.gemini/template/skill-template.md` as the absolute base for skills.
 - **TEMPLATE MANDATE:** MUST use `.gemini/template/agent-template.md` as the absolute base for agents.
 - **MANDATORY**: If the skill has flags, MUST include a `Mode Mapping` table in `SKILL.md`.
 - **MANDATORY**: For every flag listed, MUST create a corresponding mode file in the `./modes/` directory using `.gemini/template/mode-template.md`.
 - **MANDATORY**: Mode files MUST include `# Extra Rules` and `## Steps` sections.
+- **MANDATORY (Rule 02_4):** All generated skills MUST include a rule requiring PowerShell-compatible syntax for shell commands.
+- **MANDATORY (Rule 05_6):** All generated skills that produce reports MUST include a rule for storing reports in `reports/{skill-name}/{date}-{type}.md`.
+- **MANDATORY (Rule 02_5.1):** All generated skills that produce plans MUST include a rule for storing plans in `plans/{date}-{slug}/plan.md`.
 - MUST ensure file name is kebab-case and name matches frontmatter.
 - MUST NOT overwrite existing files — return `FILE_EXISTS` if path occupied.
 - MUST save skills to `.gemini/skills/<name>/SKILL.md`.

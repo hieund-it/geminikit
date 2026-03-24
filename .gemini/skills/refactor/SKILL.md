@@ -49,6 +49,8 @@ Improve code quality, readability, and maintainability by applying best practice
 - MUST follow project-specific coding standards and naming conventions.
 - MUST prioritize readability and DRY (Don't Repeat Yourself) principles.
 - MUST NOT introduce new dependencies unless absolutely necessary for the pattern.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for any refactoring tools or commands.
+- **Artifact Management (Rule 05_6):** ALL refactoring summary reports and diffs MUST be stored in `reports/refactor/{date}-refactor.md`.
 
 # Output
 

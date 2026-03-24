@@ -41,6 +41,8 @@ Summarize project architecture, tech stack, dependencies, and development workfl
 - Security: DO NOT read `.env`, `secrets.json`, etc. Report only their presence. Redact any discovered secrets immediately.
 - Architecture: Identify entry points and core modules.
 - Token Efficiency: Limit `read_file` to 20-50 lines; prefer `grep_search`.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for any shell commands during project scan.
+- **Artifact Management (Rule 05_6):** ALL generated onboarding reports MUST be stored in `reports/onboard/{date}-onboarding.md`.
 
 ## Steps
 1. Scan project root to identify directory structure

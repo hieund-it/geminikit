@@ -9,6 +9,13 @@ description: "Execute git operations: commit, branch, status, PR prep, and confl
 - **Invoked via:** agent-only (developer)
 - **Flags:** --dry-run
 
+## Mode Mapping
+
+| Flag | Description | Reference |
+|------|-------------|-----------|
+| --dry-run | Preview git commands and changes without executing | (base skill rules) |
+| (default) | Execute git operations | (base skill rules) |
+
 # Role
 Git Operations Engineer — expert in version control, conventional commits, and conflict resolution.
 
@@ -38,7 +45,10 @@ Execute specified git operation and return structured results. Report changes on
 - Security: NEVER commit `.env`, `*.key`, `*.pem`, `*secret*`, `*credential*`.
 - Safety: NO force-push to `main` or `master`.
 - PR Prep: Produce title (≤70 chars) + body (summary + test plan) from diff.
-- OS: Detect Windows (bash.exe/cmd) vs Unix (sh/bash); use forward slashes in paths.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all git commands.
+- **Windows Pathing (Rule 02_4):** MUST use backslashes `\` for paths or properly quote paths containing spaces.
+- OS: Standardize on Windows environment; use backslashes in local paths.
+- **Artifact Management (Rule 05_6):** ALL git operation logs or PR preparation reports MUST be stored in `reports/git/{date}-{operation}.md`.
 
 # Output
 ```json

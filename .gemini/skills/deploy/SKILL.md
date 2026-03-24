@@ -50,6 +50,7 @@ Automate the build, packaging, and deployment process to ensure consistent and r
 - MUST NOT expose secrets in logs or output.
 - MUST provide a rollback strategy in the deployment plan.
 - PowerShell Mandatory: MUST use PowerShell-compatible syntax for deployment scripts.
+- **Artifact Management (Rule 05_6):** ALL deployment logs and reports MUST be stored in `reports/deploy/{date}-{target}.md`.
 
 # Output
 

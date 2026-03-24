@@ -32,7 +32,9 @@ Commands follow the format: `/gk-<command> [--mode] [task]`
 | `agent-only (documenter)` | documenter | `—` |
 | `/gk-export-session` | developer | `—` |
 | `agent-only (developer)` | developer | `--dry-run` |
+| `/gk-health-check` | maintenance | `—` |
 | `/gk-infra` | devops | `--docker \| --k8s \| --terraform` |
+| `/gk-intake` | researcher | `--refine \| --spec` |
 | `/gk-mcp-manager` | mcp-manager | `—` |
 | `/gk-migrate` | maintenance | `--generate \| --apply \| --rollback` |
 | `/gk-monitor` | support | `--logs \| --metrics \| --alerts` |
@@ -107,7 +109,9 @@ For each subtask, check `.gemini/skills/` for matching skill:
 - `document/SKILL.md` — Generate accurate technical documentation from provided code content and context.
 - `export-session/SKILL.md` — Exports the current session state and conversation summary for continuation.
 - `git/SKILL.md` — Execute git operations: commit, branch, status, PR prep, and conflict detection.
+- `health-check/SKILL.md` — Validate framework compliance across all agents and skills.
 - `infra/SKILL.md` — Manage infrastructure as code (Docker, K8s, Terraform configurations)
+- `intake/SKILL.md` — Capture, structure, and refine initial user requirements or project ideas.
 - `mcp-manager/SKILL.md` — Manage MCP server configuration, test connections, and scaffold new servers. Use this skill to add/edit/remove MCP servers or to troubleshoot connectivity.
 - `migrate/SKILL.md` — Manage database schema changes and data migrations
 - `monitor/SKILL.md` — Analyze system logs and monitor performance metrics to detect anomalies

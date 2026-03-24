@@ -31,6 +31,8 @@ Research the provided query and produce a structured comparison of options with 
 # Rules
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
+- **Artifact Management (Rule 05_6):** ALL generated research reports MUST be stored in `reports/research/{date}-research.md`.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Maturity: Evaluate community support (GitHub), release frequency, and stability.
 - Security: Check CVE history or reputation. Flag unpatched critical vulnerabilities.

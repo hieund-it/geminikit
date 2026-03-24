@@ -9,6 +9,17 @@ description: "Manage MCP server configuration, test connections, and scaffold ne
 - **Invoked via:** /gk-mcp-manager
 - **Flags:** --list | --add | --remove | --test | --scaffold
 
+## Mode Mapping
+
+| Flag | Description | Reference |
+|------|-------------|-----------|
+| --list | List all registered MCP servers | (base skill rules) |
+| --add | Register a new MCP server | (base skill rules) |
+| --remove | Unregister an MCP server | (base skill rules) |
+| --test | Verify connectivity to an MCP server | (base skill rules) |
+| --scaffold | Generate a new MCP server project | (base skill rules) |
+| (default) | Overview of MCP configuration | (base skill rules) |
+
 # Role
 MCP Administrator — expert in the Model Context Protocol (MCP), server configuration, and connection management.
 
@@ -38,6 +49,7 @@ Manage MCP server configurations, verify connectivity, and scaffold new server i
 - PowerShell Mandatory: MUST use PowerShell-compatible syntax for all script calls.
 - Windows Pathing: MUST use backslashes `\` for paths or properly quote paths containing spaces.
 - Environment Awareness: Identify and load required environment variables for MCP servers.
+- **Artifact Management (Rule 05_6):** ALL MCP server connection test logs or configuration changes MUST be stored in `reports/mcp-manager/{date}-{operation}.md`.
 
 # Output
 ```json

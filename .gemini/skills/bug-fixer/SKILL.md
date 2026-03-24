@@ -48,6 +48,8 @@ Take an error message or log as input, locate the faulting code, and provide a v
 - MUST provide a precise code fix (diff or replacement) that resolves the root cause, not just the symptom.
 - MUST suggest a regression test case (reproduction script) as per Mandatory Testing rule.
 - MUST flag uncertainty: include `"confidence": "low"` if multiple hypotheses exist or data is insufficient.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
+- **Artifact Management (Rule 05_6):** ALL bug fix reports and verification results MUST be stored in `reports/bug-fixer/{date}-fix.md`.
 
 ## Steps
 1. Reproduce the bug (manually or with automated script)

@@ -46,6 +46,8 @@ description: "One sentence: what this skill does (action-oriented)"
 
 - **Security Audit** — MUST validate all inputs and redact any potential secrets (API keys, passwords) from the output.
 - **Context Economy** — MUST minimize token usage. Prefer targeted file reads and incremental processing.
+- **PowerShell Mandatory (Rule 02_4)** — MUST use PowerShell-compatible syntax for all shell commands and scripts.
+- **Artifact Management (Rule 05_6)** — ALL generated reports MUST be stored in `reports/{skill-name}/{date}-{type}.md`.
 - MUST NOT assume missing data — return `blocked` if required fields absent
 - MUST only perform the task defined in Objective — no scope expansion
 - MUST NOT call tools or access memory not listed in Input
@@ -60,6 +62,7 @@ description: "One sentence: what this skill does (action-oriented)"
   "status": "completed | failed | blocked",
   "format": "json | markdown | text",
   "result": {
+    "report_path": "string (optional) — path to the generated report in reports/ directory",
     // skill-specific result fields here
   },
   "summary": "one sentence describing what was done",

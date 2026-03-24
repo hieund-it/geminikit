@@ -1,6 +1,6 @@
 {
   "general": {
-    "defaultApprovalMode": "default"
+    "defaultApprovalMode": "auto_edit"
   },
   "model": {
     //"name": "gemini-3-flash-preview",

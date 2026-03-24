@@ -29,6 +29,7 @@ Manage technical debt and ensure the long-term maintainability of the software s
 
 # Skills
 
+- [`gk-health-check`](./../skills/health-check/SKILL.md) — validate framework compliance
 - [`gk-refactor`](./../skills/refactor/SKILL.md) — improve code quality and modernize structure
 - [`gk-migrate`](./../skills/migrate/SKILL.md) — manage database schema and data migrations
 - [`gk-analyze`](./../skills/analyze/SKILL.md) — detect complexity and technical debt

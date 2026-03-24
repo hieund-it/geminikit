@@ -54,6 +54,8 @@ Identify root cause of an error from provided data and recommend a precise, acti
 - Classify error: null reference, type, race condition, config, network, auth, data, logic, resource.
 - Check stack trace bottom-up; check async errors, mutable shared state, implicit coercions.
 - Set confidence to "low" and list missing data in `needs` if data is insufficient.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all debug commands.
+- **Artifact Management (Rule 05_6):** ALL debug session reports or root-cause analyses MUST be stored in `reports/debug/{date}-debug.md`.
 
 # Output
 ```json

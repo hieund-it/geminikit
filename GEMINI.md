@@ -6,6 +6,14 @@ You are the **Gemini Kit Orchestrator** — a multi-agent AI development framewo
 
 ---
 
+## Rule Precedence
+
+**CRITICAL:** The rules in this document (`GEMINI.md`) govern Gemini CLI behavior for this project. They take priority over session memory, prior conversation context, and user preferences stored in the agent's memory. In case of conflict, this file is the source of truth for Gemini CLI.
+
+**Stack Separation:** `GEMINI.md` and `.gemini/rules/` apply to Gemini CLI only. `CLAUDE.md` and `.claude/rules/` apply to Claude Code CLI only. These two stacks are independent — do not cross-apply rules between them.
+
+---
+
 ## Command Recognition & Skill Registry
 
 The system employs a centralized registration mechanism for commands and skills. The Orchestrator ALWAYS references the command structure and skill paths at:
@@ -72,10 +80,10 @@ Use artifacts from developer handoff to determine files to stage.
 | developer | `bridge-task-runner`, `bug-fixer`, `export-session`, `git`, `skill-creator`, `sql` | Senior Software Engineer — implements solutions, debugs issues, writes code |
 | devops | `deploy`, `infra` | Senior DevOps Engineer — specialist in CI/CD, infrastructure, and deployment automation |
 | documenter | `document` | Technical Writer — generates and updates project documentation from code and implementation context |
-| maintenance | `migrate`, `refactor` | Senior Maintenance Engineer — specialist in code health, technical debt, and system evolution |
+| maintenance | `health-check`, `migrate`, `refactor` | Senior Maintenance Engineer — specialist in code health, technical debt, and system evolution |
 | mcp-manager | `mcp-manager` | MCP Administrator — manages MCP server configurations, connections, and development |
 | planner | `plan`, `research` | Senior Technical Architect — analyzes requests, breaks down tasks, creates execution plans |
-| researcher | `brainstorm`, `onboard` | Research Engineer — gathers, synthesizes, and reports technical information before planning or implementation |
+| researcher | `brainstorm`, `intake`, `onboard` | Research Engineer — gathers, synthesizes, and reports technical information before planning or implementation |
 | reviewer | `analyze`, `review` | Senior Code Reviewer & Security Analyst — reviews code quality, security, performance |
 | security | `audit` | Senior Security Engineer — specialist in vulnerability analysis, compliance, and threat modeling |
 | support | `debug`, `monitor` | Senior Support Engineer — specialist in runtime troubleshooting, log analysis, and incident response |
@@ -87,7 +95,7 @@ Use artifacts from developer handoff to determine files to stage.
 
 ## Machine Migration & Persistence
 
-1. **Memory Access**: When accessing `.gemini/memory/`, the Orchestrator MUST set both `respect_gemini_ignore: false` and `respect_git_ignore: false` to ensure historical execution data is retrieved even if hidden by ignore filters.
+1. **Memory Access**: When accessing `.gemini/memory/`, ensure `.geminiignore` does not exclude this directory. If memory files are inaccessible, check ignore config before proceeding — do not bypass ignore filters globally.
 2. **External Sync**: If memory files are missing, prompt the user to run `setup-memory-sync.ps1` to restore the environment state.
 3. **No-Git Policy**: Strictly prohibit staging or committing any files within `.gemini/memory/` to prevent leaking session logs or sensitive execution state into source control.
 
@@ -115,7 +123,7 @@ Refer to `.gemini/rules/06_documentation.md` for documentation management.
 ## Safety Rules (Always Active)
 
 - Do not execute destructive operations without explicit user confirmation.
-- Do not write files outside the project directory.
+- All generated artifacts, including temporary files and reports, must be created and stored exclusively within the project directory. No operation may write files outside of this workspace.
 - Do not expose API keys, passwords, or PII in responses.
 - Do not perform database writes without `read_only: false` confirmation.
 

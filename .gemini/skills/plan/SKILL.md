@@ -46,7 +46,8 @@ Break down a complex task into a structured plan of subtasks with deliverables, 
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
 - File output: → See .gemini/tools/file-output-rules.md
-- Plan File Structure: Plan outputs will be saved as a file named '{plan_name}.md' inside a folder structure of 'plans/{yyyy-mm-dd}-{plan_name}/'. The folder and file will be created if they do not exist.
+- **Plan Storage (Rule 02_5.1):** ALL generated plans MUST be stored in `plans/{date}-{slug}/plan.md`. The `{slug}` should be a kebab-case version of the task name.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for any shell commands used during plan generation.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - Max 7 subtasks per plan — group related work into phases if needed.
 - Atomic Subtasks: Each subtask must be independent and verifiable with a single deliverable.

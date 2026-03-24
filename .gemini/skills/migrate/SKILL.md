@@ -49,6 +49,8 @@ Safely manage the evolution of the database schema while ensuring data integrity
 - MUST flag operations that might cause data loss (e.g., dropping columns).
 - MUST ensure migrations are idempotent.
 - MUST follow the project's naming convention for migration files (e.g., timestamp-prefixed).
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all migration commands.
+- **Artifact Management (Rule 05_6):** ALL migration execution logs or reports MUST be stored in `reports/migrate/{date}-migration.md`.
 
 # Output
 

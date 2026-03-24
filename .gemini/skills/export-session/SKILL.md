@@ -26,6 +26,8 @@ To generate a structured markdown block containing the current task state from `
 # Rules
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
+- **Artifact Management (Rule 05_6):** ALL generated session reports MUST be stored in `reports/export-session/{date}-session.md`.
 - MUST read the content of `.gemini/memory/execution.md`.
 - MUST use the `gk-summarize` skill to summarize the `conversation_history`.
 - The final output MUST be a single, well-formatted markdown block.

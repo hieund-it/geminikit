@@ -80,6 +80,9 @@ Run through `.gemini/rules/skill-creation-rules.md` Section 6 checklist:
 [ ] No assumption of missing data
 [ ] Input: all required fields typed, optional fields have defaults
 [ ] Output: status + result + summary + blocked + failed + example
+[ ] PowerShell Mandatory rule (Rule 02_4) present if executing shell commands
+[ ] Artifact Management rule (Rule 05_6) present if generating reports (using reports/ directory)
+[ ] Plan Management rule (Rule 02_5.1) present if generating plans (using plans/ directory)
 [ ] Stateless (no session state)
 [ ] No direct memory access
 [ ] No hardcoded env values

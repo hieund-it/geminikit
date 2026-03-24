@@ -35,8 +35,11 @@ These commands invoke specialized AI agents to perform complex tasks.
 | `/gk-debug` | `developer` | Identify the root cause of a software error and recommend a fix. |
 | `/gk-deploy` | `devops` | Execute build and deployment pipelines to various environments. |
 | `/gk-design` | `designer` | Generate or review UI specifications. |
+| `/gk-export-session` | `developer` | Exports the current session state and conversation summary for continuation. |
 | `/gk-fix-bug` | `developer` | Automatically find and fix bugs from error logs. |
+| `/gk-health-check` | `maintenance` | Validate framework compliance across all agents and skills. |
 | `/gk-infra` | `devops` | Manage infrastructure as code (Docker, K8s, Terraform). |
+| `/gk-intake` | `researcher` | Capture, structure, and refine initial user requirements or project ideas. |
 | `/gk-mcp-manager` | `mcp-manager` | Manage MCP server configurations and connections. |
 | `/gk-migrate` | `maintenance` | Manage database schema changes and data migrations. |
 | `/gk-monitor` | `support` | Analyze system logs and monitor performance metrics. |

@@ -21,7 +21,9 @@ This file is automatically managed by `sync_registry.py`. ALWAYS reference this 
 | `agent-only (documenter)` | documenter | gk-document | Generate accurate technical documentation from provided code content and context. |
 | `/gk-export-session` | developer | gk-export-session | Exports the current session state and conversation summary for continuation. |
 | `agent-only (developer) [--dry-run] <args>` | developer | gk-git | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
+| `/gk-health-check` | maintenance | gk-health-check | Validate framework compliance across all agents and skills. |
 | `/gk-infra [--docker \| --k8s \| --terraform] <args>` | devops | gk-infra | Manage infrastructure as code (Docker, K8s, Terraform configurations) |
+| `/gk-intake [--refine \| --spec] <args>` | researcher | gk-intake | Capture, structure, and refine initial user requirements or project ideas. |
 | `/gk-mcp-manager` | mcp-manager | gk-mcp-manager | Manage MCP server configuration, test connections, and scaffold new servers. Use this skill to add/edit/remove MCP servers or to troubleshoot connectivity. |
 | `/gk-migrate [--generate \| --apply \| --rollback] <args>` | maintenance | gk-migrate | Manage database schema changes and data migrations |
 | `/gk-monitor [--logs \| --metrics \| --alerts] <args>` | support | gk-monitor | Analyze system logs and monitor performance metrics to detect anomalies |
@@ -56,7 +58,9 @@ This file is automatically managed by `sync_registry.py`. ALWAYS reference this 
 | document | `.gemini/skills/document/SKILL.md` | — | Generate accurate technical documentation from provided code content and context. |
 | export-session | `.gemini/skills/export-session/SKILL.md` | — | Exports the current session state and conversation summary for continuation. |
 | git | `.gemini/skills/git/SKILL.md` | — | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
+| health-check | `.gemini/skills/health-check/SKILL.md` | — | Validate framework compliance across all agents and skills. |
 | infra | `.gemini/skills/infra/SKILL.md` | — | Manage infrastructure as code (Docker, K8s, Terraform configurations) |
+| intake | `.gemini/skills/intake/SKILL.md` | `refine`, `spec` | Capture, structure, and refine initial user requirements or project ideas. |
 | mcp-manager | `.gemini/skills/mcp-manager/SKILL.md` | — | Manage MCP server configuration, test connections, and scaffold new servers. Use this skill to add/edit/remove MCP servers or to troubleshoot connectivity. |
 | migrate | `.gemini/skills/migrate/SKILL.md` | — | Manage database schema changes and data migrations |
 | monitor | `.gemini/skills/monitor/SKILL.md` | — | Analyze system logs and monitor performance metrics to detect anomalies |

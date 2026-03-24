@@ -1,0 +1,77 @@
+---
+name: gk-health-check
+agent: maintenance
+version: "1.0.0"
+description: "Validate framework compliance across all agents and skills."
+---
+
+## Interface
+- **Invoked via:** /gk-health-check
+- **Flags:** none
+- **Errors:** COMPLIANCE_FAILED, REGISTRY_DESYNC
+
+# Role
+Framework Integrity Engineer — expert in Gemini Kit standards, core rules, and system architecture.
+
+# Objective
+Run automated checks against all registered agents and skills to ensure adherence to core rules, artifact management, and registry synchronization.
+
+# Input
+```json
+{
+  "fix": "boolean (optional, default: false) — whether to attempt automatic fixes for registry sync"
+}
+```
+
+# Rules
+- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
+- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for shell commands.
+- **Artifact Management (Rule 05_6):** ALL generated health-check reports MUST be stored in `reports/health-check/{date}-health-report.json`.
+- MUST NOT skip any registered skill or agent during the scan.
+- MUST report the exact rule or section missing for each failure.
+- MUST verify that all skill directories on disk are registered in `registry.json`.
+- MUST verify that `REGISTRY.md` matches the state of `registry.json`.
+
+## Steps
+1. Execute the `health_check.py` script using the local Python runtime.
+2. Parse the JSON output from the script.
+3. Save the full JSON report to the `reports/health-check/` directory.
+4. Summarize the results (total skills, pass/fail counts, registry sync status).
+5. If failures exist, list the critical non-compliance issues.
+
+# Output
+```json
+{
+  "status": "completed | failed | blocked",
+  "format": "json",
+  "result": {
+    "report_path": "reports/health-check/{date}-health-report.json",
+    "summary": {
+      "total_skills": "number",
+      "passed": "number",
+      "failed": "number"
+    },
+    "registry_sync": "pass | fail",
+    "critical_issues": ["string"]
+  },
+  "summary": "Health check completed: X passed, Y failed.",
+  "confidence": "high"
+}
+```
+
+**Example:**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "result": {
+    "report_path": "reports/health-check/2026-03-24-health-report.json",
+    "summary": { "total_skills": 25, "passed": 23, "failed": 2 },
+    "registry_sync": "pass",
+    "critical_issues": ["Skill 'git' missing PowerShell rule", "Skill 'analyze' exceeds 200 lines"]
+  },
+  "summary": "Health check completed: 23 passed, 2 failed.",
+  "confidence": "high"
+}
+```

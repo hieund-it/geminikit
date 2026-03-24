@@ -34,7 +34,8 @@ Explore software solutions, evaluate architectural choices, and debate technical
 # Rules
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- File output: → See .gemini/tools/file-output-rules.md
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
+- **Artifact Management (Rule 05_6):** ALL generated session reports MUST be stored in `reports/brainstorm/{date}-session.md`.
 - MUST NOT assume missing data — return `blocked` if required fields absent.
 - TCO: Consider dev time, maintenance, infra, and training costs.
 - Lock-in: Evaluate vendor lock-in or dependency on niche/unstable libraries.

@@ -50,6 +50,7 @@ Identify security vulnerabilities, hardcoded secrets, and license risks within t
 - MUST verify if found vulnerabilities have known patches/fixes.
 - MUST report license types that are incompatible with project policy (e.g., GPL in a proprietary project).
 - PowerShell Mandatory: MUST use PowerShell-compatible syntax for audit tools.
+- **Artifact Management (Rule 05_6):** ALL generated audit reports MUST be stored in `reports/audit/{date}-audit.md`.
 
 # Output
 

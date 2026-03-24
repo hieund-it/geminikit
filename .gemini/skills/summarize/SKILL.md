@@ -29,6 +29,8 @@ Compress content into machine-readable memory blocks based on specific templates
 # Rules
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
+- **Artifact Management (Rule 05_6):** ALL generated summary reports MUST be stored in `reports/summarize/{date}-summary.md`.
 - **Template Mapping**:
   - `type: execution` -> MUST use `.gemini/template/memory/execution.md`
   - `type: long-term` -> MUST use `.gemini/template/memory/long-term.md`

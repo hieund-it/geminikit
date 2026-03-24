@@ -51,6 +51,7 @@ Generate, optimize, and validate infrastructure configurations to ensure scalabl
 - MUST validate syntax before returning the configuration.
 - MUST include comments explaining key infrastructure decisions.
 - PowerShell Mandatory: MUST use PowerShell-compatible syntax for commands.
+- **Artifact Management (Rule 05_6):** ALL generated infrastructure configurations or audit reports MUST be stored in `reports/infra/{date}-{platform}.md`.
 
 # Output
 ```json

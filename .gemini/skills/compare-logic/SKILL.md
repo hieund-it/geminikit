@@ -42,6 +42,8 @@ To analyze, compare, and report on the differences in business logic between an 
 - MUST perform the analysis step-by-step. Do not assume file or logic correspondence without evidence.
 - MUST document findings in a structured report.
 - If a language or framework is unfamiliar, use `google_web_search` to find common patterns for that technology.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for any shell commands.
+- **Artifact Management (Rule 05_6):** ALL logic comparison reports MUST be stored in `reports/compare-logic/{date}-comparison.md`.
 
 # Process
 

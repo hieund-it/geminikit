@@ -48,13 +48,13 @@ When dispatched by the orchestrator, follow these steps **in order**:
 
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
+- **Artifact Management (Rule 05_6):** ALL generated task reports MUST be stored in `reports/bridge-task-runner/{date}-task.md`.
 - MUST read the task JSON before starting any implementation
 - MUST update the task file (`status`, `gemini_summary`, `updated_at`) before finishing — this is how the orchestrator detects completion
 - MUST NOT skip the status update step even if execution partially fails; set `status: "gemini_done"` and describe the failure in `gemini_summary`
 - MUST NOT modify task fields other than `status`, `gemini_summary`, and `updated_at`
 - Scope changes to `context_files` listed in the task when possible
-- Follow `.gemini/tools/file-output-rules.md` for all file write operations
-
 ## Safety Constraints
 
 - Do NOT delete files unless the task prompt explicitly instructs it

@@ -16,8 +16,8 @@
 
 ## 4. Validation Protocol
 - **Integrity Check:** All output MUST include `{ status, result, summary }`.
-- **Malformed Data:** If output fails validation, BẮT BUỘC trả về `status: "failed"` và không được chuyển giao cho thành phần kế tiếp.
-- **Circuit Breaker:** 3 liên tiếp lỗi từ cùng một thành phần → Tự động báo cáo `disabled` và dừng tác vụ.
+- **Malformed Data:** If output fails validation, MUST return `status: "failed"` — do not pass to the next component.
+- **Circuit Breaker:** 3 consecutive errors from the same component → automatically report `disabled` and halt the task.
 
 ## 5. Localization
 - **Reasoning:** MUST always be in English to ensure logic consistency.
