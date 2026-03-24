@@ -51,7 +51,5 @@ plans/
 AGENTS.md
 CLAUDE.md
 
-# Bridge pipeline runtime (queue and logs are transient; rules/ is tracked)
-.bridge/queue/
-.bridge/logs/
-.bridge/state.json
+# Bridge pipeline runtime (all .bridge/ content is transient — templates are in bridge/templates/)
+.bridge/

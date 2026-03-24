@@ -210,7 +210,6 @@ def generate_tasks(phases: list, template_dir: Path) -> list:
                 "context_files": context_text,
                 "success_criteria": criteria_text,
                 "phase_description": phase_data["description"],
-                "gemini_summary": "{{gemini_summary}}",  # filled by orchestrator at review time
             }
 
             prompt = apply_template(task_template, variables)
@@ -246,11 +245,15 @@ def write_task_queue(tasks: list, bridge_dir: Path) -> None:
     queue_dir = bridge_dir / "queue"
     queue_dir.mkdir(parents=True, exist_ok=True)
 
+    # Clear stale task files from previous runs to prevent orphaned tasks
+    for stale in queue_dir.glob("task-*.json"):
+        stale.unlink()
+
     for task in tasks:
         errors = validate_task(task)
         if errors:
             raise ValueError(f"Invalid task {task.get('id')}: {errors}")
-        path = queue_dir / f"task-{task['id']}.json"
+        path = queue_dir / f"{task['id']}.json"
         write_json_atomic(str(path), task)
 
     # Initialise / update state.json with total count

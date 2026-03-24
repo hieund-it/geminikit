@@ -28,6 +28,20 @@ def _load_task_schema():
 
 _schema = _load_task_schema()
 TASK_STATUSES = _schema.TASK_STATUSES
+
+
+def _find_cli(name: str) -> str:
+    """
+    Resolve CLI executable name, appending .cmd on Windows so subprocess.run
+    can locate npm-installed binaries (e.g. gemini.cmd, claude.cmd) without shell=True.
+    """
+    if sys.platform == "win32":
+        import shutil
+        # Try name.cmd first (npm installs on Windows use .cmd wrappers)
+        cmd_name = name + ".cmd"
+        if shutil.which(cmd_name):
+            return cmd_name
+    return name
 create_pipeline_state = _schema.create_pipeline_state
 read_json_atomic = _schema.read_json_atomic
 write_json_atomic = _schema.write_json_atomic
@@ -91,7 +105,7 @@ def _task_path(task: dict, queue_dir: Path) -> Path:
     """Resolve task file path from stashed _path or reconstruct it."""
     if "_path" in task:
         return Path(task["_path"])
-    return queue_dir / f"task-{task['id']}.json"
+    return queue_dir / f"{task['id']}.json"
 
 
 def _save_task(task: dict, queue_dir: Path) -> None:
@@ -125,7 +139,7 @@ def dispatch_gemini(task: dict, queue_dir: Path, project_root: Path, logger: log
     _save_task(task, queue_dir)
     logger.info("Dispatching task %s to Gemini", task["id"])
 
-    cmd = ["gemini", "-p", prompt, "--yolo", "--approval-mode", "yolo"]
+    cmd = [_find_cli("gemini"), "-p", prompt, "--yolo", "--approval-mode", "yolo"]
     try:
         result = subprocess.run(
             cmd,
@@ -195,7 +209,7 @@ def dispatch_claude_review(task: dict, project_root: Path, logger: logging.Logge
         f"BRIDGE_STATUS: FAIL"
     )
 
-    cmd = ["claude", "--print", review_prompt]
+    cmd = [_find_cli("claude"), "--print", review_prompt]
     logger.info("Task %s: sending to Claude for review", task["id"])
     try:
         result = subprocess.run(
@@ -244,8 +258,6 @@ def handle_review_result(
     """Update task status based on review outcome; apply retry logic on failure."""
     task["review_result"] = summary
     task["review_passed"] = passed
-    task["status"] = "reviewing"
-    _save_task(task, queue_dir)
 
     if passed:
         task["status"] = "done"

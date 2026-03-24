@@ -15,7 +15,6 @@ TASK_STATUSES = [
     "executing",
     "gemini_done",
     "reviewing",
-    "review_done",
     "done",
     "failed",
 ]
