@@ -30,6 +30,7 @@ Commands follow the format: `/gk-<command> [--mode] [task]`
 | `/gk-debug` | support | `--trace \| --deep` |
 | `/gk-deploy` | devops | `--staging \| --production \| --dry-run` |
 | `agent-only (documenter)` | documenter | `—` |
+| `/gk-execute` | developer | `--dry-run \| --verbose` |
 | `/gk-export-session` | developer | `—` |
 | `agent-only (developer)` | developer | `--dry-run` |
 | `/gk-health-check` | maintenance | `—` |
@@ -107,6 +108,7 @@ For each subtask, check `.gemini/skills/` for matching skill:
 - `debug/SKILL.md` — Identify root cause of a software error and recommend a precise fix.
 - `deploy/SKILL.md` — Execute build and deployment pipelines to various environments
 - `document/SKILL.md` — Generate accurate technical documentation from provided code content and context.
+- `gk-execute/SKILL.md` — Execute Markdown-based implementation plans by parsing, executing tasks, and updating status.
 - `export-session/SKILL.md` — Exports the current session state and conversation summary for continuation.
 - `git/SKILL.md` — Execute git operations: commit, branch, status, PR prep, and conflict detection.
 - `health-check/SKILL.md` — Validate framework compliance across all agents and skills.

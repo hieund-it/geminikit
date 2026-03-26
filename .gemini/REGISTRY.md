@@ -19,6 +19,7 @@ This file is automatically managed by `sync_registry.py`. ALWAYS reference this 
 | `/gk-debug [--trace \| --deep] <args>` | support | gk-debug | Identify root cause of a software error and recommend a precise fix. |
 | `/gk-deploy [--staging \| --production \| --dry-run] <args>` | devops | gk-deploy | Execute build and deployment pipelines to various environments |
 | `agent-only (documenter)` | documenter | gk-document | Generate accurate technical documentation from provided code content and context. |
+| `/gk-execute [--dry-run \| --verbose] <args>` | developer | gk-gk-execute | Execute Markdown-based implementation plans by parsing, executing tasks, and updating status. |
 | `/gk-export-session` | developer | gk-export-session | Exports the current session state and conversation summary for continuation. |
 | `agent-only (developer) [--dry-run] <args>` | developer | gk-git | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
 | `/gk-health-check` | maintenance | gk-health-check | Validate framework compliance across all agents and skills. |
@@ -56,6 +57,7 @@ This file is automatically managed by `sync_registry.py`. ALWAYS reference this 
 | debug | `.gemini/skills/debug/SKILL.md` | `deep`, `trace` | Identify root cause of a software error and recommend a precise fix. |
 | deploy | `.gemini/skills/deploy/SKILL.md` | — | Execute build and deployment pipelines to various environments |
 | document | `.gemini/skills/document/SKILL.md` | — | Generate accurate technical documentation from provided code content and context. |
+| gk-execute | `.gemini/skills/gk-execute/SKILL.md` | `dry-run`, `verbose` | Execute Markdown-based implementation plans by parsing, executing tasks, and updating status. |
 | export-session | `.gemini/skills/export-session/SKILL.md` | — | Exports the current session state and conversation summary for continuation. |
 | git | `.gemini/skills/git/SKILL.md` | — | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
 | health-check | `.gemini/skills/health-check/SKILL.md` | — | Validate framework compliance across all agents and skills. |

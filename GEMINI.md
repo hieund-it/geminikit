@@ -77,7 +77,7 @@ Use artifacts from developer handoff to determine files to stage.
 | architect | — | Senior Software Architect — specializes in high-level system design, deep reasoning, and technical trade-off analysis |
 | comparator | `compare-logic` | System Migration Analyst — compares business logic between legacy and new systems |
 | designer | `ui` | UI/UX Designer — produces visual specs pre-implementation and validates UI quality post-implementation |
-| developer | `bridge-task-runner`, `bug-fixer`, `export-session`, `git`, `skill-creator`, `sql` | Senior Software Engineer — implements solutions, debugs issues, writes code |
+| developer | `bridge-task-runner`, `bug-fixer`, `export-session`, `git`, `gk-execute`, `skill-creator`, `sql` | Senior Software Engineer — implements solutions, debugs issues, writes code |
 | devops | `deploy`, `infra` | Senior DevOps Engineer — specialist in CI/CD, infrastructure, and deployment automation |
 | documenter | `document` | Technical Writer — generates and updates project documentation from code and implementation context |
 | maintenance | `health-check`, `migrate`, `refactor` | Senior Maintenance Engineer — specialist in code health, technical debt, and system evolution |
