@@ -42,15 +42,12 @@ Improve code quality, readability, and maintainability by applying best practice
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST NOT change the functional behavior of the code.
 - MUST ensure all existing tests pass after refactoring.
 - MUST follow project-specific coding standards and naming conventions.
 - MUST prioritize readability and DRY (Don't Repeat Yourself) principles.
 - MUST NOT introduce new dependencies unless absolutely necessary for the pattern.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for any refactoring tools or commands.
-- **Artifact Management (Rule 05_6):** ALL refactoring summary reports and diffs MUST be stored in `reports/refactor/{date}-refactor.md`.
 
 # Output
 

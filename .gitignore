@@ -47,7 +47,6 @@ release-manifest.json
 Thumbs.db
 
 # Plans & local docs (dev-only)
-plans/
 AGENTS.md
 CLAUDE.md
 

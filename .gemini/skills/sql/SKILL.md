@@ -35,11 +35,7 @@ Optimize a SQL query for performance while preserving its exact logical result.
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
-- **Artifact Management (Rule 05_6):** ALL generated query reports MUST be stored in `reports/sql/{date}-query.md`.
-- MUST NOT assume missing data — return `blocked` if required fields absent.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - Logic: Preserve query logic exactly; optimized query must return identical results.
 - Locks: Evaluate if the change will block production traffic; recommend `CONCURRENTLY` (Postgres) or `ONLINE` (MySQL).
 - Migration: Ensure structural changes can be applied with zero downtime.

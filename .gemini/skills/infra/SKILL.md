@@ -44,14 +44,11 @@ Generate, optimize, and validate infrastructure configurations to ensure scalabl
 
 # Rules
 
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST NOT assume cloud provider unless specified (default to cloud-agnostic).
 - MUST follow security best practices (non-root users in Docker, resource limits in K8s).
 - MUST validate syntax before returning the configuration.
 - MUST include comments explaining key infrastructure decisions.
-- PowerShell Mandatory: MUST use PowerShell-compatible syntax for commands.
-- **Artifact Management (Rule 05_6):** ALL generated infrastructure configurations or audit reports MUST be stored in `reports/infra/{date}-{platform}.md`.
 
 # Output
 ```json

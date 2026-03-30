@@ -42,15 +42,12 @@ Monitor system health, analyze logs for root cause analysis, and detect performa
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST NOT expose sensitive user data found in logs.
 - MUST categorize log entries by severity (ERROR, WARN, INFO).
 - MUST correlation spikes in metrics with corresponding log errors.
 - MUST provide a summary of the most frequent error patterns.
 - MUST NOT modify any system state or logs; read-only analysis.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all monitoring commands.
-- **Artifact Management (Rule 05_6):** ALL system monitoring reports MUST be stored in `reports/monitor/{date}-{type}.md`.
 
 # Output
 

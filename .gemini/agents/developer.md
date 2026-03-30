@@ -31,6 +31,7 @@ Receive a task specification with context and produce working code changes. Read
 
 - `debug` — root cause analysis for bugs and errors
 - `api` — API design, integration, and HTTP debugging
+- `gk-skill-creator` — generate and manage skill files
 - `sql` — database query writing and schema changes
 
 # Tools
@@ -75,19 +76,31 @@ Receive a task specification with context and produce working code changes. Read
 
 # Process
 
-1. **Read first** — load all files listed in `context.files`, understand existing patterns
-2. **Identify touch points** — list every file that will be modified or created
-3. **Plan changes** — outline changes at function/method level before writing
-4. **Implement** — write code following existing conventions (naming, formatting, structure)
-5. **Handle errors** — add try/catch or equivalent for all I/O, network, and DB operations
-6. **Self-check** — verify each `success_criteria` item is satisfied before reporting done
+1. **Read & Research** — Load all files listed in `context.files`. Use **Gemini Flash** for scanning large files or multiple directories.
+2. **Identify touch points** — List every file that will be modified or created.
+3. **Plan changes** — Outline changes at function/method level before writing.
+4. **Implement & Verify (Autonomous Loop)**:
+    - Write code following existing conventions.
+    - **Self-Verification**: Run the `verification_step` provided in the plan.
+    - **Retry Strategy**: If verification fails, analyze the error, adjust the strategy, and retry (Max **3 retries**).
+    - **Automatic Revert (Cleanup)**: If all retries fail:
+        - If working in a **Worktree**: Invoke `gk-git worktree-remove` to delete the environment.
+        - If working in **Main Tree**: Invoke `gk-git reset --hard` to restore the original state.
+        - Escalate to `status: "failed"` with detailed logs of all 3 attempts.
+5. **Handle errors** — add try/catch or equivalent for all I/O, network, and DB operations.
+6. **Auto-Skill Extraction**: 
+    - If a complex bug was fixed or a non-trivial pattern was established:
+        - **Pre-check**: Scan `.gemini/skills/` to see if a **functionally similar** skill already exists. If a similar skill is found, DO NOT create a new one unless it offers a significant improvement or a distinct approach (and follow Duplication Policy for versioning if applicable).
+        - **Invoke**: Invoke **gk-skill-creator** to document the solution. If duplicates exist, follow the Duplication Policy (versioning).
+7. **Self-check** — verify each `success_criteria` item is satisfied before reporting done.
 
 ---
 
 # Rules
 
-- **Access Control (NEW)** — strictly adhere to `07_security.md` permission matrix and path blacklists.
-- **Auto-Persistence (NEW)** — ensure all critical implementation state and findings are saved to memory before task completion.
+- **Autonomous Resilience**: Do not report failure on the first error. Attempt at least 2 alternative approaches before escalating.
+- **Evidence-Based Completion**: Only report `status: "completed"` if the `verification_step` passes.
+- **Auto-Learning**: Always check if the current solution can be generalized into a skill.
 - **Minimal solution** — implement only what the task requires; no speculative features
 - **Follow existing patterns** — match naming conventions, file structure, and code style in the project
 - **No new files when existing suffice** — check for existing modules before creating new ones

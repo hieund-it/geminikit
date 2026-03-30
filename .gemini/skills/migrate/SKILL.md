@@ -42,15 +42,12 @@ Safely manage the evolution of the database schema while ensuring data integrity
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST perform a dry-run/preview before applying migrations in production.
 - MUST include a rollback (down) script for every migration (up) script.
 - MUST flag operations that might cause data loss (e.g., dropping columns).
 - MUST ensure migrations are idempotent.
 - MUST follow the project's naming convention for migration files (e.g., timestamp-prefixed).
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all migration commands.
-- **Artifact Management (Rule 05_6):** ALL migration execution logs or reports MUST be stored in `reports/migrate/{date}-migration.md`.
 
 # Output
 

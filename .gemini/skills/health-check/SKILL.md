@@ -24,10 +24,7 @@ Run automated checks against all registered agents and skills to ensure adherenc
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for shell commands.
-- **Artifact Management (Rule 05_6):** ALL generated health-check reports MUST be stored in `reports/health-check/{date}-health-report.json`.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST NOT skip any registered skill or agent during the scan.
 - MUST report the exact rule or section missing for each failure.
 - MUST verify that all skill directories on disk are registered in `registry.json`.

@@ -45,11 +45,7 @@ When dispatched by the orchestrator, follow these steps **in order**:
 5. **Confirm completion** with a brief message: `Task {id} complete. Status updated to gemini_done.`
 
 ## Rules
-
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
-- **Artifact Management (Rule 05_6):** ALL generated task reports MUST be stored in `reports/bridge-task-runner/{date}-task.md`.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST read the task JSON before starting any implementation
 - MUST update the task file (`status`, `gemini_summary`, `updated_at`) before finishing — this is how the orchestrator detects completion
 - MUST NOT skip the status update step even if execution partially fails; set `status: "gemini_done"` and describe the failure in `gemini_summary`

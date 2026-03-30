@@ -33,14 +33,10 @@ Systematically process and execute tasks from a Markdown implementation plan whi
 ```
 
 # Rules
-- **Security Audit** — MUST validate all inputs and redact any potential secrets (API keys, passwords) from the output.
-- **Context Economy** — MUST minimize token usage. Prefer targeted file reads and incremental processing.
-- **PowerShell Mandatory (Rule 02_4)** — MUST use PowerShell-compatible syntax for all shell commands and scripts.
-- **Artifact Management (Rule 05_6)** — ALL generated reports MUST be stored in `reports/gk-execute/{date}-execution.md`.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - **Verify Before Update** — MUST run relevant tests or build commands before marking a task as completed `[x]`.
 - **Deterministic Status** — MUST use `scripts/parse_plan.js` to identify tasks and `scripts/update_status.js` for updates to ensure consistency.
 - **No Scope Expansion** — MUST only perform the specific task identified in the plan.
-- MUST NOT assume missing data — return `blocked` if `plan_path` is absent.
 - MUST flag uncertainty: include `"confidence": "low"` when evidence or execution results are ambiguous.
 
 # Output

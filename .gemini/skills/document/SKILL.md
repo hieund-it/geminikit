@@ -32,11 +32,7 @@ Read provided code/diff and generate accurate technical documentation reflecting
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
-- **Artifact Management (Rule 05_6):** ALL generated documentation reports MUST be stored in `reports/document/{date}-documentation.md`.
-- MUST NOT assume missing data — return `blocked` if required fields absent.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - Truth: Code is the source of truth; document actual behavior, not just comments.
 - Update: For `scope=update`, modify only affected sections; preserve others.
 - API Ref: Document every public function/endpoint; match detected language style.

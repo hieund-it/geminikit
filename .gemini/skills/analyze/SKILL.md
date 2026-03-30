@@ -41,11 +41,7 @@ Analyze provided code/system and report findings on complexity, dependencies, pa
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
-- **Artifact Management (Rule 05_6):** ALL generated analysis reports MUST be stored in `reports/analyze/{date}-analysis.md`.
-- MUST NOT assume missing data — return `blocked` if required fields absent.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - Quantify complexity: cyclomatic score, LOC, coupling, dependency depth.
 - Assess maintainability (DRY, SOLID) and scalability (O(n) operations, blocking I/O).
 - Map dependencies explicitly (imports, call graph, data flow).

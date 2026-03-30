@@ -36,9 +36,7 @@ In `spec` mode: produce visual specifications. In `review` mode: evaluate UI qua
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- MUST NOT assume missing data — return `blocked` if required fields absent.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - Spec Mode: Define layout, tokens, all interactive states, and accessibility notes.
 - Review Mode: Check contrast (≥4.5:1), focus states, magic values, and consistency.
 - Responsive: Define behavior between breakpoints (stretching, wrapping).
@@ -47,8 +45,6 @@ In `spec` mode: produce visual specifications. In `review` mode: evaluate UI qua
 - Inclusive: Ensure touch targets ≥ 44x44px and logical focus management.
 - Standard: Apply 8px spacing grid by default if no system is provided.
 - Quality: MUST NOT mark `approved: true` if critical/high issues exist.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for any shell commands.
-- **Artifact Management (Rule 05_6):** ALL generated UI/UX specs or review reports MUST be stored in `reports/ui/{date}-{type}.md`.
 
 ## Steps
 1. Identify primary UI components and layout requirements

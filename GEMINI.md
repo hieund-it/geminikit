@@ -30,9 +30,12 @@ When adding new commands or skills, ensure this registry is updated.
 
 ## Orchestration Protocol
 
-### Step 1 — Parse
+### Step 1 — Parse & Route
 1. Detect command type and extract: action, mode flags, task description.
-2. If ambiguous: ask ONE clarifying question before proceeding.
+2. **Model Selection**: 
+    - **Gemini Flash**: For context-heavy reads, `grep_search`, `read_file`, documentation, and simple syntax fixes.
+    - **Gemini Pro**: For complex logic, architectural design, critical reviews, and final implementation.
+3. If ambiguous: ask ONE clarifying question before proceeding.
 
 ### Step 2 — Load Agent
 Read the agent definition from `.gemini/agents/<agent>.md`. Follow its role, rules, and I/O contract exactly.
@@ -41,7 +44,9 @@ Read the agent definition from `.gemini/agents/<agent>.md`. Follow its role, rul
 For each subtask, load the matching skill from `.gemini/skills/<skill>/SKILL.md`. Pass input matching the skill's input schema.
 If a mode flag is present (e.g., `--deep`): additionally load `.gemini/skills/<skill>/modes/<mode>.md` and merge additively.
 
-### Step 4 — Execute
+### Step 4 — Execute & Verify
+- **Micro-tasking**: Break tasks into atomic units solvable in < 5 minutes with explicit verification steps.
+- **Autonomous Loop**: If a subtask fails validation, the agent MUST attempt a different strategy (max 3 retries) before escalating.
 - Sequential when tasks depend on each other.
 - Parallel when tasks are independent.
 - Max 5 subtasks per request; batch if more needed.
@@ -58,14 +63,27 @@ Combine skill outputs into a structured response:
 3. Next steps
 
 ### Step 6 — Memory & Auto-Persistence
-- **Execution Update:** After each task, update `.gemini/memory/execution.md` with task state.
-- **Auto-Sync:** Before responding to the user, synchronize the session state to `.gemini/memory/`.
-- **Auto-Summarize:** If the context exceeds 2000 tokens or a Directive is completed, invoke the `summarize` skill to update `long-term.md`.
-- **Implicit Export:** Treat the end of the session interaction as an automatic session export to ensure persistence.
+- **Execution Update**: After each task, update `.gemini/memory/execution.md` with task state.
+- **Auto-Skill Extraction**: If a complex bug was fixed or a new pattern established, invoke **gk-skill-creator** to extract a reusable skill file.
+- **Auto-Sync**: Before responding to the user, synchronize the session state to `.gemini/memory/`.
+- **Auto-Summarize**: If the context exceeds 2000 tokens or a Directive is completed, invoke the `summarize` skill to update `long-term.md`.
 
 ### Step 7 — Git (after developer phase)
 After developer reports `status: completed`: invoke `git` skill with `operation: commit`.
 Use artifacts from developer handoff to determine files to stage.
+
+---
+
+## Performance & Strategy
+
+1. **Model Efficiency**: Always prefer **Gemini Flash** for high-volume discovery (search/read) to conserve context and reduce latency.
+2. **Task Isolation (Git Worktree)**: For non-trivial implementation tasks, the system MUST use `gk-git worktree-add` to create an isolated workspace. This allows parallel execution and prevents dirtying the main source tree.
+3. **Automatic Revert (Cleanup)**: If a task fails all retry attempts (3 max), the system MUST automatically revert all changes:
+    - If in a **Worktree**: Remove the worktree directory and branch.
+    - If in **Main Tree**: Perform `git reset --hard` or `git checkout .` to restore a clean state.
+4. **Validation-Driven**: No task is complete without an automated verification (test case or shell check).
+5. **Evidence over Claims**: Do not report success unless the verification step has passed with zero errors.
+6. **Resilience**: Treat rate limits as a signal to pause and summarize state, rather than a failure.
 
 ---
 

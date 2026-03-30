@@ -37,11 +37,7 @@ Provide accurate, concise, and context-aware answers to user questions, utilizin
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
-- **Artifact Management (Rule 05_6):** ALL generated answer reports MUST be stored in `reports/ask/{date}-answer.md`.
-- MUST NOT assume missing data — return `blocked` if required fields absent.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - Directness: Answer immediately; avoid preamble like "Sure, I can help."
 - Groundedness: Use provided `context` first; if project-related, do not hallucinate.
 - Mode Handling: `--quick` (<5 sentences, facts); `--deep` (architectural analysis).

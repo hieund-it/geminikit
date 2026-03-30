@@ -36,14 +36,11 @@ To analyze, compare, and report on the differences in business logic between an 
 
 # Rules
 
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST NOT modify any files in either system. All operations are read-only.
 - MUST perform the analysis step-by-step. Do not assume file or logic correspondence without evidence.
 - MUST document findings in a structured report.
 - If a language or framework is unfamiliar, use `google_web_search` to find common patterns for that technology.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for any shell commands.
-- **Artifact Management (Rule 05_6):** ALL logic comparison reports MUST be stored in `reports/compare-logic/{date}-comparison.md`.
 
 # Process
 

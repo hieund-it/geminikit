@@ -25,19 +25,20 @@ Execute specified git operation and return structured results. Report changes on
 # Input
 ```json
 {
-  "operation": "string (required) — commit|branch|status|pr-prep|diff|conflict-check",
+  "operation": "string (required) — commit|branch|status|pr-prep|diff|conflict-check|worktree-add|worktree-remove",
   "files": ["string"] (optional) — files to stage; empty = all modified,
   "message": "string (optional, req for commit) — conventional commit message",
   "branch": "string (optional, req for branch) — kebab-case branch name",
   "base": "string (optional, default: main) — base branch for diff/pr-prep",
+  "path": "string (optional, req for worktree) — directory path for worktree",
   "mode": "string (optional) — dry-run|execute"
 }
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- MUST NOT assume missing data — return `blocked` if required fields absent.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+- **Worktree Isolation**: When creating a worktree, ensure the path is outside the main `.git` directory but within the project root (e.g., `temp/worktree-<branch>`).
+- **Worktree Cleanup**: Always `git worktree remove --force` when a task is finished or failed to prevent stale lock files.
 - Commit Atomicity: Ensure each commit represents a single logical change.
 - Diff Vigilance: Scan for debug logs (console.log), unused imports, or accidental secrets.
 - Workflow: Favor rebase for linear history; warn before rebasing shared branches.
@@ -45,10 +46,6 @@ Execute specified git operation and return structured results. Report changes on
 - Security: NEVER commit `.env`, `*.key`, `*.pem`, `*secret*`, `*credential*`.
 - Safety: NO force-push to `main` or `master`.
 - PR Prep: Produce title (≤70 chars) + body (summary + test plan) from diff.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all git commands.
-- **Windows Pathing (Rule 02_4):** MUST use backslashes `\` for paths or properly quote paths containing spaces.
-- OS: Standardize on Windows environment; use backslashes in local paths.
-- **Artifact Management (Rule 05_6):** ALL git operation logs or PR preparation reports MUST be stored in `reports/git/{date}-{operation}.md`.
 
 # Output
 ```json

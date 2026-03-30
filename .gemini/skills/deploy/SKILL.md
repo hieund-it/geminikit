@@ -43,14 +43,11 @@ Automate the build, packaging, and deployment process to ensure consistent and r
 
 # Rules
 
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST perform a dry-run or verification before actual deployment.
 - MUST check for build success before attempting deployment.
 - MUST NOT expose secrets in logs or output.
 - MUST provide a rollback strategy in the deployment plan.
-- PowerShell Mandatory: MUST use PowerShell-compatible syntax for deployment scripts.
-- **Artifact Management (Rule 05_6):** ALL deployment logs and reports MUST be stored in `reports/deploy/{date}-{target}.md`.
 
 # Output
 

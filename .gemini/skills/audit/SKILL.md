@@ -43,14 +43,11 @@ Identify security vulnerabilities, hardcoded secrets, and license risks within t
 
 # Rules
 
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST NOT ignore "dev" dependencies unless explicitly requested.
 - MUST flag hardcoded secrets (API keys, passwords) as CRITICAL severity.
 - MUST verify if found vulnerabilities have known patches/fixes.
 - MUST report license types that are incompatible with project policy (e.g., GPL in a proprietary project).
-- PowerShell Mandatory: MUST use PowerShell-compatible syntax for audit tools.
-- **Artifact Management (Rule 05_6):** ALL generated audit reports MUST be stored in `reports/audit/{date}-audit.md`.
 
 # Output
 

@@ -1,12 +1,17 @@
 # 03_RESOURCE: Context & Token Optimization
 
-## 1. Surgical Reads
-- DO NOT read entire large files (>100 lines).
-- Protocol: Use `grep_search` to locate targets → `read_file` with `start_line/end_line` for targeted access.
+## 1. Surgical Reads & Flash Research
+- **Flash First**: Use **Gemini Flash** (via `grep_search` or `glob`) to map the codebase before any implementation.
+- **Selective Reading**: NEVER read an entire file if you only need a specific function. Use `grep_search` with `context: 5` to identify relevant lines, then `read_file` with `start_line/end_line`.
+- **Context Caching Strategy**: Keep system instructions and core rules (`GEMINI.md`) at the top of the prompt. Avoid frequent changes to these files within a session to leverage model-side caching.
+- **Incremental Loading**: Start with the minimum required files. Only expand context if the initial data is insufficient.
 - **Large-scale Analysis:** In projects >100 files, MUST use `codebase_investigator` for dependency mapping to save tokens and prevent fragmented context.
 - Limit: <5 parallel file reads per turn.
 
-## 2. Token Budget
+## 2. Token Budget & Model Tiering
+- **Cost Policy**: 
+    - **Flash**: Research, Discovery, Search, Documentation, Linting.
+    - **Pro**: Logic Design, implementation, Security Review, Final Verification.
 - Agent context: ≤2000 tokens. Skill context: ≤500 tokens.
 - Response length: ≤300 lines. If exceeded, you MUST invoke `summarize` before proceeding.
 - **No Over-activation:** DO NOT call `activate_skill` if the task can be handled by core instructions or basic tools (`read_file`, `shell`).

@@ -54,10 +54,7 @@ Generate a new agent or skill file based on provided templates, ensuring strict 
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
-- **Artifact Management (Rule 05_6):** ALL generated skill reports MUST be stored in `reports/skill-creator/{date}-skill.md`.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - **PRE-FLIGHT (CRITICAL):** MUST read `.gemini/template/how-to-create-skill.md` before generating a new skill.
 - **TEMPLATE MANDATE:** MUST use `.gemini/template/skill-template.md` as the absolute base for skills.
 - **TEMPLATE MANDATE:** MUST use `.gemini/template/agent-template.md` as the absolute base for agents.
@@ -68,7 +65,10 @@ Generate a new agent or skill file based on provided templates, ensuring strict 
 - **MANDATORY (Rule 05_6):** All generated skills that produce reports MUST include a rule for storing reports in `reports/{skill-name}/{date}-{type}.md`.
 - **MANDATORY (Rule 02_5.1):** All generated skills that produce plans MUST include a rule for storing plans in `plans/{date}-{slug}/plan.md`.
 - MUST ensure file name is kebab-case and name matches frontmatter.
-- MUST NOT overwrite existing files — return `FILE_EXISTS` if path occupied.
+- **DUPLICATION POLICY**: If the skill name already exists at `.gemini/skills/<name>/SKILL.md`:
+    - MUST read the existing skill first to see if it can be merged.
+    - If it's a new version of the same pattern, increment name to `<name>-v2`, `<name>-v3`, etc.
+    - MUST update `GEMINI.md` to reflect the new version.
 - MUST save skills to `.gemini/skills/<name>/SKILL.md`.
 - MUST include YAML frontmatter for skills with `gk-` prefix.
 - MUST register the new component in `GEMINI.md` (Skills) or `.gemini/AGENT.md` (Agents).

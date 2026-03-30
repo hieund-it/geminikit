@@ -44,9 +44,7 @@ Identify root cause of an error from provided data and recommend a precise, acti
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- MUST NOT assume missing data — return `blocked` if required fields absent.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - Hypothesis-Driven: Formulate at least two competing hypotheses before selecting the most likely one.
 - Isolate Symptom: Distinguish between the visible error (symptom) and the state failure (root cause).
 - Evaluate Impact: Check if the fix introduces risks (performance, side effects).
@@ -54,8 +52,6 @@ Identify root cause of an error from provided data and recommend a precise, acti
 - Classify error: null reference, type, race condition, config, network, auth, data, logic, resource.
 - Check stack trace bottom-up; check async errors, mutable shared state, implicit coercions.
 - Set confidence to "low" and list missing data in `needs` if data is insufficient.
-- **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all debug commands.
-- **Artifact Management (Rule 05_6):** ALL debug session reports or root-cause analyses MUST be stored in `reports/debug/{date}-debug.md`.
 
 # Output
 ```json

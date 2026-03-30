@@ -42,14 +42,11 @@ Manage MCP server configurations, verify connectivity, and scaffold new server i
 ```
 
 # Rules
-- **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
-- **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - Verify First: Always test the connection after adding a new server.
 - Safe Config: Ensure `.gemini/mcp-config.json` is backed up before manual edits.
-- PowerShell Mandatory: MUST use PowerShell-compatible syntax for all script calls.
 - Windows Pathing: MUST use backslashes `\` for paths or properly quote paths containing spaces.
 - Environment Awareness: Identify and load required environment variables for MCP servers.
-- **Artifact Management (Rule 05_6):** ALL MCP server connection test logs or configuration changes MUST be stored in `reports/mcp-manager/{date}-{operation}.md`.
 
 # Output
 ```json
