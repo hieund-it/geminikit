@@ -1,6 +1,6 @@
-# Gemini Kit — Global System Rules
+# Global System Rules
 
-These rules apply to ALL agents, skills, and tool executions in Gemini Kit. They cannot be overridden by individual agents or skills.
+These rules apply to ALL agents, skills, and tool executions in this project. They cannot be overridden by individual agents or skills.
 
 ---
 

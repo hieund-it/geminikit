@@ -1,6 +1,6 @@
 {
   "name": "geminicli-kit",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Multi-agent AI development framework for Gemini CLI",
   "bin": {
     "gk": "./bin/gk.js"
