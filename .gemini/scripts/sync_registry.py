@@ -72,7 +72,7 @@ def main():
         if skill['flags'] != "none":
             full_cmd = f"`{skill['command']} [{safe_flags}] <args>`"
             
-        cmd_table_registry += f"| {full_cmd} | {skill['agent']} | gk-{skill['name']} | {skill['description']} |\n"
+        cmd_table_registry += f"| {full_cmd} | {skill['agent']} | {skill['name']} | {skill['description']} |\n"
 
     # 3. Build Skill Routing List (for AGENT.md)
     skill_routing = ""

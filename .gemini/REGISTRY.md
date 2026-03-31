@@ -1,4 +1,4 @@
-# Gemini Kit Registry
+# Registry
 
 This file is automatically managed by `sync_registry.py`. ALWAYS reference this for command structures and skill paths.
 
@@ -9,34 +9,34 @@ This file is automatically managed by `sync_registry.py`. ALWAYS reference this 
 <!-- GK_COMMAND_TABLE_START -->
 | Command | Agent | Skills | Description |
 |---------|-------|--------|-------------|
-| `/gk-analyze [--deep \| --security \| --perf] <args>` | reviewer | gk-analyze | Analyze code or system structure and report findings on complexity, dependencies, and risks. |
-| `/gk-ask [--deep \| --quick] <args>` | (self) | gk-ask | Expert assistant for answering technical and general questions with grounded context. |
-| `/gk-audit [--deps \| --static \| --license] <args>` | security | gk-audit | Audit dependencies and static code for security vulnerabilities and license compliance |
-| `/gk-brainstorm` | researcher | gk-brainstorm | Software solution brainstorming, architectural evaluation, and technical decision debating. |
-| `Bridge orchestrator (`orchestrator.py`) — not directly by users` | developer | gk-bridge-task-runner | Execute a bridge pipeline task and signal completion by updating the task JSON status. |
-| `/gk-fix-bug (or "agent-only") [--verify \| --deep] <args>` | developer | gk-bug-fixer | Identify root cause from error logs and generate a verified code fix with regression tests. |
-| `/gk-compare-logic [--deep \| --quick] <args>` | comparator | gk-compare-logic | Compares business logic between a legacy system and a new, migrated system by analyzing their source code. |
-| `/gk-debug [--trace \| --deep] <args>` | support | gk-debug | Identify root cause of a software error and recommend a precise fix. |
-| `/gk-deploy [--staging \| --production \| --dry-run] <args>` | devops | gk-deploy | Execute build and deployment pipelines to various environments |
-| `agent-only (documenter)` | documenter | gk-document | Generate accurate technical documentation from provided code content and context. |
-| `/gk-execute [--dry-run \| --verbose] <args>` | developer | gk-gk-execute | Execute Markdown-based implementation plans by parsing, executing tasks, and updating status. |
-| `/gk-export-session` | developer | gk-export-session | Exports the current session state and conversation summary for continuation. |
-| `agent-only (developer) [--dry-run] <args>` | developer | gk-git | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
-| `/gk-health-check` | maintenance | gk-health-check | Validate framework compliance across all agents and skills. |
-| `/gk-infra [--docker \| --k8s \| --terraform] <args>` | devops | gk-infra | Manage infrastructure as code (Docker, K8s, Terraform configurations) |
-| `/gk-intake [--refine \| --spec] <args>` | researcher | gk-intake | Capture, structure, and refine initial user requirements or project ideas. |
-| `/gk-mcp-manager` | mcp-manager | gk-mcp-manager | Manage MCP server configuration, test connections, and scaffold new servers. Use this skill to add/edit/remove MCP servers or to troubleshoot connectivity. |
-| `/gk-migrate [--generate \| --apply \| --rollback] <args>` | maintenance | gk-migrate | Manage database schema changes and data migrations |
-| `/gk-monitor [--logs \| --metrics \| --alerts] <args>` | support | gk-monitor | Analyze system logs and monitor performance metrics to detect anomalies |
-| `/gk-onboard [--deep] <args>` | researcher | gk-onboard | Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential. |
-| `/gk-plan [--fast \| --deep \| --parallel \| --from <path> \| --dry-run \| --phase <id>] <args>` | planner | gk-plan | Break down a complex task into structured, executable subtasks with dependencies and effort estimates. |
-| `/gk-refactor [--pattern \| --modernize \| --cleanup] <args>` | maintenance | gk-refactor | Improve code structure and maintainability without changing external behavior |
-| `agent-only (planner, orchestrator)` | planner | gk-research | Gather, compare, and synthesize technical options into a structured recommendation report. |
-| `/gk-review [--strict \| --quick \| --api \| --security \| --perf] <args>` | reviewer | gk-review | Comprehensive review of code quality, API design, security, and performance with actionable findings. |
-| `/gk-create [- `--skill`: Generate a new skill component at `.gemini/skills/<name>/SKILL.md`] <args>` | developer | gk-skill-creator | Generate agent and skill files following Gemini Kit templates and rules. |
-| `agent-only (developer)` | developer | gk-sql | Optimize a SQL query for performance while preserving its logical result. |
-| `agent-only (orchestrator)` | (self) | gk-summarize | Compress conversation history or agent output into a structured, token-efficient summary. |
-| `/gk-design [--spec \| --review] <args>` | designer | gk-ui | Generate precise visual component specs or review implemented UI for design quality and accessibility compliance. |
+| `/gk-analyze [--deep \| --security \| --perf] <args>` | reviewer | analyze | Analyze code or system structure and report findings on complexity, dependencies, and risks. |
+| `/gk-ask [--deep \| --quick] <args>` | (self) | ask | Expert assistant for answering technical and general questions with grounded context. |
+| `/gk-audit [--deps \| --static \| --license] <args>` | security | audit | Audit dependencies and static code for security vulnerabilities and license compliance |
+| `/gk-brainstorm` | researcher | brainstorm | Software solution brainstorming, architectural evaluation, and technical decision debating. |
+| `Bridge orchestrator (`orchestrator.py`) — not directly by users` | developer | bridge-task-runner | Execute a bridge pipeline task and signal completion by updating the task JSON status. |
+| `/gk-fix-bug (or "agent-only") [--verify \| --deep] <args>` | developer | bug-fixer | Identify root cause from error logs and generate a verified code fix with regression tests. |
+| `/gk-compare-logic [--deep \| --quick] <args>` | comparator | compare-logic | Compares business logic between a legacy system and a new, migrated system by analyzing their source code. |
+| `/gk-debug [--trace \| --deep] <args>` | support | debug | Identify root cause of a software error and recommend a precise fix. |
+| `/gk-deploy [--staging \| --production \| --dry-run] <args>` | devops | deploy | Execute build and deployment pipelines to various environments |
+| `agent-only (documenter)` | documenter | document | Generate accurate technical documentation from provided code content and context. |
+| `/gk-execute [--dry-run \| --verbose] <args>` | developer | gk-execute | Execute Markdown-based implementation plans by parsing, executing tasks, and updating status. |
+| `/gk-export-session` | developer | export-session | Exports the current session state and conversation summary for continuation. |
+| `agent-only (developer) [--dry-run] <args>` | developer | git | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
+| `/gk-health-check` | maintenance | health-check | Validate framework compliance across all agents and skills. |
+| `/gk-infra [--docker \| --k8s \| --terraform] <args>` | devops | infra | Manage infrastructure as code (Docker, K8s, Terraform configurations) |
+| `/gk-intake [--refine \| --spec] <args>` | researcher | intake | Capture, structure, and refine initial user requirements or project ideas. |
+| `/gk-mcp-manager` | mcp-manager | mcp-manager | Manage MCP server configuration, test connections, and scaffold new servers. Use this skill to add/edit/remove MCP servers or to troubleshoot connectivity. |
+| `/gk-migrate [--generate \| --apply \| --rollback] <args>` | maintenance | migrate | Manage database schema changes and data migrations |
+| `/gk-monitor [--logs \| --metrics \| --alerts] <args>` | support | monitor | Analyze system logs and monitor performance metrics to detect anomalies |
+| `/gk-onboard [--deep] <args>` | researcher | onboard | Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential. |
+| `/gk-plan [--fast \| --deep \| --parallel \| --from <path> \| --dry-run \| --phase <id>] <args>` | planner | plan | Break down a complex task into structured, executable subtasks with dependencies and effort estimates. |
+| `/gk-refactor [--pattern \| --modernize \| --cleanup] <args>` | maintenance | refactor | Improve code structure and maintainability without changing external behavior |
+| `agent-only (planner, orchestrator)` | planner | research | Gather, compare, and synthesize technical options into a structured recommendation report. |
+| `/gk-review [--strict \| --quick \| --api \| --security \| --perf] <args>` | reviewer | review | Comprehensive review of code quality, API design, security, and performance with actionable findings. |
+| `/gk-create [- `--skill`: Generate a new skill component at `.gemini/skills/<name>/SKILL.md`] <args>` | developer | skill-creator | Generate agent and skill files following Gemini Kit templates and rules. |
+| `agent-only (developer)` | developer | sql | Optimize a SQL query for performance while preserving its logical result. |
+| `agent-only (orchestrator)` | (self) | summarize | Compress conversation history or agent output into a structured, token-efficient summary. |
+| `/gk-design [--spec \| --review] <args>` | designer | ui | Generate precise visual component specs or review implemented UI for design quality and accessibility compliance. |
 
 <!-- GK_COMMAND_TABLE_END -->
 
