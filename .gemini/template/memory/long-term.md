@@ -43,19 +43,6 @@ Pruned when entry count exceeds 200 (oldest entries removed first).
 
 <!-- Agents append new entries below this line. Keep entries in reverse chronological order. -->
 
----
-id: "00000000-0000-0000-0000-000000000001"
-timestamp: "2026-03-19T13:11:00Z"
-project: "geminikit"
-category: milestone
-title: "Phase 06 hooks/memory/tools infrastructure created"
-body: |
-  Created 14 files under .gemini/: hooks (session-init, pre-tool, post-tool),
-  memory (short-term, long-term, execution), tools (db, api, script),
-  prompts (task-decomposition, skill-router), templates (skill, agent, command).
-tags: [phase-06, infrastructure, geminikit]
----
-
 ## Notes
 - Never store API keys, tokens, passwords, or secrets in this file.
 - Entries are tagged with `project` for cross-project installations.

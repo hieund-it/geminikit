@@ -34,7 +34,7 @@ To generate a structured markdown block containing the current task state from `
 A markdown block that looks like this:
 
 ````markdown
-**GEMINI KIT SESSION EXPORT**
+**SESSION EXPORT**
 
 Copy the entire content of this block and paste it as the first prompt in a new session to resume your work.
 
