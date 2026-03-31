@@ -6,6 +6,7 @@ version: "1.0.0"
 
 # Extra Rules
 
+- **EXCLUDE from scan**: `.gemini/`, `GEMINI.md`, `.geminiignore` — AI framework files, not project code.
 - Perform an exhaustive repository-wide scan for all architectural patterns.
 - Map multi-layer dependencies (transitive) and identify outdated packages.
 - Deeply analyze entry points, controllers, services, and data layers.

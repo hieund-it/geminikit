@@ -52,5 +52,6 @@ temp/
 tmp/
 .temp/
 
-# --- Project Specific Noise ---
-# Ignore old reports and plans to avoid noise in logic search
+# --- AI Framework Files ---
+# Exclude framework memory from directory scans to prevent session bleed across projects
+.gemini/memory/

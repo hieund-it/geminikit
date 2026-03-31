@@ -34,10 +34,11 @@ Summarize project architecture, tech stack, dependencies, and development workfl
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - Discovery: Use `ls` or `glob` to identify directory structure.
+- **EXCLUDE from scan**: `.gemini/`, `GEMINI.md`, `.geminiignore` — these are AI framework config files, NOT part of the project being onboarded.
 - Surgical Read: Use `grep_search` for tech stack signatures (React, Express, etc.).
 - Dependency Analysis: Extract critical versions from `package.json`, `requirements.txt`, etc.
 - Security: DO NOT read `.env`, `secrets.json`, etc. Report only their presence. Redact any discovered secrets immediately.
-- Architecture: Identify entry points and core modules.
+- Architecture: Identify entry points and core modules. Focus on application source code, not framework tooling.
 - Token Efficiency: Limit `read_file` to 20-50 lines; prefer `grep_search`.
 
 ## Steps
