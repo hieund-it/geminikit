@@ -9,6 +9,10 @@
 
 ## 2. Execution Contract
 - MUST follow the workflow: **Research → Strategy → Execution → Validation**.
+- **2.1 Intake & Interview Protocol (CRITICAL):**
+  - **Context Gathering**: For tasks involving `refactor`, `migrate`, or architectural changes, the Agent MUST interview the user using `gk-intake` or specific questions.
+  - **Implicit History**: Ask about the history of the code being changed: "Why was it written this way?", "What are the hidden side effects?".
+  - **Goal Verification**: Confirm the final expected state before generating any plan.
 - **Strategy Phase:**
   1. Determine if the task requires external integrations (DB, API, Repo).
   2. If yes, execute MCP Bridge discovery (`python .gemini/scripts/mcp_bridge.py`).
@@ -57,4 +61,10 @@
 - After 3 retries with no success: return `status: "failed"`, `error.code: "RATE_LIMITED"`, and surface to user.
 - On HTTP 5xx from external APIs: treat as transient, apply same backoff. Log each retry to `execution.md`.
 - **Graceful Degradation:** If a skill/agent is unavailable (timeout or load error), fall back to reporting the task as `blocked` — do not silently skip or hallucinate output.
+
+## 8. High-Impact Skill Validation
+- **gk-refactor / gk-migrate**: MUST provide a "Before/After" comparison report and wait for user approval before applying changes to the main branch.
+- **gk-plan**: Every plan must have a "Risks & Mitigations" section.
+- **gk-research**: Reports must end with a "Recommendation for Decision" and wait for the user to pick an option.
+- **gk-skill-creator**: Skills are generated in a `.gemini/skills/drafts/` folder and require a manual move to the active registry by the user or an explicit "Confirm & Move" command.
 

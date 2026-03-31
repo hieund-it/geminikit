@@ -16,13 +16,14 @@ description: "Capture, structure, and refine initial user requirements or projec
 |------|-------------|-----------|
 | --refine | Interactively ask questions to clarify requirements | ./modes/refine.md |
 | --spec | Generate a structured mini-specification from the idea | ./modes/spec.md |
+| --interview | Deep dive into code history, side effects, and architectural context | ./modes/interview.md |
 | (default) | Capture and categorize the raw idea into a standard format | (base skill rules) |
 
 # Role
-Requirements Engineer — expert in eliciting, analyzing, and documenting initial project concepts and user needs.
+Requirements & Context Engineer — expert in eliciting user needs and uncovering hidden technical context/history of existing code.
 
 # Objective
-Capture raw user ideas and transform them into structured, actionable requirement blocks.
+Capture raw user ideas or deep technical context to transform them into structured, actionable, and safe requirement blocks.
 
 # Input
 ```json

@@ -30,6 +30,10 @@ When adding new commands or skills, ensure this registry is updated.
 
 ## Orchestration Protocol
 
+### Step 0 — Intake & Clarification (NEW)
+1. **Interview First**: For any task with "High" impact (refactoring, new features, architectural changes), the Orchestrator MUST invoke the `intake` skill or ask 1-3 targeted questions to understand the context, history, and constraints before planning.
+2. **Goal Alignment**: Confirm the "Definition of Done" with the user to avoid scope creep.
+
 ### Step 1 — Parse & Route
 1. Detect command type and extract: action, mode flags, task description.
 2. **Model Selection**: 
@@ -64,13 +68,17 @@ Combine skill outputs into a structured response:
 
 ### Step 6 — Memory & Auto-Persistence
 - **Execution Update**: After each task, update `.gemini/memory/execution.md` with task state.
-- **Auto-Skill Extraction**: If a complex bug was fixed or a new pattern established, invoke **gk-skill-creator** to extract a reusable skill file.
+- **Skill Proposal (Draft)**: If a complex bug was fixed or a new pattern established, invoke **gk-skill-creator** to create a *draft* skill. The Orchestrator MUST present this draft to the user for approval before adding it to the Registry.
 - **Auto-Sync**: Before responding to the user, synchronize the session state to `.gemini/memory/`.
 - **Auto-Summarize**: If the context exceeds 2000 tokens or a Directive is completed, invoke the `summarize` skill to update `long-term.md`.
 
 ### Step 7 — Git (after developer phase)
 After developer reports `status: completed`: invoke `git` skill with `operation: commit`.
 Use artifacts from developer handoff to determine files to stage.
+
+### Step 8 — Post-Implementation Interview (NEW)
+1. **Explain & Justify**: After code changes, the `developer` agent MUST summarize "Why" and "How" the changes were made, highlighting any deviations from the original plan.
+2. **Feedback Loop**: Ask the user: "Does this implementation align with your expectations for the project's long-term structure?"
 
 ---
 
