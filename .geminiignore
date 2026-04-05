@@ -54,4 +54,3 @@ tmp/
 
 # --- AI Framework Files ---
 # Exclude framework memory from directory scans to prevent session bleed across projects
-.gemini/memory/

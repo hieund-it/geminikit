@@ -1,7 +1,6 @@
 # Gemini Kit Environment
 .gemini/.env
 .gemini/temp_mcp_manifest.json
-.gemini/memory/
 .gemini/runtime/
 
 # Claude / OpenCode (local dev tools, not shipped)
@@ -11,6 +10,7 @@
 # npm
 node_modules/
 package-lock.json
+.gemini/hooks/errors.log
 
 # Secrets & env files
 *.env

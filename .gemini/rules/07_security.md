@@ -17,17 +17,21 @@ To minimize risk, agents are restricted to specific operations based on their ro
 ## 2. Forbidden Paths (Blacklist)
 Agents are strictly PROHIBITED from reading or writing to the following patterns. Any attempt MUST be blocked by the Orchestrator.
 
+<forbidden_paths>
 - `**/.env*` (Environment secrets)
 - `**/secrets.json` / `**/credentials.json`
 - `**/*.pem` / `**/*.key` (Private keys/Certificates)
 - `**/.git/` (Git internal metadata)
 - `**/node_modules/` (Except for version checks)
 - `**/dist/` / `**/build/` (Build artifacts)
+</forbidden_paths>
 
 ---
 
 ## 3. Tool Access Control
+<restricted_tools>
 - **Critical Tools:** `run_shell_command`, `write_file`, `replace` are restricted to `developer` and `tester` agents ONLY.
+</restricted_tools>
 - **Read-only Tools:** `read_file`, `grep_search`, `glob` are available to ALL agents.
 - **Elevation:** If an agent needs a restricted tool, it MUST escalate the request to the `developer` agent via the Orchestrator.
 

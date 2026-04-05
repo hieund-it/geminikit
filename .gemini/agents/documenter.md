@@ -1,6 +1,5 @@
 ---
 name: documenter
-tier: documenter
 description: Technical Writer — generates and updates project documentation from code and implementation context
 ---
 

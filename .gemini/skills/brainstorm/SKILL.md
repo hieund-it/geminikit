@@ -34,16 +34,25 @@ Explore software solutions, evaluate architectural choices, and facilitate a con
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
-- **Interview First**: If priorities are unclear (e.g., Performance vs. Maintenance), MUST ask the user 1-2 targeted questions before brainstorming.
+- **Phase 1: Interview Only (Mandatory)**: If `solutions` array is empty or this is the first turn, you MUST ONLY output 1-3 targeted questions in the `confirmation_questions` field. The `solutions` and `recommendation` fields MUST remain empty.
+- **Phase 2: Draft Proposal**: Only after the user answers Phase 1 questions can you provide a draft proposal.
+- **Phase 3: Final Confirmation**: Brainstorming is NOT complete until the user confirms a specific path.
 - **Trade-off Analysis**: For every approach, explicitly state the primary RISK and the REWARD.
 - **Devil's Advocate**: Steel-man less-favored options; MUST NOT prematurely dismiss an approach without user consent.
-- **Selection Gate**: MUST end the brainstorming report with a "Selection Required" section, presenting 2-3 distinct paths for user choice.
-- **Decision rationale**: Distinguish from over-engineering; only propose solutions that satisfy the problem's current scale.
+- **Selection Required**: Present 2-3 distinct paths for user choice in the `selection_options` field.
+- **Decision rationale**: Propose solutions that satisfy the problem's current scale, avoiding over-engineering.
+
+# Process
+1. **Intake & Interview** — Ask clarifying questions to align with user expectations and project constraints.
+2. **Research & Ideation** — Map the problem space and generate potential architectural paths.
+3. **Draft Proposal** — Present options with detailed trade-offs (Pros/Cons/Risks).
+4. **Iterative Refinement** — Update the proposal based on user feedback or additional constraints.
+5. **Final Confirmation** — Secure user approval for the chosen path before handing off to the next agent (e.g., Planner or Developer).
 
 # Output
 ```json
 {
-  "status": "completed | failed | blocked",
+  "status": "completed | failed | blocked | awaiting_confirmation",
   "format": "json",
   "result": {
     "solutions": [
@@ -58,9 +67,10 @@ Explore software solutions, evaluate architectural choices, and facilitate a con
     "matrix": "object — comparison of solutions vs criteria",
     "recommendation": "string — The agent's proposed best path based on user input",
     "selection_options": ["string — concise list of options for the user to pick"],
-    "next_interview": ["string — clarifying questions to help user make a decision"]
+    "confirmation_questions": ["string — specific questions to verify the proposed plan satisfies all user needs"],
+    "next_steps": "string — what happens after the user confirms"
   },
-  "summary": "Brainstorming complete; awaiting user selection of a path.",
+  "summary": "Brainstorming phase complete; awaiting user interview/confirmation of the chosen path.",
   "confidence": "high | medium | low"
 }
 ```

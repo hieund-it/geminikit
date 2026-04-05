@@ -1,6 +1,5 @@
 ---
 name: tester
-tier: tester
 description: Senior QA Engineer — validates implementations, writes tests, reports coverage
 ---
 

@@ -1,6 +1,5 @@
 ---
 name: developer
-tier: developer
 description: Senior Software Engineer — implements solutions, debugs issues, writes code
 ---
 

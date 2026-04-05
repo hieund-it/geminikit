@@ -1,6 +1,6 @@
 # Bridge Testing Guide
 
-Hướng dẫn chạy thử pipeline `gk bridge` từ Claude đến Gemini với 1 task đơn giản.
+Guide to testing the 'gk bridge' pipeline from Claude to Gemini with a simple task.
 
 ---
 
@@ -9,19 +9,19 @@ Hướng dẫn chạy thử pipeline `gk bridge` từ Claude đến Gemini với
 ```bash
 gk --version       # GeminiKit CLI
 claude --version   # Claude CLI
-gemini --version   # Gemini CLI (phải có trong PATH)
+gemini --version   # Gemini CLI (must be in PATH)
 ```
 
-Nếu thiếu Gemini CLI:
+If Gemini CLI is missing:
 ```bash
 npm install -g @google/gemini-cli
 ```
 
 ---
 
-## Step 1 — Tạo minimal plan để test
+## Step 1 — Create a minimal plan for testing
 
-Tạo 2 file sau trong `plans/test-bridge/`:
+Create the following 2 files in `plans/test-bridge/`:
 
 **`plans/test-bridge/plan.md`**
 ```markdown
@@ -62,7 +62,7 @@ status: pending
 gk bridge init --plan plans/test-bridge/plan.md
 ```
 
-Kết quả mong đợi:
+Expected result:
 ```
 ✓ Created .bridge/ directory structure
 ✓ Using plan: plans/test-bridge/plan.md
@@ -70,7 +70,7 @@ Kết quả mong đợi:
   task-01-01: Hello World [implement]
 ```
 
-Verify task file tồn tại và đúng format:
+Verify task file exists and is in correct format:
 ```bash
 cat .bridge/queue/task-01-01.json
 ```
@@ -79,41 +79,41 @@ Expected: `"status": "pending"`, `"assigned_to": "gemini"`
 
 ---
 
-## Step 3 — Chạy pipeline
+## Step 3 — Run the pipeline
 
 ```bash
 gk bridge start
 ```
 
-Pipeline tự động thực hiện theo thứ tự:
+The pipeline automatically executes in order:
 
 ```
-pending → executing   (orchestrator gọi Gemini)
+pending → executing   (orchestrator calls Gemini)
 executing → gemini_done  (Gemini update task file)
-gemini_done → reviewing  (orchestrator gọi Claude review)
+gemini_done → reviewing  (orchestrator calls Claude for review)
 reviewing → done / pending (retry)
 ```
 
-Ctrl+C để dừng gracefully nếu cần.
+Ctrl+C to stop gracefully if needed.
 
 ---
 
-## Step 4 — Kiểm tra kết quả
+## Step 4 — Check the results
 
 ```bash
-# Tổng quan pipeline
+# Pipeline Overview
 gk bridge status
 
-# Chi tiết task
+# Task Details
 cat .bridge/queue/task-01-01.json
 
 # Full logs
 cat .bridge/logs/pipeline-*.log
 ```
 
-**Task thành công:** `"status": "done"`, `hello.txt` được tạo trong project root.
+**Successful Task:** "status": "done", `hello.txt` is created in the project root.
 
-**Task thất bại:** `"status": "failed"`, đọc `gemini_summary` và `review_result` trong task JSON để debug.
+**Failed Task:** "status": "failed", read `gemini_summary` and `review_result` in task JSON to debug.
 
 ---
 
@@ -132,18 +132,18 @@ for f in glob.glob('.bridge/queue/*.json'):
 
 ### Common issues
 
-| Symptom | Nguyên nhân | Fix |
+| Symptom | Cause | Fix |
 |---------|-------------|-----|
-| `gemini command not found` | Gemini CLI chưa install | `npm install -g @google/gemini-cli` |
-| Task mãi ở `executing` | Gemini không update status file | Check log — Gemini có đang dùng bridge-task-runner skill không |
-| `BRIDGE_STATUS` missing | Claude output thiếu marker | Check Claude CLI có đang chạy `--print` mode không |
-| Task retry 3 lần rồi `failed` | Review liên tục fail | Đọc `review_result` trong task JSON, fix prompt hoặc implementation |
+| `gemini command not found` | Gemini CLI not installed | `npm install -g @google/gemini-cli` |
+| Task stuck in `executing` | Gemini not updating status file | Check log — Is Gemini using the bridge-task-runner skill? |
+| `BRIDGE_STATUS` missing | Claude output missing marker | Check if Claude CLI is running in `--print` mode |
+| Task retries 3 times then `failed` | Review continuously fails | Read `review_result` in task JSON, fix prompt or implementation |
 
-### Reset và chạy lại
+### Reset and Rerun
 
 ```bash
-gk bridge reset        # xóa state, giữ queue
-gk bridge init --plan plans/test-bridge/plan.md   # tạo lại queue
+gk bridge reset        # clear state, keep queue
+gk bridge init --plan plans/test-bridge/plan.md   # recreate queue
 gk bridge start
 ```
 
@@ -154,15 +154,15 @@ gk bridge start
 ```
 Claude CLI (orchestrator.py)
     │
-    ├── Đọc .bridge/queue/task-01-01.json (status=pending)
+    ├── Read .bridge/queue/task-01-01.json (status=pending)
     │
-    ├── Gọi: gemini -p "<task prompt>" --yolo
+    ├── Call: gemini -p "<task prompt>" --yolo
     │       └── Gemini execute task
-    │           └── Cập nhật task-01-01.json: status=gemini_done
+    │           └── Updates task-01-01.json: status=gemini_done
     │
-    ├── Gọi: claude --print "<review prompt>"
+    ├── Call: claude --print "<review prompt>"
     │       └── Claude review output
-    │           └── Output có "BRIDGE_STATUS: PASS" hoặc "BRIDGE_STATUS: FAIL"
+    │           └── Output contains "BRIDGE_STATUS: PASS" or "BRIDGE_STATUS: FAIL"
     │
-    └── Cập nhật task-01-01.json: status=done (hoặc pending nếu retry)
+    └── Updates task-01-01.json: status=done (or pending if retry)
 ```

@@ -1,6 +1,5 @@
 ---
 name: support
-tier: support
 description: Senior Support Engineer — specialist in runtime troubleshooting, log analysis, and incident response
 ---
 

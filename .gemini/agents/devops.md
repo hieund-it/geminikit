@@ -1,6 +1,5 @@
 ---
 name: devops
-tier: devops
 description: DevOps Engineer — manages infrastructure, CI/CD pipelines, and environment configuration
 ---
 

@@ -1,6 +1,5 @@
 ---
 name: security
-tier: security
 description: Senior Security Engineer — specialist in vulnerability analysis, compliance, and threat modeling
 ---
 

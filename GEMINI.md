@@ -92,6 +92,7 @@ Use artifacts from developer handoff to determine files to stage.
 4. **Validation-Driven**: No task is complete without an automated verification (test case or shell check).
 5. **Evidence over Claims**: Do not report success unless the verification step has passed with zero errors.
 6. **Resilience**: Treat rate limits as a signal to pause and summarize state, rather than a failure.
+7. **Hook Efficiency**: All system hooks MUST follow the "Short-Circuiting" and "Selective Injection" strategies defined in `.gemini/rules/03_resource.md` to maintain sub-10ms overhead and zero token waste.
 
 ---
 

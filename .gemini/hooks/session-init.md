@@ -13,33 +13,17 @@ the context cascade for downstream agents.
 
 ## Actions (in order)
 
-1. **Detect working directory** — resolve absolute path of CWD.
-2. **Detect project type** — inspect root files:
-   - `package.json` → `node`
-   - `pyproject.toml` / `requirements.txt` → `python`
-   - `go.mod` → `go`
-   - `Cargo.toml` → `rust`
-   - Default → `unknown`
-3. **Set session variables** — write to `.gemini/memory/short-term.md`:
-   ```yaml
-   project_name: <dirname of CWD>
-   project_type: <detected type>
-   model_default: gemini-2.5-pro
-   working_dir: <absolute CWD>
-   session_start_time: <ISO 8601 timestamp>
-   debug_mode: false
-   token_budget: 1000000
-   ```
-5. **Load long-term memory** — scan `.gemini/memory/long-term.md` for entries
-   tagged with `project_name` and inject the 5 most recent as context hints.
-6. **Integrity & Self-Healing (NEW)** — Check `.gemini/memory/` for file corruption:
-   - If `execution.md` or `long-term.md` is unreadable or malformed, attempt to restore from the latest file in `.gemini/memory/archive/`.
-   - Log any recovery actions in the new session log.
-7. **Load Pinned Knowledge (NEW)** — Always load the full content of `.gemini/memory/pinned.md` as immutable context. This data is exempt from summarization.
-8. **Log session start** — append entry to `.gemini/memory/execution.md`:
-   ```
-   [<timestamp>] SESSION_START project=<project_name> type=<project_type> status=<ok|recovered>
-   ```
+1. **Check for Pinned Context** — Read `.gemini/memory/pinned.md` first. This file contains "permanent" facts and core project logic that MUST NOT be forgotten.
+2. **Hydrate Last State (Briefing)** — Read only the last 3 entries from `.gemini/memory/long-term.md` (or the last 5 milestones) to restore the AI's mental model of the project's progress.
+3. **Task Restoration** — If `.gemini/memory/execution.md` contains an `in_progress` task, load only that task's context. DO NOT load completed or failed tasks from the previous session to save tokens.
+4. **Environment Sync** — Run `git status --short` and `git branch --show-current` to align the session with the actual state of the codebase.
+5. **Session Resume Briefing** — Inject a 1-sentence summary into the prompt: "Resuming session. Current focus: [Active Task]. Last milestone: [Milestone Name]."
+
+## Context Budgeting (Rule 03_6)
+- **Pinned:** Max 500 tokens.
+- **Long-term Briefing:** Max 800 tokens.
+- **Active Task:** Max 500 tokens.
+- **Total Init Budget:** ≤ 2000 tokens.
 
 ## Output
 Initialized session context written to `.gemini/memory/short-term.md`.

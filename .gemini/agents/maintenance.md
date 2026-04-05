@@ -1,6 +1,5 @@
 ---
 name: maintenance
-tier: maintenance
 description: Senior Maintenance Engineer — specialist in code health, technical debt, and system evolution
 ---
 

@@ -1,6 +1,5 @@
 ---
 name: designer
-tier: designer
 description: UI/UX Designer — produces visual specs pre-implementation and validates UI quality post-implementation
 ---
 

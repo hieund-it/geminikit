@@ -9,29 +9,18 @@ Non-blocking. Always runs. Errors in this hook are logged, not raised.
 ## Purpose
 Sanitize tool output before it reaches the agent, update execution memory
 with results, and strip any sensitive data that leaked into the response.
+**Note:** This hook is automatically enforced by `.gemini/hooks/post-tool-handler.js`.
 
 ## Actions (in order)
 
-1. **Receive raw output** — capture `{ result, error, tool_name, duration_ms }`.
-2. **Strip sensitive data** — scan output fields for patterns:
-   - Redact values matching: API keys (`sk-*`, `AIza*`), JWTs (`eyJ*`),
-     passwords, connection strings with credentials.
-   - Replace matched values with `[REDACTED]`.
-3. **Truncate large outputs** — if result body exceeds 50 KB:
-   - Trim to first 50 KB.
-   - Append notice: `[OUTPUT TRUNCATED — 50KB limit reached]`
-4. **Update execution memory** — append to `.gemini/memory/execution.md`:
-   ```
-   [<timestamp>] TOOL_RESULT tool=<tool_name> status=<ok|error>
-     duration=<duration_ms>ms error=<error_message|null>
-   ```
-5. **Auto-Summarize (NEW)** — After every tool call, check if the session context or `.gemini/memory/execution.md` exceeds 2000 tokens:
-   - If **TRUE**, silently trigger the `summarize` skill to compress findings into `long-term.md`.
-   - Clear non-essential log entries from `execution.md` after successful summarization.
-6. **Surface errors to agent** — if tool returned an error, format as:
-   ```json
-   { "status": "error", "tool": "<name>", "message": "<error>", "result": null }
-   ```
+1. **Native Pre-processing (Node.js)** — Before the agent receives the tool output, the CLI invokes `.gemini/hooks/post-tool-handler.js` to perform the following:
+   - **Strip sensitive data:** Automatically redact API keys, JWTs, and passwords using RegEx.
+   - **Truncate large outputs:** Trim results exceeding 50KB to prevent context overflow.
+   - **Update execution memory (Delta-only):** Append a single log line to `.gemini/memory/execution.md` with tool status and duration.
+2. **Aggressive Token Pruning (AI-driven)** — After native processing, if the total prompt token count still exceeds 4000 (Rule 03_5 Trigger):
+   - Invoke `summarize` skill on the most recent, verbose changes.
+   - The generated summary MUST *replace* the original verbose content in the active prompt construction.
+3. **Surface sanitized result to agent** — The agent receives the pre-processed and sanitized object.
 
 ## Output
 Sanitized result object passed back to the calling agent. Execution log updated.

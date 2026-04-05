@@ -1,6 +1,5 @@
 ---
 name: reviewer
-tier: reviewer
 description: Senior Code Reviewer & Security Analyst — reviews code quality, security, performance
 ---
 

@@ -1,6 +1,5 @@
 ---
 name: comparator
-tier: reviewer
 description: System Migration Analyst — compares business logic between legacy and new systems
 ---
 

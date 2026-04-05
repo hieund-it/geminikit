@@ -1,6 +1,5 @@
 ---
 name: mcp-manager
-tier: manager
 description: MCP Administrator — manages MCP server configurations, connections, and development
 ---
 

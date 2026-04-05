@@ -12,21 +12,26 @@ execution. Prevents dangerous operations from reaching external systems.
 
 ## Actions (in order)
 
+0. **Short-Circuiting (Efficiency)** — If the `tool_name` is non-modifying (e.g., `read_file`, `list_directory`, `ls`), immediately skip to step 4. DO NOT perform complex validation or logging for read-only operations unless a security flag is set.
 1. **Log invocation** — append to `.gemini/memory/execution.md`:
    ```
    [<timestamp>] TOOL_CALL tool=<tool_name> inputs=<sanitized_inputs>
    ```
-2. **Validate input schema** — confirm required fields are present and typed correctly.
+2. **Selective Injection** — Inject ONLY the context required for the specific tool. 
+   - **SQL tool:** Inject schema definitions from `.gemini/memory/db_schema.md`.
+   - **Script tool:** Inject environment constraints from `.gemini/rules/05_development.md`.
+   - **Others:** DO NOT inject global rules or project history.
+3. **Validate input schema** — confirm required fields are present and typed correctly.
    - Missing required field → block with: `InputError: missing field '<field>'`
    - Wrong type → block with: `InputError: '<field>' must be <expected_type>`
-3. **Check path safety** — for any input containing a file path:
+4. **Check path safety** — for any input containing a file path:
    - Reject paths with `../` traversal sequences.
    - Reject paths outside the current `working_dir`.
    - Block with: `SecurityError: path escapes working directory`
-4. **Check tool allowlist** — verify tool name appears in approved list:
+5. **Check tool allowlist** — verify tool name appears in approved list:
    - Approved: `read_file`, `write_file`, `search`, `db-tool`, `api-tool`, `script-tool`
    - Unknown tool → block with: `PolicyError: tool '<name>' not in allowlist`
-5. **Block destructive operations** — pattern-match inputs for danger signals:
+6. **Block destructive operations** — pattern-match inputs for danger signals:
    - `rm -rf`, `DROP TABLE`, `DELETE FROM` without `WHERE`, `format`, `mkfs`
    - If detected and no explicit `confirmed: true` flag → block with:
      `SafetyError: destructive operation requires confirmation flag`

@@ -17,7 +17,9 @@
   1. Determine if the task requires external integrations (DB, API, Repo).
   2. If yes, execute MCP Bridge discovery (`python .gemini/scripts/mcp_bridge.py`).
   3. Incorporate discovered tools from `temp_mcp_manifest.json` into the implementation plan.
+<confirmation_required>
 - **Confirmation Gate:** Upon completion of the Strategy Phase (Planning), the Orchestrator MUST present the plan to the user and **wait for explicit confirmation** (e.g., "Plan approved", "Proceed") before proceeding to the Execution Phase.
+</confirmation_required>
 - A task is considered complete ONLY after the result has been verified (Validation is the final mandatory step).
 
 ## 3. Priority & Conflict Resolution
@@ -54,7 +56,9 @@
   2. Do NOT attempt further writes to partially-modified files.
   3. Report `status: "blocked"` with `recovery_action: "manual_review"` to the user.
 - **Checkpoint Restore:** If `execution.md` contains a prior checkpoint, the Orchestrator MAY offer to resume from it — but MUST confirm with the user before proceeding.
+<no_auto_fix>
 - **No Silent Forward-Fix:** Never attempt to auto-fix a failed write without user confirmation.
+</no_auto_fix>
 
 ## 7. API Rate Limit & Retry
 - On HTTP 429 / rate limit error: wait using exponential backoff — 2s, 4s, 8s — max 3 retries.

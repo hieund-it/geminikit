@@ -1,6 +1,5 @@
 ---
 name: architect
-tier: architect
 description: Senior Software Architect — specializes in high-level system design, deep reasoning, and technical trade-off analysis
 ---
 

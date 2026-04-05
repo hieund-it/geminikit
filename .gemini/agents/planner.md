@@ -1,6 +1,5 @@
 ---
 name: planner
-tier: planner
 description: Senior Technical Architect — analyzes requests, breaks down tasks, creates execution plans
 ---
 
