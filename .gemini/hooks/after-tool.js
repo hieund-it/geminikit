@@ -1,5 +1,6 @@
 // AfterTool hook — logs tool invocations (name, status, duration) to execution.md
 const { appendMemory } = require('./lib/memory-manager');
+const { readStdin } = require('./lib/read-stdin');
 const { logError } = require('./lib/logger');
 
 // Redact sensitive field values before logging
@@ -12,14 +13,6 @@ function redactSensitive(obj) {
       SENSITIVE_KEYS.test(k) ? [k, '[REDACTED]'] : [k, v]
     )
   );
-}
-
-function readStdin() {
-  try {
-    return JSON.parse(require('fs').readFileSync(0, 'utf8'));
-  } catch (_) {
-    return {};
-  }
 }
 
 async function main() {

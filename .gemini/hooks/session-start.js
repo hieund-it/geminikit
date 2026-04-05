@@ -1,15 +1,7 @@
 // SessionStart hook — loads pinned + recent long-term memory into short-term context
 const { readMemory, writeMemory } = require('./lib/memory-manager');
+const { readStdin } = require('./lib/read-stdin');
 const { logError } = require('./lib/logger');
-
-// Cross-platform stdin reader using fd 0 (works on Unix, Windows Git Bash, WSL)
-function readStdin() {
-  try {
-    return JSON.parse(require('fs').readFileSync(0, 'utf8'));
-  } catch (_) {
-    return {};
-  }
-}
 
 async function main() {
   try {

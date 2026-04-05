@@ -1,14 +1,8 @@
-// PreCompress hook — snapshots short-term memory to long-term before Gemini CLI prunes history
+// PreCompress hook — summarizes short-term memory into long-term before Gemini CLI prunes history
 const { readMemory, appendMemory } = require('./lib/memory-manager');
+const { summarize } = require('./lib/gemini-summarizer');
+const { readStdin } = require('./lib/read-stdin');
 const { logError, logInfo } = require('./lib/logger');
-
-function readStdin() {
-  try {
-    return JSON.parse(require('fs').readFileSync(0, 'utf8'));
-  } catch (_) {
-    return {};
-  }
-}
 
 async function main() {
   try {
@@ -17,8 +11,11 @@ async function main() {
     const shortTerm = readMemory('short-term.md');
     if (shortTerm.trim()) {
       const ts = new Date().toISOString();
-      appendMemory('long-term.md', `## Pre-Compress Snapshot — ${ts}\n${shortTerm}\n`);
-      logInfo('pre-compress', 'Saved pre-compress snapshot to long-term.md');
+      // Summarize before persisting to avoid duplicating raw content already in long-term
+      const summary = await summarize(shortTerm);
+      const content = summary || shortTerm; // fallback to raw if API unavailable
+      appendMemory('long-term.md', `## Pre-Compress Snapshot — ${ts}\n${content}\n`);
+      logInfo('pre-compress', summary ? 'Saved summarized pre-compress snapshot' : 'Saved raw pre-compress snapshot (API unavailable)');
     }
 
   } catch (err) {
