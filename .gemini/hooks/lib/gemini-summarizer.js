@@ -26,7 +26,16 @@ async function summarize(text, systemPrompt) {
     const model = getClient().getGenerativeModel({ model: 'gemini-2.0-flash' });
     const prompt = systemPrompt
       ? `${systemPrompt}\n\n---\n${text}`
-      : `Summarize the following conversation concisely, preserving key decisions, tasks, and context:\n\n${text}`;
+      : `Summarize this conversation as a standup update using EXACTLY this format (no extra commentary):
+**Focus:** [1 line — what was worked on]
+**Decisions:** [key choices made; bullet if multiple]
+**Files:** [key file paths touched, or "none"]
+**Status:** ✓ [completed items] | ⏳ [in progress or blocked]
+**Next:** [next steps]
+Keep each field under 2 lines.
+
+---
+${text}`;
     const result = await model.generateContent(prompt);
     return result.response.text();
   } catch (err) {
