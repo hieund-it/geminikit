@@ -6,7 +6,7 @@ These rules apply to all atomic skills within the Gemini Kit framework and must 
 
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- **No Assumptions** — MUST NOT assume missing data. Return `status: blocked` if required fields are absent in the input.
+<no_assumptions>- **No Assumptions** — MUST NOT assume missing data. Return `status: blocked` if required fields are absent in the input.</no_assumptions>
 - **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
 - **Windows Pathing (Rule 02_4):** MUST use backslashes `\` for paths or properly quote paths containing spaces in a Windows environment.
 - **Artifact Management (Rule 05_6):** ALL generated reports, specs, or logs MUST be stored in the appropriate `reports/{skill}/` directory with a timestamped filename (e.g., `{date}-{slug}.md`).

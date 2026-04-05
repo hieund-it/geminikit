@@ -13,7 +13,7 @@ the context cascade for downstream agents.
 
 ## Actions (in order)
 
-1. **Check for Pinned Context** — Read `.gemini/memory/pinned.md` first. This file contains "permanent" facts and core project logic that MUST NOT be forgotten.
+<pinned_context>1. **Check for Pinned Context** — Read `.gemini/memory/pinned.md` first. This file contains "permanent" facts and core project logic that MUST NOT be forgotten.</pinned_context>
 2. **Hydrate Last State (Briefing)** — Read only the last 3 entries from `.gemini/memory/long-term.md` (or the last 5 milestones) to restore the AI's mental model of the project's progress.
 3. **Task Restoration** — If `.gemini/memory/execution.md` contains an `in_progress` task, load only that task's context. DO NOT load completed or failed tasks from the previous session to save tokens.
 4. **Environment Sync** — Run `git status --short` and `git branch --show-current` to align the session with the actual state of the codebase.

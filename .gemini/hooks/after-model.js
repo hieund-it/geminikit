@@ -19,7 +19,7 @@ async function main() {
     // Accumulate current response into short-term rolling buffer
     if (responseText) {
       const ts = new Date().toISOString();
-      appendMemory('short-term.md', `\n## Turn ${turnId} — ${ts}\n${responseText}\n`);
+      appendMemory('short-term.md', `## Turn ${turnId} — ${ts}\n${responseText}\n`);
     }
 
     if (shouldSummarize(totalTokens, turnId)) {

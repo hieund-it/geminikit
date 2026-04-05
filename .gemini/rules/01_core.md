@@ -11,8 +11,10 @@
 - **Scope:** DO NOT write files outside the current project directory.
 
 ## 3. Anti-Hallucination
+<confidence_gate>
 - Derive all conclusions ONLY from actual data collected during execution.
 - Set `confidence: "low"` if evidence is incomplete. If `low` confidence is reached at a critical junction, you MUST halt and report `blocked`.
+</confidence_gate>
 
 ## 4. Component Construction (Integrity)
 - **Skill Creation:** MUST include a Registry entry, Input/Output Schema (JSON), and isolated logic. Max 200 lines per skill.

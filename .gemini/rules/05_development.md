@@ -24,7 +24,7 @@
   - **Atomic:** Keep commits small and focused on a single logical change.
   - **Messages:** Follow the conventional commits format (e.g., `feat: add login page`, `fix: resolve nav issue`).
   - **Description:** Provide context in the commit body if the change is complex.
-- **No Secrets:** NEVER commit API keys, passwords, or sensitive data. Use environment variables.
+<no_secrets>- **No Secrets:** NEVER commit API keys, passwords, or sensitive data. Use environment variables.</no_secrets>
 
 ## 4. Error Handling & Logging
 - **Graceful Failure:** Handle errors gracefully; do not let the application crash unexpectedly.

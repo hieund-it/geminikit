@@ -62,7 +62,7 @@ Create a `.env` file in the root of the cloned repository by copying the example
 ```bash
 cp .gemini/.env.example .env
 ```
-You will need to edit this `.env` file to add your own API keys for services like Google Search or any other integrated tools.
+You will need to edit this `.env` file to add your own API keys. **Important**: `GEMINI_API_KEY` is required for native hooks (SessionStart, AfterModel, PreCompress, AfterTool, SessionEnd) to function properly. Obtain your Gemini API key at https://aistudio.google.com/app/apikey. Other optional API keys (GitHub, Slack, Google Maps) are only needed if you plan to use those specific MCP integrations.
 
 **4. Run Commands Locally**
 

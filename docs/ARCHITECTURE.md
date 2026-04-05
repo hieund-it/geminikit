@@ -79,6 +79,54 @@ The Gemini Kit Memory System provides robust state management through:
 - **Self-Healing**: Automatic detection and recovery from corrupted state files.
 - **Pinned Knowledge**: Persistent facts and user preferences that bypass rotation logic.
 
+## Native Hooks System
+
+Gemini CLI v0.26.0+ supports native hooks (`.gemini/settings.json` hook registration) that enable automatic state management without human intervention. Gemini Kit implements five lifecycle hooks via Node.js scripts in `.gemini/hooks/`:
+
+### Hook Events & Responsibilities
+
+| Event | Script | Trigger | Responsibility |
+|-------|--------|---------|-----------------|
+| **SessionStart** | `session-start.js` | Session initialization | Load pinned context and last 3 long-term memory entries into short-term context |
+| **AfterModel** | `after-model.js` | Model response received | Check token threshold; auto-summarize short-term to long-term if >25K tokens or every 10 turns; compress long-term if >15 entries |
+| **PreCompress** | `pre-compress.js` | Before Gemini CLI prunes history | Snapshot short-term context to long-term to prevent loss during context compression |
+| **AfterTool** | `after-tool.js` | After tool execution | Log tool name, status (success/error), and duration to execution.md; redact sensitive fields |
+| **SessionEnd** | `session-end.js` | Session termination | Final long-term memory compression if overloaded; reset short-term memory |
+
+### Hook Infrastructure
+
+**Library Modules** (`.gemini/hooks/lib/`):
+- `memory-manager.js`: CRUD operations for `.gemini/memory/*.md` files (read, write, append, trim entries)
+- `gemini-summarizer.js`: Gemini API wrapper with token threshold logic and conversation summarization
+- `logger.js`: Silent error logger writing to `.gemini/errors.log` (debug mode via `LOG_LEVEL=debug`)
+
+**Configuration** (`.gemini/settings.json`):
+```json
+"hooks": {
+  "SessionStart": [{ "hooks": [{ "type": "command", "command": "node .gemini/hooks/session-start.js", "timeout": 5000 }] }],
+  "AfterModel": [{ "hooks": [{ "type": "command", "command": "node .gemini/hooks/after-model.js", "timeout": 30000 }] }],
+  "PreCompress": [{ "hooks": [{ "type": "command", "command": "node .gemini/hooks/pre-compress.js", "timeout": 10000 }] }],
+  "AfterTool": [{ "hooks": [{ "type": "command", "command": "node .gemini/hooks/after-tool.js", "timeout": 5000 }] }],
+  "SessionEnd": [{ "hooks": [{ "type": "command", "command": "node .gemini/hooks/session-end.js", "timeout": 10000 }] }]
+}
+```
+
+### Memory Files
+
+Three persistent memory files in `.gemini/memory/`:
+- `short-term.md`: Session-specific context, populated at SessionStart, appended during AfterModel, cleared at SessionEnd
+- `long-term.md`: Cross-session knowledge, auto-populated by AfterModel summaries and compressed when >15 entries
+- `execution.md`: Tool invocation audit trail logged by AfterTool (name, status, duration, timestamps)
+- `pinned.md`: Immutable system instructions and context that persist across all sessions
+
+### Token Thresholds & Auto-Summarization
+
+- **TOKENS_THRESHOLD**: 25,000 — trigger summarization when cumulative tokens reach this limit
+- **TURNS_INTERVAL**: 10 — also summarize every 10 model turns regardless of token count
+- **MAX_LONG_TERM_ENTRIES**: 15 — compress long-term memory entries when count exceeds this threshold
+
+All summarization uses `gemini-2.0-flash` model via `@google/generative-ai` package for fast, cost-effective compression.
+
 ## Security Framework
 
 Security is integrated at the core through:
