@@ -1,5 +1,5 @@
 // AfterModel hook — accumulates response into short-term, summarizes when threshold met, then resets
-const { readMemory, writeMemory, appendMemory } = require('./lib/memory-manager');
+const { writeMemory, appendMemory, extractTurns } = require('./lib/memory-manager');
 const { shouldSummarize, summarize } = require('./lib/gemini-summarizer');
 const { compressLongTermIfNeeded } = require('./lib/compress-if-needed');
 const { readStdin } = require('./lib/read-stdin');
@@ -23,9 +23,10 @@ async function main() {
     }
 
     if (shouldSummarize(totalTokens, turnId)) {
-      const shortTerm = readMemory('short-term.md');
-      if (shortTerm.trim()) {
-        const summary = await summarize(shortTerm);
+      // Extract only conversation turns — exclude pinned context / session headers
+      const turns = extractTurns('short-term.md');
+      if (turns) {
+        const summary = await summarize(turns);
         if (summary) {
           const ts = new Date().toISOString();
           appendMemory('long-term.md', `## Turn ${turnId} — ${ts}\n${summary}\n`);

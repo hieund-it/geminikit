@@ -36,6 +36,13 @@ function appendMemory(filename, entry) {
   } catch (err) { logError('appendMemory', err); }
 }
 
+// Extract only ## Turn N sections from a memory file (excludes headers, schema, pinned context)
+function extractTurns(filename) {
+  const content = readMemory(filename);
+  const turns = content.split(/(?=^## Turn \d+)/m).filter(s => /^## Turn \d+/.test(s));
+  return turns.join('\n').trim();
+}
+
 // Count ## section headers as logical entries
 function countEntries(filename) {
   const content = readMemory(filename);
@@ -53,4 +60,4 @@ function trimEntries(filename, keepLast) {
   } catch (err) { logError('trimEntries', err); }
 }
 
-module.exports = { readMemory, writeMemory, appendMemory, countEntries, trimEntries };
+module.exports = { readMemory, writeMemory, appendMemory, countEntries, trimEntries, extractTurns };
