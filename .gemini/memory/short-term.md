@@ -1,5 +1,5 @@
 # Session Context
-Loaded: 2026-04-05T03:03:51.342Z
+Loaded: 2026-04-06T16:40:01.199Z
 Session: unknown
 ## Pinned Context
 # Pinned Knowledge (Immutable Context)
@@ -33,7 +33,6 @@ This data is exempt from summarization, truncation, or archiving.
 | Read access | All agents and hooks |
 | Pruning | Automated: remove oldest when count > 200 |
 | Manual curation | Review and clean entries periodically |
-
 
 
 ## Entries
@@ -86,12 +85,9 @@ tags: [phase-06, infrastructure, geminikit]
 ---
 
 
-
 ## Notes
 - Never store API keys, tokens, passwords, or secrets in this file.
 - Entries are tagged with `project` for cross-project installations.
 - `session-init` hook loads the 5 most recent entries matching `project_name`.
 - Body text is limited to 500 characters to control file growth.
-
-
 

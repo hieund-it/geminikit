@@ -1,9 +1,25 @@
 # 04_OUTPUT: Communication & Handoff
 
 ## 1. Response Format
-- MUST use JSON for communication between components.
-- Standard structure: `{ status, result, summary, artifacts, next_steps }`.
-- Status values: `completed | failed | blocked`.
+
+**Two distinct output contexts — never mix them:**
+
+| Context | Format | Audience |
+|---------|--------|----------|
+| Agent → Agent handoff | JSON (`{ status, result, summary, artifacts, next_steps }`) | Next agent in pipeline |
+| Agent → User response | Human-readable — adapt to content type (see below) | Human in terminal |
+
+**User-facing format guide (choose by content type, not by habit):**
+- Short answers / status: plain text — no unnecessary headers or bullets
+- Multiple options / steps: numbered list (`1. 2. 3.`) — clearer than Markdown bullets
+- Comparisons / trade-offs: table or labeled bullet pairs
+- Long reports with sections: Markdown with headings
+- Code / commands: fenced code block (always)
+- **NEVER**: raw JSON block — extract human-meaningful fields and rephrase as prose/list
+
+JSON schemas in `# Output` sections of SKILL.md files define the **internal data contract only**, not what to display to the user.
+
+Status values: `completed | failed | blocked`.
 
 ## 2. Delegation with Compression
 - Agents MUST compress their output before returning to the Orchestrator.

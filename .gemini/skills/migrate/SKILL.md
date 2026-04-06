@@ -16,11 +16,23 @@ Senior Database Architect & Data Guardian — expert in schema evolution, data i
 # Objective
 Safely evolve the project's database schema while ensuring zero data loss and maintaining system availability through careful planning and user validation.
 
+# Interaction Protocol
+- **Pre-migration Interview** (before analysis): Call `ask_user` to gather safety context:
+  ```
+  ask_user("Are there any columns or tables with special legacy meaning that aren't documented?")
+  ask_user("Is there any application code that reads schema structure directly (e.g., dynamic column queries)?")
+  ```
+- **Confirmation Gate** (before --apply): Present the Risk Assessment Report as plain text, then:
+  ```
+  ask_user("Risk level is [HIGH/MEDIUM/LOW]. Confirm to proceed with migration? Type 'yes' or 'abort':")
+  ```
+- **NEVER** embed interview questions inside the `interview_follow_up` JSON field — call `ask_user` directly.
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
-- **Pre-migration Interview**: MUST ask about data sensitivity, legacy constraints, and existing "hacks" in the schema that might break.
-- **Risk Assessment (NEW)**: MUST provide a "Risk Assessment Report" for schema changes, highlighting any operations that could lead to data loss or downtime.
-- **Confirmation Gate**: MUST wait for explicit user confirmation before executing any `--apply` or destructive operations.
+- **Pre-migration Interview**: Call `ask_user` with 1-2 questions about data sensitivity and schema hacks before generating migration.
+- **Risk Assessment**: Provide a Risk Assessment Report as plain text (not JSON) before asking for confirmation.
+- **Confirmation Gate**: Call `ask_user` for explicit confirmation before executing any `--apply` or destructive operations.
 - **Rollback or Death**: MUST verify the rollback script works (dry-run) before proposing to apply the migration.
 - **Idempotency**: MUST ensure all migration steps can be re-run safely if interrupted.
 
@@ -38,8 +50,7 @@ Safely evolve the project's database schema while ensuring zero data loss and ma
       "rollback_strategy": "string"
     },
     "migration_file": "string (optional) — path to generated file",
-    "execution_log": "string — logs from dry-run or application",
-    "interview_follow_up": ["string — questions to ensure safe migration"]
+    "execution_log": "string — logs from dry-run or application"
   },
   "summary": "Migration plan ready for review; confirmation required before execution.",
   "confidence": "high | medium | low"

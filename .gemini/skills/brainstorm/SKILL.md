@@ -1,7 +1,7 @@
 ---
 name: gk-brainstorm
 agent: researcher
-version: "1.2.0"
+version: "1.3.0"
 description: "Software solution brainstorming, architectural evaluation, and technical decision debating."
 ---
 
@@ -32,29 +32,45 @@ Explore software solutions, evaluate architectural choices, and facilitate a con
 }
 ```
 
+# Interaction Protocol (CRITICAL)
+- **NEVER embed questions or option lists inside JSON output fields** — users see raw JSON and cannot interact with it.
+- **Phase 1 — Interview**: Call `ask_user` tool for EACH clarifying question. Example:
+  ```
+  ask_user("What is the expected user scale — hundreds, thousands, or millions?")
+  ask_user("Do you have a preferred tech stack or hard constraints (e.g., must stay on AWS, no new licenses)?")
+  ```
+- **Phase 3 — Selection**: Present options as readable Markdown, then call `ask_user` with a numbered prompt. Example:
+  ```
+  ask_user("Which path would you like to proceed with?\n1. Monolith with module boundaries\n2. Microservices with API gateway\n3. Serverless event-driven\n\nEnter the number or describe your preference:")
+  ```
+- Wait for the user's response before advancing to the next phase.
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
-- **Phase 1: Interview Only (Mandatory)**: If `solutions` array is empty or this is the first turn, you MUST ONLY output 1-3 targeted questions in the `confirmation_questions` field. The `solutions` and `recommendation` fields MUST remain empty.
-- **Phase 2: Draft Proposal**: Only after the user answers Phase 1 questions can you provide a draft proposal.
-- **Phase 3: Final Confirmation**: Brainstorming is NOT complete until the user confirms a specific path.
+- **Phase 1: Interview Only (Mandatory)**: If this is the first turn, ONLY call `ask_user` with 1-3 targeted questions. Do NOT generate solutions yet.
+- **Phase 2: Draft Proposal**: Only after the user answers Phase 1 questions can you generate and display a draft proposal in Markdown.
+- **Phase 3: Final Confirmation**: Brainstorming is NOT complete until `ask_user` returns the user's confirmed path.
 - **Trade-off Analysis**: For every approach, explicitly state the primary RISK and the REWARD.
 - **Devil's Advocate**: Steel-man less-favored options; MUST NOT prematurely dismiss an approach without user consent.
-- **Selection Required**: Present 2-3 distinct paths for user choice in the `selection_options` field.
+- **Selection Required**: Present 2-3 distinct paths via `ask_user` — never in a JSON field.
 - **Decision rationale**: Propose solutions that satisfy the problem's current scale, avoiding over-engineering.
 
 # Process
-1. **Intake & Interview** — Ask clarifying questions to align with user expectations and project constraints.
-2. **Research & Ideation** — Map the problem space and generate potential architectural paths.
-3. **Draft Proposal** — Present options with detailed trade-offs (Pros/Cons/Risks).
-4. **Iterative Refinement** — Update the proposal based on user feedback or additional constraints.
-5. **Final Confirmation** — Secure user approval for the chosen path before handing off to the next agent (e.g., Planner or Developer).
+1. **Intake & Interview** — Call `ask_user` with 1-3 targeted questions to align with user expectations and project constraints. Wait for answers before proceeding.
+2. **Research & Ideation** — Map the problem space and generate potential architectural paths internally.
+3. **Draft Proposal** — Render options as Markdown (name, approach, pros/cons, risk). Then call `ask_user` to capture the user's selection.
+4. **Iterative Refinement** — If user requests changes, update the proposal and call `ask_user` again.
+5. **Final Confirmation** — After `ask_user` returns a confirmed path, output the final JSON result for agent handoff.
 
 # Output
+> Output JSON is for **agent handoff only** — after the user has confirmed via `ask_user`. Never output JSON with empty or placeholder question fields.
+
 ```json
 {
-  "status": "completed | failed | blocked | awaiting_confirmation",
+  "status": "completed | failed | blocked",
   "format": "json",
   "result": {
+    "chosen_solution": "string — name of the path the user confirmed",
     "solutions": [
       {
         "name": "string",
@@ -65,12 +81,10 @@ Explore software solutions, evaluate architectural choices, and facilitate a con
       }
     ],
     "matrix": "object — comparison of solutions vs criteria",
-    "recommendation": "string — The agent's proposed best path based on user input",
-    "selection_options": ["string — concise list of options for the user to pick"],
-    "confirmation_questions": ["string — specific questions to verify the proposed plan satisfies all user needs"],
-    "next_steps": "string — what happens after the user confirms"
+    "recommendation": "string — agent's rationale for the recommended path",
+    "next_steps": "string — what happens after confirmation (e.g., hand off to gk-plan)"
   },
-  "summary": "Brainstorming phase complete; awaiting user interview/confirmation of the chosen path.",
+  "summary": "User selected [chosen_solution]; ready for planning phase.",
   "confidence": "high | medium | low"
 }
 ```

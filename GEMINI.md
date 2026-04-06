@@ -61,10 +61,17 @@ Include: `from_agent`, `to_agent`, `status`, `artifacts`, `context`, `confidence
 If `confidence: "low"`: next agent MUST verify artifacts before acting.
 
 ### Step 5 — Respond
-Combine skill outputs into a structured response:
+Combine skill outputs into a **Markdown** response for the user:
 1. Summary (1 paragraph)
 2. Key results (bullet list)
 3. Next steps
+
+**CRITICAL — JSON OUTPUT BAN:**
+- **NEVER** render raw JSON blocks in user-facing responses. Users cannot interact with JSON.
+- Skill `# Output` schemas (with `"format": "json"`) are **agent-to-agent handoff contracts only** — they define the internal data shape, NOT what to display to the user.
+- Extract human-meaningful fields (`summary`, `recommendation`, `next_steps`, `chosen_solution`, etc.) and present them in the **most readable format for that content** — plain text for short answers, numbered list for options, table for comparisons, headings only for long reports.
+- The label "Handoff Result (JSON)" and any raw `{...}` JSON blocks MUST NOT appear in user-facing output.
+- Exception: if the user explicitly asks "show me the raw JSON output", you may display it in a fenced code block.
 
 ### Step 6 — Memory & Auto-Persistence
 - **Execution Update**: After each task, update `.gemini/memory/execution.md` with task state.
