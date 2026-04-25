@@ -54,14 +54,16 @@ Perform a deep review of code or API specifications to identify issues in qualit
 - **Score (1-10):** 1-3 Reject, 4-6 Request Changes, 7-8 Approve with Suggestions, 9-10 Approve.
 - **Actionable:** Provide specific fixes (`fix_code` or `fix_description`) for every issue identified.
 - **YAGNI:** Flag over-engineering or unnecessary abstractions in both code and API design.
+- **Logic Verification** — For code with complex branching or algorithmic logic, SHOULD invoke `/gk-verify` to validate correctness via sandbox execution.
 
 ## Steps
 1. Perform initial security scan (secrets, injection)
 2. Evaluate code correctness and logic flow
-3. Assess API standards and documentation (if applicable)
-4. Audit architectural patterns and scalability
-5. Check for style, naming, and redundancy
-6. Assign a score and generate specific fixes
+3. (Optional) For complex logic, invoke `/gk-verify` to sandbox-test critical paths
+4. Assess API standards and documentation (if applicable)
+5. Audit architectural patterns and scalability
+6. Check for style, naming, and redundancy
+7. Assign a score and generate specific fixes
 
 # Output
 ```json

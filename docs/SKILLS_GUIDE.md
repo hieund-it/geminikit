@@ -65,6 +65,7 @@ All new skills must adhere to the following framework-level requirements:
 
 ### 3. State Management
 - **Statelessness**: Skills should be stateless. Any persistent data should be handled via the framework's Memory System (Layer 5).
+- **Skill State Convention** (Optional): Skills may write `.gemini/.skill-state.json` at startup to signal which skill is active. This enables hook-based context injection (templates, active plan paths, registry state) that reduces boilerplate and token usage. Schema: `{ skill: "gk-plan", session_id, timestamp, outputDir?, slug? }`. Gracefully ignored if not written — hooks degrade to standard behavior.
 
 ## Usage
 Skills are typically invoked by Agents, not directly by users (except via `/gk-` commands which wrap agents).

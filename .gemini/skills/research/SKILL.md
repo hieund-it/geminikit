@@ -31,6 +31,9 @@ Research the provided query and produce a structured comparison of options with 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - **Artifact Management (Rule 05_6):** Save research reports to `reports/research/{YYMMDD-HHmm}-{slug}.md`.
+- **Web Search First** — MUST use `google_web_search` as the first action for any research query. Do not rely solely on training knowledge.
+- **Evidence Fetching** — After search, use `web_fetch` on top 2-3 relevant URLs to extract concrete evidence (code examples, benchmarks, version info).
+- **Citation Required** — Every claim in the recommendation must cite a URL from search results or provided sources.
 - Maturity: Evaluate community support (GitHub), release frequency, and stability.
 - Security: Check CVE history or reputation. Flag unpatched critical vulnerabilities.
 - TCO: Estimate long-term maintenance, monitoring, and debugging costs.
@@ -40,6 +43,14 @@ Research the provided query and produce a structured comparison of options with 
 - Depth: `surface` (2-3 options, concise); `deep` (full comparison matrix).
 - Max 5: Filter to top 5 most relevant options before analysis.
 - Sources: Prioritize provided `sources` over training knowledge; cite URLs.
+
+## Steps
+1. Execute `google_web_search` with the research query
+2. Identify top 2-3 relevant URLs from results
+3. Use `web_fetch` on each URL to extract evidence
+4. Compare options against constraints and evaluation criteria
+5. Pick one winner with justified trade-off analysis
+6. Save report to `reports/research/{YYMMDD-HHmm}-{slug}.md`
 
 # Output
 ```json

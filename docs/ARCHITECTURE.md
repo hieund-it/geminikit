@@ -90,7 +90,8 @@ Gemini CLI v0.26.0+ supports native hooks (`.gemini/settings.json` hook registra
 | **SessionStart** | `session-start.js` | Session initialization | Load pinned context and last 3 long-term memory entries into short-term context |
 | **AfterModel** | `after-model.js` | Model response received | Check token threshold; auto-summarize short-term to long-term if >25K tokens or every 10 turns; compress long-term if >15 entries |
 | **PreCompress** | `pre-compress.js` | Before Gemini CLI prunes history | Snapshot short-term context to long-term to prevent loss during context compression |
-| **AfterTool** | `after-tool.js` | After tool execution | Log tool name, status (success/error), and duration to execution.md; redact sensitive fields |
+| **BeforeAgent** | `before-agent-rules-inject.js` | Before agent rules injection | Detect active skill via `.gemini/.skill-state.json`; inject skill-specific context (templates, paths, registry state) without dedup; continue with standard rules injection |
+| **AfterTool** | `after-tool.js` | After tool execution | Log tool name, status (success/error), and duration to execution.md; redact sensitive fields; detect write operations and trigger post-write processing (phase scaffolding, skill registry sync, report indexing) |
 | **SessionEnd** | `session-end.js` | Session termination | Final long-term memory compression if overloaded; reset short-term memory |
 
 ### Hook Infrastructure
@@ -99,6 +100,8 @@ Gemini CLI v0.26.0+ supports native hooks (`.gemini/settings.json` hook registra
 - `memory-manager.js`: CRUD operations for `.gemini/memory/*.md` files (read, write, append, trim entries)
 - `gemini-summarizer.js`: Gemini API wrapper with token threshold logic and conversation summarization
 - `logger.js`: Silent error logger writing to `.gemini/errors.log` (debug mode via `LOG_LEVEL=debug`)
+- `skill-state-manager.js`: Read/write `.gemini/.skill-state.json` for hook-skill communication (session tracking, context injection)
+- `post-write-processor.js`: Post-write operations including phase file scaffolding, skill registry sync, and report indexing
 
 **Configuration** (`.gemini/settings.json`):
 ```json

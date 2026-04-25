@@ -30,6 +30,11 @@ async function main() {
       appendMemory('short-term.md', `## Chunk — ${ts}\n${responseText}\n`);
     }
 
+    // Detect display-field usage for observability
+    if (isLastChunk && responseText.includes('"display"')) {
+      logInfo('after-model', 'display-field detected in response');
+    }
+
     // Only summarize + reset on last chunk to avoid mid-stream processing
     if (isLastChunk && shouldSummarize(totalTokens)) {
       const turns = extractTurns('short-term.md');

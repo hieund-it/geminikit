@@ -8,6 +8,7 @@ const { readStdin } = require('./lib/read-stdin');
 const { logError, logInfo } = require('./lib/logger');
 const { readSkillState } = require('./lib/skill-state-manager');
 const { buildSkillContext } = require('./lib/skill-context-builder');
+const { readHandoff } = require('./lib/agent-handoff-manager');
 
 const DEDUP_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
@@ -103,7 +104,24 @@ async function main() {
     markInjected(session_id);
     logInfo('before-agent-rules-inject', `Injected context for session ${session_id}`);
 
-    const context = [skillContext, rulesContext].filter(Boolean).join('\n\n');
+    // Read agent handoff context
+    let handoffContext = '';
+    try {
+      const handoff = readHandoff(cwd, session_id);
+      if (handoff) {
+        const parts = [
+          `## Agent Handoff`,
+          `From: ${handoff.from || 'unknown'} → To: ${handoff.to || 'any'}`,
+          handoff.key_decisions?.length ? `Decisions: ${handoff.key_decisions.join('; ')}` : null,
+          handoff.artifacts?.length ? `Artifacts: ${handoff.artifacts.map(a => a.path || a.summary).join(', ')}` : null,
+          handoff.blocked_by?.length ? `Blocked: ${handoff.blocked_by.join(', ')}` : null,
+          handoff.context ? `Context: ${handoff.context}` : null,
+        ].filter(Boolean).join('\n');
+        handoffContext = parts;
+      }
+    } catch {}
+
+    const context = [skillContext, rulesContext, handoffContext].filter(Boolean).join('\n\n');
     process.stdout.write(JSON.stringify({
       hookSpecificOutput: { additionalContext: context }
     }));

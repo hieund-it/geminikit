@@ -47,14 +47,16 @@ Take an error message or log as input, locate the faulting code, and provide a v
 - MUST provide a precise code fix (diff or replacement) that resolves the root cause, not just the symptom.
 - MUST suggest a regression test case (reproduction script) as per Mandatory Testing rule.
 - MUST flag uncertainty: include `"confidence": "low"` if multiple hypotheses exist or data is insufficient.
+- **Sandbox Verification** — When fix involves algorithmic or logic changes (not just config/typo), SHOULD invoke `/gk-verify` to validate fix correctness before reporting.
 
 ## Steps
 1. Reproduce the bug (manually or with automated script)
 2. Locate faulting code through search and stack trace analysis
 3. Diagnose root cause (hypothesize and verify)
 4. Generate a verified, project-idiomatic code fix
-5. Provide a regression test to prevent future occurrences
-6. Summarize the fix and validation report
+5. (Optional) If fix involves logic changes, invoke `/gk-verify` to execute fix logic in sandbox
+6. Provide a regression test to prevent future occurrences
+7. Summarize the fix and validation report
 
 # Output
 ```json

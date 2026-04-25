@@ -3,8 +3,9 @@
 const path = require('path');
 const { appendMemory } = require('./lib/memory-manager');
 const { readStdin } = require('./lib/read-stdin');
-const { logError } = require('./lib/logger');
+const { logError, logInfo } = require('./lib/logger');
 const { isWriteOperation, getFilePath, createPhaseTemplates, syncSkillRegistry, indexReport } = require('./lib/post-write-processor');
+const { truncateResponse } = require('./lib/response-truncator');
 
 const SENSITIVE_TOKENS = /^(key|token|secret|password|credential|auth(orization)?)$/i;
 
@@ -61,6 +62,16 @@ async function main() {
           indexReport(relPath, cwd);
         }
       }
+    }
+
+    // Truncate large tool responses to save context tokens
+    const truncated = truncateResponse(tool_name, tool_input, tool_response);
+    if (truncated) {
+      logInfo('after-tool', `Truncated ${tool_name} response`);
+      process.stdout.write(JSON.stringify({
+        hookSpecificOutput: { toolResponse: truncated }
+      }));
+      process.exit(0);
     }
 
   } catch (err) {

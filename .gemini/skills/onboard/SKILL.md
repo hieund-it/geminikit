@@ -40,14 +40,16 @@ Summarize project architecture, tech stack, dependencies, and development workfl
 - Security: DO NOT read `.env`, `secrets.json`, etc. Report only their presence. Redact any discovered secrets immediately.
 - Architecture: Identify entry points and core modules. Focus on application source code, not framework tooling.
 - Token Efficiency: Limit `read_file` to 20-50 lines; prefer `grep_search`.
+- **Version Verification** — After detecting dependencies from local files, use `google_web_search` to verify latest stable versions and check for known deprecations or security advisories.
 
 ## Steps
 1. Scan project root to identify directory structure
 2. Identify core tech stack (React, Node, Python, etc.)
 3. Extract critical dependencies and version information
-4. Map system architecture and primary entry points
-5. Perform initial security audit (secrets presence)
-6. Generate summary report for new developer onboarding
+4. Verify detected dependency versions against latest stable via `google_web_search`
+5. Map system architecture and primary entry points
+6. Perform initial security audit (secrets presence)
+7. Generate summary report for new developer onboarding
 
 # Output
 ```json

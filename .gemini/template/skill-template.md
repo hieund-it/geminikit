@@ -61,6 +61,14 @@ description: "One sentence: what this skill does (action-oriented)"
 {
   "status": "completed | failed | blocked",
   "format": "json | markdown | text",
+  "display": "string (optional) — markdown-formatted user-facing summary. Populate when output has user-relevant content.",
+  "handoff": {
+    "to": "string (optional) — target skill/agent, or 'any'",
+    "artifacts": [{"type": "file|decision", "path": "string", "summary": "string"}],
+    "key_decisions": ["string"],
+    "blocked_by": ["string"],
+    "context": "string (max 200 words)"
+  },
   "result": {
     "report_path": "string (optional) — path to the generated report in reports/ directory",
     // skill-specific result fields here
@@ -69,6 +77,10 @@ description: "One sentence: what this skill does (action-oriented)"
   "confidence": "high | medium | low"
 }
 ```
+
+> **Display Field Convention:** When a skill produces user-facing content (research findings, review verdicts, onboarding summaries), populate `display` with a markdown-formatted summary. The model will render this directly to the user. Keep `display` under 500 words. Do not duplicate the full `result` — `display` is a curated view.
+
+> **Handoff Convention:** When a skill completes work that a subsequent skill will build on, populate `handoff` to pass structured context. The BeforeAgent hook injects this into the next agent's prompt. Keep `context` under 200 words.
 
 **On blocked (missing required input):**
 ```json

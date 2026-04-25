@@ -6,6 +6,7 @@ These rules apply to all atomic skills within the Gemini Kit framework and must 
 
 - **Security Audit** — always check for sensitive data (secrets, keys) in inputs/outputs and redact if found.
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
+- **Display Convention** — When skill output includes user-facing content, populate the `display` field with a markdown-formatted summary (max 500 words). This field drives what the user sees; `result` is for programmatic consumption.
 <no_assumptions>- **No Assumptions** — MUST NOT assume missing data. Return `status: blocked` if required fields are absent in the input.</no_assumptions>
 - **PowerShell Mandatory (Rule 02_4):** MUST use PowerShell-compatible syntax for all shell commands.
 - **Windows Pathing (Rule 02_4):** MUST use backslashes `\` for paths or properly quote paths containing spaces in a Windows environment.

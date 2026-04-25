@@ -2,10 +2,13 @@
 const { readMemory, writeMemory } = require('./lib/memory-manager');
 const { readStdin } = require('./lib/read-stdin');
 const { logError } = require('./lib/logger');
+const { clearAllHandoffs } = require('./lib/agent-handoff-manager');
 
 async function main() {
   try {
     const input = readStdin(); // { session_id: '...', hook_event_name: 'SessionStart', ... }
+    const cwd = input.cwd || process.cwd();
+    clearAllHandoffs(cwd);
 
     // Load pinned context (immutable rules/instructions)
     const pinned = readMemory('pinned.md');
