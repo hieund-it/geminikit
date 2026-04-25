@@ -7,7 +7,7 @@ description: "Capture, structure, and refine initial user requirements or projec
 
 ## Interface
 - **Invoked via:** /gk-intake
-- **Flags:** --refine | --spec
+- **Flags:** --refine | --spec | --interview
 - **Errors:** AMBIGUOUS_INPUT, MISSING_CONTEXT
 
 ## Mode Mapping

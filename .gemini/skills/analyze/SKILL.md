@@ -42,6 +42,7 @@ Analyze provided code/system and report findings on complexity, dependencies, pa
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+- **Artifact Management (Rule 05_6):** Save analysis reports to `reports/analyze/{YYMMDD-HHmm}-{slug}.md`.
 - Quantify complexity: cyclomatic score, LOC, coupling, dependency depth.
 - Assess maintainability (DRY, SOLID) and scalability (O(n) operations, blocking I/O).
 - Map dependencies explicitly (imports, call graph, data flow).
@@ -81,6 +82,7 @@ Analyze provided code/system and report findings on complexity, dependencies, pa
     "dependencies": [{"from": "string", "to": "string", "type": "import|call", "circular": "boolean"}],
     "security_flags": ["string"]
   },
+  "report_path": "string (optional) — path where analysis report was saved",
   "summary": "one sentence describing overall state",
   "confidence": "high | medium | low"
 }

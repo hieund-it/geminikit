@@ -46,6 +46,7 @@ Perform a deep review of code or API specifications to identify issues in qualit
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+- **Artifact Management (Rule 05_6):** Save review reports to `reports/review/{YYMMDD-HHmm}-{slug}.md`.
 - **Priority:** Security > Correctness > Performance > Architecture > Style.
 - **API Review:** Enforce REST principles (methods, status codes), Idempotency (PUT/DELETE), and Pagination for lists.
 - **Code Review:** Check for clean code (DRY, SOLID), testability, and potential race conditions.
@@ -90,6 +91,7 @@ Perform a deep review of code or API specifications to identify issues in qualit
       "coverage_estimate": "string (optional)"
     }
   },
+  "report_path": "string (optional) — path where review report was saved",
   "summary": "one sentence verdict and primary issue count",
   "confidence": "high | medium | low"
 }

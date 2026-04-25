@@ -30,6 +30,7 @@ Research the provided query and produce a structured comparison of options with 
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+- **Artifact Management (Rule 05_6):** Save research reports to `reports/research/{YYMMDD-HHmm}-{slug}.md`.
 - Maturity: Evaluate community support (GitHub), release frequency, and stability.
 - Security: Check CVE history or reputation. Flag unpatched critical vulnerabilities.
 - TCO: Estimate long-term maintenance, monitoring, and debugging costs.
@@ -53,6 +54,7 @@ Research the provided query and produce a structured comparison of options with 
     "next_steps": ["string"],
     "gaps": ["string"]
   },
+  "output_file": "string (optional) — path where research report was saved",
   "summary": "one sentence describing the recommendation",
   "confidence": "high | medium | low"
 }

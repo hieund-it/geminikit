@@ -31,9 +31,9 @@ Run automated checks against all registered agents and skills to ensure adherenc
 - MUST verify that `REGISTRY.md` matches the state of `registry.json`.
 
 ## Steps
-1. Execute the `health_check.py` script using the local Python runtime.
-2. Parse the JSON output from the script.
-3. Save the full JSON report to the `reports/health-check/` directory.
+1. Execute `.gemini/skills/health-check/scripts/health_check.py` if it exists; otherwise perform manual checks below.
+2. Parse JSON output (or build findings manually by scanning `.gemini/skills/*/SKILL.md` and `registry.json`).
+3. Save the full JSON report to `reports/health-check/{YYMMDD-HHmm}-health-report.json`.
 4. Summarize the results (total skills, pass/fail counts, registry sync status).
 5. If failures exist, list the critical non-compliance issues.
 
@@ -43,7 +43,7 @@ Run automated checks against all registered agents and skills to ensure adherenc
   "status": "completed | failed | blocked",
   "format": "json",
   "result": {
-    "report_path": "reports/health-check/{date}-health-report.json",
+    "report_path": "reports/health-check/{YYMMDD-HHmm}-health-report.json",
     "summary": {
       "total_skills": "number",
       "passed": "number",
@@ -63,7 +63,7 @@ Run automated checks against all registered agents and skills to ensure adherenc
   "status": "completed",
   "format": "json",
   "result": {
-    "report_path": "reports/health-check/2026-03-24-health-report.json",
+    "report_path": "reports/health-check/260324-1200-health-report.json",
     "summary": { "total_skills": 25, "passed": 23, "failed": 2 },
     "registry_sync": "pass",
     "critical_issues": ["Skill 'git' missing PowerShell rule", "Skill 'analyze' exceeds 200 lines"]

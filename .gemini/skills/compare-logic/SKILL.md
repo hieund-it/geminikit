@@ -86,7 +86,7 @@ To analyze, compare, and report on the differences in business logic between an 
 ## Phase 4: Reporting
 
 1.  **Structure the Report:**
-    - Create a new file, e.g., `comparison_report.md`.
+    - Save report to `reports/compare-logic/{YYMMDD-HHmm}-comparison.md` (Rule 05_6).
     - Use a structured format. For each pair of files compared, create a section.
     - For each function/logic block within those files, detail your findings using the "Match", "Partial Match", "Mismatch/Gap", "New Feature" categories.
 
@@ -102,7 +102,7 @@ To analyze, compare, and report on the differences in business logic between an 
   "status": "completed | failed | blocked",
   "format": "json",
   "result": {
-    "report_path": "path/to/your/comparison_report.md"
+    "report_path": "reports/compare-logic/{YYMMDD-HHmm}-comparison.md"
   },
   "summary": "The logic comparison is complete. The report has been generated.",
   "confidence": "medium"

@@ -33,7 +33,7 @@ Compress content into machine-readable memory blocks based on specific templates
   - `type: long-term` -> MUST use `.gemini/template/memory/long-term.md`
   - `type: short-term` -> MUST use `.gemini/template/memory/short-term.md`
   - `type: session` -> MUST use `.gemini/template/summary-template.md` (high-level)
-- **Persistence**: MUST use `respect_git_ignore: false` when writing to `.gemini/memory/`.
+- **Persistence**: MUST write output directly to `.gemini/memory/` using file write tools.
 - **Formatting**:
   - `execution`: MUST populate `task_id`, `status`, `subtasks`, and `tool_log`.
   - `long-term`: MUST create append-only YAML blocks with `category`, `title`, and `body`.

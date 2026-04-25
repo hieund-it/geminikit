@@ -44,6 +44,7 @@ Identify security vulnerabilities, hardcoded secrets, and license risks within t
 # Rules
 
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+- **Artifact Management (Rule 05_6):** Save audit reports to `reports/audit/{YYMMDD-HHmm}-{slug}.md`.
 - MUST NOT ignore "dev" dependencies unless explicitly requested.
 - MUST flag hardcoded secrets (API keys, passwords) as CRITICAL severity.
 - MUST verify if found vulnerabilities have known patches/fixes.
@@ -74,6 +75,7 @@ Identify security vulnerabilities, hardcoded secrets, and license risks within t
     ],
     "summary_report": "string — high-level audit summary"
   },
+  "report_path": "string (optional) — path where audit report was saved",
   "summary": "one sentence describing the audit findings",
   "confidence": "high | medium | low"
 }
