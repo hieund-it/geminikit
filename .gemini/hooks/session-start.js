@@ -5,7 +5,7 @@ const { logError } = require('./lib/logger');
 
 async function main() {
   try {
-    const input = readStdin(); // { event: 'SessionStart', sessionId: '...' }
+    const input = readStdin(); // { session_id: '...', hook_event_name: 'SessionStart', ... }
 
     // Load pinned context (immutable rules/instructions)
     const pinned = readMemory('pinned.md');
@@ -16,22 +16,25 @@ async function main() {
     const recent = entries.slice(-3).join('\n');
 
     // Write initialized short-term context for this session
+    // Support both field names: session_id (official API) and sessionId (legacy)
     const sessionContext = [
       `# Session Context`,
       `Loaded: ${new Date().toISOString()}`,
-      `Session: ${input.sessionId || 'unknown'}`,
+      `Session: ${input.session_id || input.sessionId || 'unknown'}`,
       '',
       pinned ? `## Pinned Context\n${pinned}` : '',
-      `## Recent History\n${recent}`,
+      recent ? `## Recent History\n${recent}` : '',
     ].filter(Boolean).join('\n') + '\n';
 
     writeMemory('short-term.md', sessionContext);
 
+    process.stdout.write(JSON.stringify({
+      hookSpecificOutput: { additionalContext: sessionContext }
+    }));
   } catch (err) {
     logError('session-start', err);
+    process.stdout.write(JSON.stringify({ hookSpecificOutput: { additionalContext: '' } }));
   }
-
-  process.stdout.write(JSON.stringify({ status: 'ok' }));
   process.exit(0);
 }
 

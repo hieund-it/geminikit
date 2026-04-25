@@ -55,6 +55,19 @@ Explore software solutions, evaluate architectural choices, and facilitate a con
 - **Selection Required**: Present 2-3 distinct paths via `ask_user` — never in a JSON field.
 - **Decision rationale**: Propose solutions that satisfy the problem's current scale, avoiding over-engineering.
 
+## Initialization (Required)
+Before starting, write skill state to enable hook context injection:
+```json
+{
+  "skill": "gk-brainstorm",
+  "session_id": "<current-session-id>",
+  "timestamp": "<ISO-timestamp>",
+  "slug": "<topic-slug>"
+}
+```
+Write to: `.gemini/.skill-state.json`
+The BeforeAgent hook will inject the report path and `summary-template.md` automatically.
+
 # Process
 1. **Intake & Interview** — Call `ask_user` with 1-3 targeted questions to align with user expectations and project constraints. Wait for answers before proceeding.
 2. **Research & Ideation** — Map the problem space and generate potential architectural paths internally.
@@ -84,6 +97,7 @@ Explore software solutions, evaluate architectural choices, and facilitate a con
     "recommendation": "string — agent's rationale for the recommended path",
     "next_steps": "string — what happens after confirmation (e.g., hand off to gk-plan)"
   },
+  "output_file": "string (optional) — path where brainstorm report was saved",
   "summary": "User selected [chosen_solution]; ready for planning phase.",
   "confidence": "high | medium | low"
 }

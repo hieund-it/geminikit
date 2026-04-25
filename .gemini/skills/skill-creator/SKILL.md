@@ -26,6 +26,19 @@ description: "Generate agent and skill files following Gemini Kit templates and 
 - **Agent Template:** `.gemini/template/agent-template.md`
 - **Mode Template:** `.gemini/template/mode-template.md`
 
+## Initialization (Required)
+Before starting, write skill state to enable hook context injection:
+```json
+{
+  "skill": "gk-skill-creator",
+  "session_id": "<current-session-id>",
+  "timestamp": "<ISO-timestamp>"
+}
+```
+Write to: `.gemini/.skill-state.json`
+The BeforeAgent hook will inject `skill-template.md` automatically.
+**Note:** AfterTool hook auto-syncs skill registry after writing `SKILL.md` — **do NOT manually update `GEMINI.md`**.
+
 # Role
 
 Senior Gemini Kit Architect

@@ -32,6 +32,18 @@ Systematically process and execute tasks from a Markdown implementation plan whi
 }
 ```
 
+## Initialization (Required)
+Before starting, write skill state to enable hook context injection:
+```json
+{
+  "skill": "gk-execute",
+  "session_id": "<current-session-id>",
+  "timestamp": "<ISO-timestamp>"
+}
+```
+Write to: `.gemini/.skill-state.json`
+The BeforeAgent hook will inject the active plan path and pending phases — **do NOT scan `plans/` manually**.
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - **Verify Before Update** — MUST run relevant tests or build commands before marking a task as completed `[x]`.

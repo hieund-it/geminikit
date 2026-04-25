@@ -1,16 +1,24 @@
-// AfterTool hook — logs tool invocations (name, status, duration) to execution.md
+// AfterTool hook — logs tool invocations + triggers post-write processing for write operations
+// Official AfterTool API: { session_id, hook_event_name, tool_name, tool_input, tool_response, cwd, timestamp }
+const path = require('path');
 const { appendMemory } = require('./lib/memory-manager');
 const { readStdin } = require('./lib/read-stdin');
 const { logError } = require('./lib/logger');
+const { isWriteOperation, getFilePath, createPhaseTemplates, syncSkillRegistry, indexReport } = require('./lib/post-write-processor');
 
-// Redact sensitive field values before logging
-const SENSITIVE_KEYS = /\b(key|token|secret|password|credential|auth)\b/i;
+const SENSITIVE_TOKENS = /^(key|token|secret|password|credential|auth(orization)?)$/i;
+
+// Redact sensitive field values before logging.
+// Splits field name by _ or - to catch compound names like api_key, auth_token.
+function isSensitiveKey(name) {
+  return String(name).toLowerCase().split(/[_-]/).some(p => SENSITIVE_TOKENS.test(p));
+}
 
 function redactSensitive(obj) {
   if (!obj || typeof obj !== 'object') return obj;
   return Object.fromEntries(
     Object.entries(obj).map(([k, v]) =>
-      SENSITIVE_KEYS.test(k) ? [k, '[REDACTED]'] : [k, v]
+      isSensitiveKey(k) ? [k, '[REDACTED]'] : [k, v]
     )
   );
 }
@@ -18,12 +26,42 @@ function redactSensitive(obj) {
 async function main() {
   try {
     const input = readStdin();
-    // Expected: { event, toolName, status: 'success'|'error', durationMs, params? }
+    // Official AfterTool API uses snake_case: tool_name, tool_input, tool_response, cwd
+    const { tool_name = 'unknown', tool_input, tool_response, cwd = process.cwd() } = input;
 
-    const { toolName = 'unknown', status = 'unknown', durationMs = 0 } = input;
+    const redactedInput = redactSensitive(tool_input);
+    const hasError = tool_response && (tool_response.error || tool_response.status === 'error');
+    const status = hasError ? 'error' : 'ok';
+
     const ts = new Date().toISOString();
-    const logLine = `[${ts}] TOOL ${toolName} → ${status} (${durationMs}ms)\n`;
+    const inputSummary = redactedInput ? JSON.stringify(redactedInput).slice(0, 120) : '';
+    const logLine = `[${ts}] TOOL ${tool_name} → ${status}${inputSummary ? ` | ${inputSummary}` : ''}\n`;
     appendMemory('execution.md', logLine);
+
+    // Post-write processing: detect write operations and trigger auto-actions
+    if (isWriteOperation(tool_name)) {
+      const filePath = getFilePath(tool_input);
+      if (filePath) {
+        const absPath = path.isAbsolute(filePath) ? filePath : path.join(cwd, filePath);
+        const relPath = path.relative(cwd, absPath);
+
+        if (/^plans\/[^/]+\/plan\.md$/.test(relPath)) {
+          const created = createPhaseTemplates(absPath, cwd);
+          if (created.length > 0) {
+            process.stdout.write(JSON.stringify({
+              hookSpecificOutput: {
+                additionalContext: `Phase stubs auto-created: ${created.join(', ')} — fill in content for each phase.`
+              }
+            }));
+            process.exit(0);
+          }
+        } else if (/^\.gemini\/skills\/[^/]+\/SKILL\.md$/.test(relPath)) {
+          syncSkillRegistry(cwd);
+        } else if (/^reports\//.test(relPath)) {
+          indexReport(relPath, cwd);
+        }
+      }
+    }
 
   } catch (err) {
     logError('after-tool', err);

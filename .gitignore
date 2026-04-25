@@ -1,5 +1,6 @@
 # Gemini Kit Environment
 .gemini/.env
+.gemini/.skill-state.json
 .gemini/temp_mcp_manifest.json
 .gemini/runtime/
 
@@ -52,3 +53,5 @@ CLAUDE.md
 
 # Bridge pipeline runtime (all .bridge/ content is transient — templates are in bridge/templates/)
 .bridge/
+# Added by code-review-graph
+.code-review-graph/

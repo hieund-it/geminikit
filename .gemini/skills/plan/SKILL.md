@@ -56,6 +56,20 @@ Break down a complex task into a structured plan of subtasks with deliverables, 
 - Flag Blockers: Decisions or external dependencies required before work starts.
 - Parallelism: Identify tasks that can run concurrently versus those that share resources.
 
+## Initialization (Required)
+Before starting, write skill state to enable hook context injection:
+```json
+{
+  "skill": "gk-plan",
+  "session_id": "<current-session-id>",
+  "timestamp": "<ISO-timestamp>",
+  "slug": "<task-slug>"
+}
+```
+Write to: `.gemini/.skill-state.json`
+The BeforeAgent hook will inject `plan-template.md` and `phase-template.md` automatically.
+**Note:** AfterTool hook auto-creates phase stub files after you write `plan.md`.
+
 ## Steps
 1. Analyze the primary task and extract core requirements
 2. Group related work into high-level phases
