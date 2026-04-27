@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-04-26
+### Changed
+- **Skills Quality Rebuild (Phase 05)**: Rebuilt 15 core skills to v2.0.0 with Gemini-native optimizations
+  - All skills now include explicit Tools section (Gemini CLI tools with when-to-use guidance)
+  - All skills now include Output Schema (structured JSON responses)
+  - All skills now include Error Recovery tables (error codes, causes, mitigation)
+  - Added Gemini-Specific Optimizations section (long context, google_search, code execution)
+- **Research Skill**: Now requires ≥3 google_search queries with citation format; mandatory URL attribution
+- **Review Skill**: Added real-time CVE checking via google_search; added modes (--strict, --quick, --api, --security, --perf, --openapi)
+- **Deploy Skill**: Auto-detects deployment platforms (Cloudflare, Vercel, Netlify, Docker, Fly.io, Railway, GCP, GitHub Actions)
+- **Git Skill**: Enhanced content-pattern secret scanning before commit; improved clean output format
+- **Audit Skill**: Added real-time CVE enrichment via google_search for dependency security
+- **Ask Skill**: google_search now mandatory for external/library questions; improved information grounding
+- **Bug-Fixer Skill**: Added code execution verification for fixes; enhanced Stack Overflow equivalent error lookup
+- **Plan Skill**: Now reads entire codebase via long context before planning; leverages 1M token window
+- **Debug, Refactor, Analyze, Brainstorm, Document, Intake, Gk-Execute Skills**: Enhanced to leverage Gemini's native capabilities
+
 ## [1.2.1] - 2026-04-05
 ### Added
 - **Native Hooks System**: Five lifecycle hooks (SessionStart, AfterModel, PreCompress, AfterTool, SessionEnd) implemented as Node.js scripts in `.gemini/hooks/`

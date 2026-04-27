@@ -46,7 +46,7 @@ Read the agent definition from `.gemini/agents/<agent>.md`. Follow its role, rul
 
 ### Step 3 — Load Skill(s)
 For each subtask, load the matching skill from `.gemini/skills/<skill>/SKILL.md`. Pass input matching the skill's input schema.
-If a mode flag is present (e.g., `--deep`): additionally load `.gemini/skills/<skill>/modes/<mode>.md` and merge additively.
+If a mode flag is present (e.g., `--deep`): additionally load `.gemini/skills/<skill>/references/<mode>.md` and merge additively.
 
 ### Step 4 — Execute & Verify
 - **Micro-tasking**: Break tasks into atomic units solvable in < 5 minutes with explicit verification steps.
@@ -111,14 +111,14 @@ Use artifacts from developer handoff to determine files to stage.
 | architect | — | Senior Software Architect — specializes in high-level system design, deep reasoning, and technical trade-off analysis |
 | comparator | `compare-logic` | System Migration Analyst — compares business logic between legacy and new systems |
 | designer | `ui` | UI/UX Designer — produces visual specs pre-implementation and validates UI quality post-implementation |
-| developer | `bridge-task-runner`, `bug-fixer`, `export-session`, `git`, `gk-execute`, `skill-creator`, `sql` | Senior Software Engineer — implements solutions, debugs issues, writes code |
-| devops | `deploy`, `infra` | Senior DevOps Engineer — specialist in CI/CD, infrastructure, and deployment automation |
-| documenter | `document` | Technical Writer — generates and updates project documentation from code and implementation context |
+| developer | `analytics`, `bridge-task-runner`, `bug-fixer`, `cms`, `email`, `export-session`, `feature-flags`, `git`, `gk-execute`, `i18n`, `skill-creator`, `sql` | Senior Software Engineer — implements solutions, debugs issues, writes code |
+| devops | `deploy`, `infra`, `observability` | Senior DevOps Engineer — specialist in CI/CD, infrastructure, deployment automation, and observability setup |
+| documenter | `api-docs`, `document` | Technical Writer — generates and updates project documentation, API specs from code and context |
 | maintenance | `health-check`, `migrate`, `refactor` | Senior Maintenance Engineer — specialist in code health, technical debt, and system evolution |
 | mcp-manager | `mcp-manager` | MCP Administrator — manages MCP server configurations, connections, and development |
 | planner | `plan`, `research` | Senior Technical Architect — analyzes requests, breaks down tasks, creates execution plans |
 | researcher | `brainstorm`, `intake`, `onboard` | Research Engineer — gathers, synthesizes, and reports technical information before planning or implementation |
-| reviewer | `analyze`, `review` | Senior Code Reviewer & Security Analyst — reviews code quality, security, performance |
+| reviewer | `a11y`, `analyze`, `performance`, `review` | Senior Code Reviewer & Security Analyst — reviews code quality, security, performance, and accessibility |
 | security | `audit` | Senior Security Engineer — specialist in vulnerability analysis, compliance, and threat modeling |
 | support | `debug`, `monitor` | Senior Support Engineer — specialist in runtime troubleshooting, log analysis, and incident response |
 | tester | — | Senior QA Engineer — validates implementations, writes tests, reports coverage |

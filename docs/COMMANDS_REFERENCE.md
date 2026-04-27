@@ -14,6 +14,9 @@ These commands manage the Gemini Kit environment and are executed directly in yo
 | `gk uninstall` | Removes the `.gemini/` directory and uninstalls the local runtime from the current project. |
 | `gk version` | Displays the installed version of Gemini Kit. |
 | `gk bridge` | Manages the Claude-Gemini bridge pipeline (subcommands: `init`, `start`, `status`, `reset`). |
+| `gk token gain` | Show token savings dashboard. Options: `--history` (per-session breakdown), `--json` (machine-readable output). |
+| `gk token discover` | Analyze token usage patterns to identify missed optimization opportunities. |
+| `gk token report` | Generate a markdown token analytics report saved to `plans/reports/token-report-YYYYMMDD.md`. |
 
 ## AI Agent Commands
 

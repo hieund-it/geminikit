@@ -65,8 +65,14 @@ Specialized entities with defined roles and rules (located in `.gemini/agents/`)
 
 A complete list of agents and their skills is available in the [Agent Registry](AGENTS_REGISTRY.md).
 
-### 3. Skills
+### 3. Skills (v2.0.0)
 Atomic, reusable units of functionality (located in `.gemini/skills/`). Skills are the "what" — they follow a strict Input/Output schema and perform one specific job (e.g., `gk-summarize`, `gk-analyze`, `gk-git`). They are the building blocks that agents use to accomplish their goals.
+
+As of Phase 05 (2026-04-26), all 15 core skills are v2.0.0 and include:
+- **Tools section**: Explicit Gemini CLI tools with when-to-use guidance
+- **Output Schema**: Standardized JSON structure (status, display, result, summary, confidence)
+- **Error Recovery**: Tabular error handling strategies
+- **Gemini-Specific Optimizations**: Long context reading, google_search integration, code execution verification
 
 ## Memory System
 
