@@ -1,9 +1,16 @@
 ---
 name: gk-execute
 agent: developer
-version: "1.0.0"
+version: "2.0.0"
+tier: core
 description: "Execute Markdown-based implementation plans by parsing, executing tasks, and updating status."
 ---
+
+## Tools
+- `read_file` — read plan.md and phase files; read source files before implementing tasks
+- `write_file` — implement code changes and update task status in plan files
+- `run_shell_command` — run build/test/lint commands to verify task completion
+- `list_directory` — explore project structure when context is unclear
 
 ## Interface
 - **Command:** `/gk-execute`
@@ -44,6 +51,19 @@ Before starting, write skill state to enable hook context injection:
 Write to: `.gemini/.skill-state.json`
 The BeforeAgent hook will inject the active plan path and pending phases — **do NOT scan `plans/` manually**.
 
+## Gemini-Specific Optimizations
+- **Long Context:** Read the ENTIRE plan file and all referenced source files before executing — prevents partial implementation from missing dependencies
+- **Google Search:** N/A for plan execution — implementation follows the plan spec, not external research
+- **Code Execution:** MUST run build and test commands via `run_shell_command` to verify each task before marking complete
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `plan_path` missing or file not found | Ask user to provide the plan file path |
+| BLOCKED | No pending tasks in plan | Report completion status; do not fabricate tasks |
+| FAILED | Build/test fails after implementation | Update task to `status: failed`; report error; do NOT mark as complete |
+| FAILED | Task scope unclear | Read full plan context; ask user to clarify if still ambiguous |
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - **Verify Before Update** — MUST run relevant tests or build commands before marking a task as completed `[x]`.
@@ -64,6 +84,22 @@ The BeforeAgent hook will inject the active plan path and pending phases — **d
   },
   "summary": "one sentence describing the execution result",
   "confidence": "high | medium | low"
+}
+```
+
+**Example (completed):**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "result": {
+    "report_path": "reports/gk-execute/260427-1430-report.md",
+    "current_task": "Implement POST /users endpoint with Zod validation",
+    "progress": { "total": 8, "completed": 3, "percentage": 37 },
+    "next_task": "Add rate limiting middleware to auth routes"
+  },
+  "summary": "Task 3/8 completed: POST /users endpoint implemented and tests pass.",
+  "confidence": "high"
 }
 ```
 

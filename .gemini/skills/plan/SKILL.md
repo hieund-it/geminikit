@@ -1,10 +1,17 @@
 ---
 name: gk-plan
 agent: planner
-version: "1.1.0"
+version: "2.0.0"
+tier: core
 format: "json"
 description: "Break down a complex task into structured, executable subtasks with dependencies and effort estimates."
 ---
+
+## Tools
+- `read_file` — read ALL relevant source files before planning (leverage 1M context window)
+- `list_directory` — explore project structure to identify scope and affected modules
+- `write_file` — save `plan.md` and phase files to `plans/{date}-{slug}/`
+- `google_web_search` — research unfamiliar frameworks, architecture patterns, or library trade-offs
 
 ## Interface
 - **Invoked via:** /gk-plan
@@ -14,12 +21,12 @@ description: "Break down a complex task into structured, executable subtasks wit
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --fast | Rapid planning with minimal detail | ./modes/fast.md |
-| --deep | Comprehensive analysis and detailed decomposition | ./modes/deep.md |
-| --parallel | Identify maximum concurrent task opportunities | ./modes/parallel.md |
-| --from | Load base plan from existing file path | ./modes/from.md |
-| --dry-run | Validate plan logic without committing/saving | ./modes/dry-run.md |
-| --phase | Focus on a specific phase by ID | ./modes/phase.md |
+| --fast | Rapid planning with minimal detail | ./references/fast.md |
+| --deep | Comprehensive analysis and detailed decomposition | ./references/deep.md |
+| --parallel | Identify maximum concurrent task opportunities | ./references/parallel.md |
+| --from | Load base plan from existing file path | ./references/from.md |
+| --dry-run | Validate plan logic without committing/saving | ./references/dry-run.md |
+| --phase | Focus on a specific phase by ID | ./references/phase.md |
 | (default) | Standard task decomposition | (base skill rules) |
 
 # Role
@@ -70,7 +77,21 @@ Write to: `.gemini/.skill-state.json`
 The BeforeAgent hook will inject `plan-template.md` and `phase-template.md` automatically.
 **Note:** AfterTool hook auto-creates phase stub files after you write `plan.md`.
 
+## Gemini-Specific Optimizations
+- **Long Context:** MUST read all relevant source files (src/, tests/, configs) BEFORE decomposing — use Gemini's 1M token window to understand the full codebase instead of guessing structure
+- **Google Search:** Use for unfamiliar frameworks, library selection, architecture patterns, or version compatibility checks
+- **Code Execution:** N/A — planning is analytical, not runtime verification
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `task` field missing | Ask user to provide the task description |
+| BLOCKED | Insufficient codebase context | Use `list_directory` then `read_file` on key entry points |
+| FAILED | Plan exceeds 7 subtasks | Group related work into phases; keep max 7 phases per plan |
+| FAILED | Unknown tech stack | Run `google_web_search` to research before decomposing |
+
 ## Steps
+0. **Read codebase first:** Use `list_directory` + `read_file` on key files (package.json, src/, configs) to map project structure — do NOT plan without this step
 1. Analyze the primary task and extract core requirements
 2. Group related work into high-level phases
 3. Decompose each phase into atomic, verifiable subtasks

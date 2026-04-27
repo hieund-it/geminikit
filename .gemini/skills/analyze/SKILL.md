@@ -1,21 +1,30 @@
 ---
 name: gk-analyze
 agent: reviewer
-version: "1.1.0"
+version: "2.0.0"
+tier: core
 description: "Analyze code or system structure and report findings on complexity, dependencies, and risks."
 ---
 
+## Tools
+- `read_file` — read full source files using long context; do NOT truncate (Gemini's 1M window handles large codebases)
+- `list_directory` — map project structure before deep analysis
+- `grep_search` — locate patterns: imports, function calls, secret patterns, dangerous APIs
+- `google_web_search` — verify dependency versions, check CVE databases, look up framework-specific risks
+- `run_code` — measure cyclomatic complexity or verify dependency graph for accurate metrics
+
 ## Interface
 - **Invoked via:** /gk-analyze
-- **Flags:** --deep | --security | --perf
+- **Flags:** --deep | --security | --perf | --onboard
 
 ## Mode Mapping
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --deep | Full call graph, transitive deps, circular chain detection | ./modes/deep.md |
-| --security | OWASP Top 10, injection vectors, secrets, auth gaps | ./modes/security.md |
-| --perf | Bottleneck report, N+1 queries, O(n²) loops, memory risks | ./modes/perf.md |
+| --deep | Full call graph, transitive deps, circular chain detection | ./references/deep.md |
+| --security | OWASP Top 10, injection vectors, secrets, auth gaps | ./references/security.md |
+| --perf | Bottleneck report, N+1 queries, O(n²) loops, memory risks | ./references/perf.md |
+| --onboard | Project onboarding summary — tech stack, architecture, dependencies, dev workflow | (base skill rules) |
 | (default) | Standard code quality analysis | (base skill rules) |
 
 # Role
@@ -36,9 +45,21 @@ Analyze provided code/system and report findings on complexity, dependencies, pa
     "related_files": ["string"],
     "architecture_notes": "string"
   },
-  "mode": "string (optional) — deep|security|perf"
+  "mode": "string (optional) — deep|security|perf|onboard"
 }
 ```
+
+## Gemini-Specific Optimizations
+- **Long Context:** Read ALL source files in one pass — full codebase ingestion prevents missed circular deps or hidden patterns
+- **Google Search:** Use for CVE lookups in security mode and dependency version verification in onboard mode — real-time data beats training knowledge
+- **Code Execution:** Use `run_code` for cyclomatic complexity calculation on large files where manual counting would be inaccurate
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `target` or `type` missing | Ask user to specify what to analyze (file path or system) |
+| FAILED | File too large for single read | Use `list_directory` + read by section; aggregate results |
+| FAILED | Cannot compute metrics | Report qualitative findings with `confidence: medium` |
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
@@ -51,6 +72,7 @@ Analyze provided code/system and report findings on complexity, dependencies, pa
 - Circular dependencies are high-severity structural risks.
 - For `surface` depth: identify top-level structure and critical risks only.
 - For `deep` depth: identify all call chains and detect transitive dependencies.
+- **Onboard mode (--onboard):** Scan project root structure; detect tech stack via grep signatures (React, Express, etc.); extract critical deps from package.json/requirements.txt; verify dep versions via web search; map entry points and core modules; EXCLUDE `.gemini/`, `GEMINI.md`, `.geminiignore` from scan; DO NOT read `.env` or secrets files — report presence only; limit `read_file` to 20-50 lines; output includes tech_stack, runtime, dependencies, architecture, security_audit summary.
 
 ## Steps
 1. Scan the target file or system structure
@@ -80,7 +102,14 @@ Analyze provided code/system and report findings on complexity, dependencies, pa
       "cyclomatic_complexity": "number"
     },
     "dependencies": [{"from": "string", "to": "string", "type": "import|call", "circular": "boolean"}],
-    "security_flags": ["string"]
+    "security_flags": ["string"],
+    "onboard": {
+      "tech_stack": ["string"],
+      "runtime": "string",
+      "dependencies": "object",
+      "architecture": "object",
+      "security_audit": "string"
+    }
   },
   "report_path": "string (optional) — path where analysis report was saved",
   "summary": "one sentence describing overall state",

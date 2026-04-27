@@ -3,13 +3,14 @@ name: gk-bridge-task-runner
 agent: developer
 version: "1.1.0"
 description: "Execute a bridge pipeline task and signal completion by updating the task JSON status."
+tier: internal
 ---
 
 <!-- Invoked by bridge orchestrator — not a user-facing skill -->
 
 ## Interface
 
-- **Invoked via:** Bridge orchestrator (`orchestrator.py`) — not directly by users
+- **Invoked via:** Bridge orchestrator — not directly by users
 - **Input:** Task file path provided in prompt (e.g. `.bridge/queue/task-01-01.json`)
 
 ## Role
@@ -78,5 +79,20 @@ Write `gemini_summary` as 3–8 concise sentences covering:
   },
   "summary": "one sentence describing task completion",
   "confidence": "high | medium | low"
+}
+```
+
+**Example (completed):**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "result": {
+    "task_id": "task-007",
+    "status": "gemini_done",
+    "summary": "Implemented POST /users endpoint with Zod validation; build and tests pass."
+  },
+  "summary": "Task task-007 completed by Gemini; ready for Claude review.",
+  "confidence": "high"
 }
 ```

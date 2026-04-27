@@ -66,8 +66,12 @@ function buildExecuteContext(state, cwd) {
 }
 
 function buildSkillCreatorContext(cwd) {
-  // Only inject first 60 lines of skill template to avoid context bloat
-  const tpl = readTemplate(cwd, 'skill-template.md').split('\n').slice(0, 60).join('\n');
+  // Read skill-template from skill-creator/references/ (moved from template/)
+  let tpl = '';
+  try {
+    const tplPath = path.join(cwd, '.gemini', 'skills', 'skill-creator', 'references', 'skill-template.md');
+    tpl = fs.readFileSync(tplPath, 'utf8').split('\n').slice(0, 60).join('\n');
+  } catch { /* template not found — skip injection */ }
   return [
     `## Skill Context: gk-skill-creator`,
     `Output path: .gemini/skills/{name}/SKILL.md`,

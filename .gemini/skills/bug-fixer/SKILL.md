@@ -1,11 +1,17 @@
 ---
 name: gk-bug-fixer
 agent: developer
-version: "1.1.0"
+version: "2.0.0"
+tier: core
 description: "Identify root cause from error logs and generate a verified code fix with regression tests."
 ---
 
-<!-- Save as: .gemini/skills/bug-fixer/SKILL.md -->
+## Tools
+- `grep_search` / `glob` — locate faulting code via error message or stack trace
+- `read_file` — read source files to understand context around the bug
+- `run_code` — execute fix logic in sandbox to verify correctness; MUST use for algorithmic/logic fixes
+- `google_web_search` — look up error messages, framework-specific bugs, known CVEs
+- `write_file` — save fix and regression test
 
 ## Interface
 - **Invoked via:** /gk-fix-bug (or "agent-only")
@@ -15,8 +21,8 @@ description: "Identify root cause from error logs and generate a verified code f
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --verify | Mandatory regression test and automated verification of fix | ./modes/verify.md |
-| --deep | Multi-layer analysis and architectural root-cause identification | ./modes/deep.md |
+| --verify | Mandatory regression test and automated verification of fix | ./references/verify.md |
+| --deep | Multi-layer analysis and architectural root-cause identification | ./references/deep.md |
 | (default) | Standard error diagnosis and fix generation | (base skill rules) |
 
 # Role
@@ -47,7 +53,19 @@ Take an error message or log as input, locate the faulting code, and provide a v
 - MUST provide a precise code fix (diff or replacement) that resolves the root cause, not just the symptom.
 - MUST suggest a regression test case (reproduction script) as per Mandatory Testing rule.
 - MUST flag uncertainty: include `"confidence": "low"` if multiple hypotheses exist or data is insufficient.
-- **Sandbox Verification** — When fix involves algorithmic or logic changes (not just config/typo), SHOULD invoke `/gk-verify` to validate fix correctness before reporting.
+- **Sandbox Verification** — When fix involves algorithmic or logic changes (not just config/typo), MUST invoke `run_code` to validate fix correctness before reporting. Skip only for config-only or pure typo fixes.
+
+## Gemini-Specific Optimizations
+- **Long Context:** Read entire source file + all imports — don't truncate; full context prevents misdiagnosis
+- **Google Search:** Search error message verbatim + framework/version — Gemini can retrieve real-time Stack Overflow equivalents
+- **Code Execution:** MUST run fix logic via `run_code` for all algorithmic/logic fixes to verify before reporting; do NOT speculate on correctness
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `error` field missing | Ask user to paste the error message or stack trace |
+| FAILED | Cannot locate faulting code | Use `grep_search` on error keywords; use `google_web_search` for framework-specific errors |
+| FAILED | `run_code` sandbox unavailable | Document fix with high confidence rationale; mark `confidence: medium` |
 
 ## Steps
 1. Reproduce the bug (manually or with automated script)

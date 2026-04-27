@@ -3,6 +3,7 @@ name: gk-compare-logic
 agent: comparator
 version: "1.1.0"
 description: "Compares business logic between a legacy system and a new, migrated system by analyzing their source code."
+tier: optional
 ---
 
 ## Interface
@@ -13,8 +14,8 @@ description: "Compares business logic between a legacy system and a new, migrate
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --deep | Exhaustive line-by-line comparison and transitive tracing | ./modes/deep.md |
-| --quick | High-signal summary of primary logic blocks and entry points | ./modes/quick.md |
+| --deep | Exhaustive line-by-line comparison and transitive tracing | ./references/deep.md |
+| --quick | High-signal summary of primary logic blocks and entry points | ./references/quick.md |
 | (default) | Standard balanced comparison of systems | (base skill rules) |
 
 # Role
@@ -105,6 +106,19 @@ To analyze, compare, and report on the differences in business logic between an 
     "report_path": "reports/compare-logic/{YYMMDD-HHmm}-comparison.md"
   },
   "summary": "The logic comparison is complete. The report has been generated.",
+  "confidence": "medium"
+}
+```
+
+**Example (completed):**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "result": {
+    "report_path": "reports/compare-logic/260427-1430-comparison.md"
+  },
+  "summary": "Logic comparison complete: ~68% fidelity. 3 mismatches and 2 gaps found in payment processing. Full report saved.",
   "confidence": "medium"
 }
 ```

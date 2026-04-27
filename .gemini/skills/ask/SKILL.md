@@ -1,9 +1,15 @@
 ---
 name: gk-ask
 agent: (self)
-version: "1.1.0"
+version: "2.0.0"
+tier: core
 description: "Expert assistant for answering technical and general questions with grounded context."
 ---
+
+## Tools
+- `google_web_search` — ground answers with real-time sources; MUST use when question involves external APIs, versions, or best practices
+- `read_file` — read relevant project files to give context-aware answers
+- `web_fetch` — retrieve specific documentation pages or RFCs when cited precision is needed
 
 ## Interface
 - **Invoked via:** /gk-ask
@@ -13,8 +19,8 @@ description: "Expert assistant for answering technical and general questions wit
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --deep | Architectural impact and multi-file analysis | ./modes/deep.md |
-| --quick | Brief answers (under 5 sentences), focused on immediate facts | ./modes/quick.md |
+| --deep | Architectural impact and multi-file analysis | ./references/deep.md |
+| --quick | Brief answers (under 5 sentences), focused on immediate facts | ./references/quick.md |
 | (default) | Context-aware technical answers | (base skill rules) |
 
 # Role
@@ -35,6 +41,17 @@ Provide accurate, concise, and context-aware answers to user questions, utilizin
   "mode": "string (optional) — quick|deep"
 }
 ```
+
+## Gemini-Specific Optimizations
+- **Long Context:** For project-related questions, read all relevant files before answering — avoids hallucinating details about the codebase
+- **Google Search:** MUST use for questions about external APIs, library versions, current best practices, or anything that could be stale in training data
+- **Code Execution:** Use `run_code` to validate code snippets in answers — don't provide untested code examples
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `question` field missing | Ask user to provide the question |
+| FAILED | Cannot find relevant context | State limitations; offer to search with `google_web_search` |
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)

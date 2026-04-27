@@ -1,9 +1,16 @@
 ---
 name: gk-audit
 agent: security
-version: "1.1.0"
+version: "2.0.0"
+tier: core
 description: "Audit dependencies and static code for security vulnerabilities and license compliance"
 ---
+
+## Tools
+- `run_shell_command` — run `npm audit`, dependency scanners, and SAST tools
+- `read_file` — read lockfiles, source code, and license files for static analysis
+- `google_web_search` — look up CVE databases, security advisories, and license compatibility in real-time
+- `grep_search` — scan source for hardcoded secrets, dangerous patterns (eval, exec, innerHTML)
 
 ## Interface
 - **Invoked via:** /gk-audit
@@ -14,9 +21,9 @@ description: "Audit dependencies and static code for security vulnerabilities an
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --deps | Audit project dependencies (npm audit, pip audit, etc.) | ./modes/deps.md |
-| --static | Static Application Security Testing (SAST) on source code | ./modes/static.md |
-| --license | Check third-party library licenses for compliance | ./modes/license.md |
+| --deps | Audit project dependencies (npm audit, pip audit, etc.) | ./references/deps.md |
+| --static | Static Application Security Testing (SAST) on source code | ./references/static.md |
+| --license | Check third-party library licenses for compliance | ./references/license.md |
 | (default) | Comprehensive security audit | (base skill rules) |
 
 # Role
@@ -40,6 +47,19 @@ Identify security vulnerabilities, hardcoded secrets, and license risks within t
   }
 }
 ```
+
+## Gemini-Specific Optimizations
+- **Long Context:** Read full lockfiles (package-lock.json, yarn.lock) and all source files in one pass — avoids missing transitive dependencies
+- **Google Search:** Query CVE databases (NVD, GitHub Advisory) in real-time for each flagged package — training knowledge is stale for CVEs
+- **Code Execution:** Run `npm audit --json` or equivalent via `run_shell_command` for automated dependency vulnerability data
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | No lockfile found | Ask user to run `npm install` first; explain why lockfile is needed |
+| FAILED | SCAN_FAILED | Report the error; provide manual check instructions |
+| FAILED | VULNERABILITY_FOUND | Report all CVEs with severity; suggest fix versions; do NOT auto-patch without user approval |
+| FAILED | COMPLIANCE_VIOLATION | List offending packages and licenses; recommend alternatives |
 
 # Rules
 
@@ -78,5 +98,25 @@ Identify security vulnerabilities, hardcoded secrets, and license risks within t
   "report_path": "string (optional) — path where audit report was saved",
   "summary": "one sentence describing the audit findings",
   "confidence": "high | medium | low"
+}
+```
+
+**Example (completed):**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "result": {
+    "vulnerabilities": [
+      { "id": "CVE-2024-12345", "severity": "high", "package": "lodash@4.17.20", "description": "Prototype pollution via merge", "fix_version": "4.17.21" }
+    ],
+    "license_issues": [
+      { "package": "some-lib@1.0.0", "license": "GPL-3.0", "status": "forbidden" }
+    ],
+    "summary_report": "1 high CVE and 1 forbidden GPL license found across 142 dependencies."
+  },
+  "report_path": "reports/audit/260427-1430-audit.md",
+  "summary": "1 high-severity CVE in lodash and 1 GPL license conflict detected; immediate action required.",
+  "confidence": "high"
 }
 ```

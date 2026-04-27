@@ -3,6 +3,7 @@ name: gk-sql
 agent: developer
 version: "1.1.0"
 description: "Optimize a SQL query for performance while preserving its logical result."
+tier: optional
 ---
 
 ## Interface

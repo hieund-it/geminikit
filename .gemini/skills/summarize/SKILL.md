@@ -4,6 +4,7 @@ agent: (self)
 version: "1.1.0"
 format: "json"
 description: "Compress context into structured memory using project-specific templates (execution, long-term, short-term)."
+tier: internal
 ---
 
 ## Interface

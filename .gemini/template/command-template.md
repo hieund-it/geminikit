@@ -14,6 +14,6 @@ prompt = """
 @{../skills/[skill-name]/SKILL.md}
 
 ## Available Modes (apply the mode matching any flag in the task above)
-@{../skills/[skill-name]/modes/[mode1].md}
-@{../skills/[skill-name]/modes/[mode2].md}
+@{../skills/[skill-name]/references/[mode1].md}
+@{../skills/[skill-name]/references/[mode2].md}
 """

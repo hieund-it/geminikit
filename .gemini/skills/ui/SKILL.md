@@ -2,20 +2,23 @@
 name: gk-ui
 agent: designer
 version: "1.1.0"
+tier: optional
 format: "json"
 description: "Generate precise visual component specs or review implemented UI for design quality and accessibility compliance."
 ---
 
 ## Interface
 - **Invoked via:** /gk-design
-- **Flags:** --spec | --review
+- **Flags:** --spec | --review | --gen | --auto
 
 ## Mode Mapping
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --spec | Generate visual specifications and tokens | ./modes/spec.md |
-| --review | Evaluate implementation against design and WCAG | ./modes/review.md |
+| --spec | Generate visual specifications and tokens | ./references/spec.md |
+| --review | Evaluate implementation against design and WCAG | ./references/review.md |
+| --gen | AI-driven UI strategy using Google Design Stack | ./references/generate.md |
+| --auto | Full Auto-Pilot: Generate, tokenise, and audit UI | ./references/auto.md |
 | (default) | Context-dependent UI/UX analysis | (base skill rules) |
 
 # Role

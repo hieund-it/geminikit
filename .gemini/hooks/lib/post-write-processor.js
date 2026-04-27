@@ -52,12 +52,12 @@ function createPhaseTemplates(planFilePath, cwd) {
   } catch { return []; }
 }
 
-// .gemini/skills/*/SKILL.md → run sync_registry.py if it exists
+// .gemini/skills/*/SKILL.md → run sync-registry.js if it exists
 function syncSkillRegistry(cwd) {
   try {
-    const syncScript = path.join(cwd, '.gemini', 'tools', 'sync_registry.py');
+    const syncScript = path.join(cwd, '.gemini', 'scripts', 'sync-registry.js');
     if (!fs.existsSync(syncScript)) return false;
-    execSync(`python3 "${syncScript}"`, { cwd, stdio: 'pipe', timeout: 10000 });
+    execSync(`node "${syncScript}"`, { cwd, stdio: 'pipe', timeout: 10000 });
     return true;
   } catch { return false; }
 }

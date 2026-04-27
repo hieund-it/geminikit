@@ -20,34 +20,60 @@ Commands follow the format: `/gk-<command> [--mode] [task]`
 <!-- GK_COMMAND_TABLE_START -->
 | Command | Agent | Mode flags |
 |---------|-------|------------|
-| `/gk-analyze` | reviewer | `--deep \| --security \| --perf` |
+| `/gk-a11y` | reviewer | `--audit \| --fix \| --report` |
+| `/gk-analytics` | developer | `--setup \| --events \| --audit` |
+| `/gk-analyze` | reviewer | `--deep \| --security \| --perf \| --onboard` |
 | `/gk-ask` | (self) | `--deep \| --quick` |
 | `/gk-audit` | security | `--deps \| --static \| --license` |
-| `/gk-brainstorm` | researcher | `—` |
-| `Bridge orchestrator (`orchestrator.py`) — not directly by users` | developer | `—` |
+| `/gk-auth` | developer | `--jwt \| --oauth \| --session \| --rbac` |
+| `/gk-backend` | developer | `--rest \| --graphql \| --middleware \| --validate` |
+| `/gk-brainstorm` | researcher | `none` |
+| `Bridge orchestrator — not directly by users` | developer | `none` |
 | `/gk-fix-bug (or "agent-only")` | developer | `--verify \| --deep` |
+| `/gk-cms` | developer | `--setup \| --schema \| --query` |
+| `/gk-coding-level` | developer | `--set \| --get \| --explain` |
 | `/gk-compare-logic` | comparator | `--deep \| --quick` |
+| `/gk-context-engineering` | developer | `--audit \| --compress \| --archive` |
+| `/gk-database` | developer | `--design \| --query \| --optimize \| --index` |
 | `/gk-debug` | support | `--trace \| --deep` |
 | `/gk-deploy` | devops | `--staging \| --production \| --dry-run` |
-| `agent-only (documenter)` | documenter | `—` |
-| `/gk-execute` | developer | `--dry-run \| --verbose` |
-| `/gk-export-session` | developer | `—` |
+| `/gk-docs-seeker` | researcher | `--latest \| --example \| --compare` |
+| `agent-only (documenter)` | documenter | `none` |
+| `/gk-email` | developer | `--setup \| --template \| --test` |
+| `/gk-export-session` | developer | `none` |
+| `/gk-feature-flags` | developer | `--setup \| --create \| --rollout` |
+| `/gk-frontend` | developer | `--component \| --page \| --api-route \| --optimize` |
 | `agent-only (developer)` | developer | `--dry-run` |
-| `/gk-health-check` | maintenance | `—` |
+| `` | developer | `none` |
+| `/gk-health-check` | maintenance | `none` |
+| `/gk-i18n` | developer | `--setup \| --extract \| --validate` |
 | `/gk-infra` | devops | `--docker \| --k8s \| --terraform` |
-| `/gk-intake` | researcher | `--refine \| --spec` |
-| `/gk-mcp-manager` | mcp-manager | `—` |
+| `/gk-intake` | researcher | `--refine \| --spec \| --interview` |
+| `/gk-journal` | developer | `--today \| --feature \| --bug \| --lesson` |
+| `/gk-llms` | documenter | `--full \| --docs-only \| --code-only` |
+| `/gk-mcp-manager` | mcp-manager | `--list \| --add \| --remove \| --test \| --scaffold` |
+| `/gk-media` | developer | `--video \| --audio \| --image \| --thumbnail` |
 | `/gk-migrate` | maintenance | `--generate \| --apply \| --rollback` |
+| `/gk-mobile` | developer | `--rn \| --flutter \| --native \| --navigation` |
 | `/gk-monitor` | support | `--logs \| --metrics \| --alerts` |
-| `/gk-onboard` | researcher | `--deep` |
+| `/gk-observability` | devops | `--setup \| --audit \| --configure` |
+| `/gk-performance` | reviewer | `--audit \| --bundle \| --vitals` |
 | `/gk-plan` | planner | `--fast \| --deep \| --parallel \| --from <path> \| --dry-run \| --phase <id>` |
+| `/gk-preview` | documenter | `--explain \| --diagram \| --ascii \| --slides` |
 | `/gk-refactor` | maintenance | `--pattern \| --modernize \| --cleanup` |
-| `agent-only (planner, orchestrator)` | planner | `—` |
-| `/gk-review` | reviewer | `--strict \| --quick \| --api \| --security \| --perf` |
-| `/gk-create` | developer | `- `--skill`: Generate a new skill component at `.gemini/skills/<name>/SKILL.md`` |
-| `agent-only (developer)` | developer | `—` |
-| `agent-only (orchestrator)` | (self) | `—` |
-| `/gk-design` | designer | `--spec \| --review` |
+| `agent-only (planner, orchestrator)` | planner | `none` |
+| `/gk-retro` | planner | `--sprint \| --weekly \| --project` |
+| `/gk-review` | reviewer | `--strict \| --quick \| --api \| --api-generate \| --api-validate \| --api-serve \| --security \| --perf` |
+| `/gk-security-scan` | security | `--owasp \| --secrets \| --sast \| --report` |
+| `/gk-sequential-thinking` | architect | `--depth \| --assumption \| --refine` |
+| `/gk-create` | developer | `--skill \| --agent` |
+| `agent-only (developer)` | developer | `none` |
+| `agent-only (orchestrator)` | (self) | `none` |
+| `/gk-team` | developer | `--spawn \| --coordinate \| --parallel \| --merge` |
+| `/gk-design` | designer | `--spec \| --review \| --gen \| --auto` |
+| `/gk-verify (or "agent-only")` | developer | `none` |
+| `/gk-watzup` | developer | `--summary \| --plan` |
+| `/gk-web-testing` | tester | `--e2e \| --unit \| --perf \| --coverage` |
 
 <!-- GK_COMMAND_TABLE_END -->
 
@@ -93,39 +119,65 @@ Routing table:
 | design, ui spec, visual review | `designer` |
 | compare, migration, logic parity | `comparator` |
 | document, docs, technical writing | `documenter` |
-| research, onboard, brainstorm | `researcher` |
+| research, brainstorm | `researcher` |
 
 ### Step 4 — Skill Routing
 For each subtask, check `.gemini/skills/` for matching skill:
 <!-- GK_SKILL_ROUTING_START -->
+- `a11y/SKILL.md` — Audit UI components for WCAG 2.2 AA compliance and generate actionable accessibility fixes
+- `analytics/SKILL.md` — Setup product analytics integration and define event tracking schemas for user behavior measurement
 - `analyze/SKILL.md` — Analyze code or system structure and report findings on complexity, dependencies, and risks.
 - `ask/SKILL.md` — Expert assistant for answering technical and general questions with grounded context.
 - `audit/SKILL.md` — Audit dependencies and static code for security vulnerabilities and license compliance
+- `auth/SKILL.md` — Implement authentication and authorization with JWT, OAuth2, or session management. Use when adding login, OAuth providers, session handling, or Better Auth integration.
+- `backend/SKILL.md` — Build Node.js/Python backend APIs with REST or GraphQL. Use when implementing API endpoints, middleware, authentication, or server-side logic.
 - `brainstorm/SKILL.md` — Software solution brainstorming, architectural evaluation, and technical decision debating.
 - `bridge-task-runner/SKILL.md` — Execute a bridge pipeline task and signal completion by updating the task JSON status.
 - `bug-fixer/SKILL.md` — Identify root cause from error logs and generate a verified code fix with regression tests.
+- `cms/SKILL.md` — Integrate headless CMS (Sanity, Strapi, Payload), define content schemas, and generate typed data fetching queries
+- `coding-level/SKILL.md` — Adapt response depth and style to user's coding experience level. Persists in memory to ensure consistent interaction quality.
 - `compare-logic/SKILL.md` — Compares business logic between a legacy system and a new, migrated system by analyzing their source code.
+- `context-engineering/SKILL.md` — Monitor and optimize context usage. Use to audit token count, implement compression strategies, and manage long-running session context.
+- `database/SKILL.md` — Design schemas, write queries, and optimize performance for PostgreSQL and MongoDB. Use when creating database models, writing complex queries, or improving DB performance.
 - `debug/SKILL.md` — Identify root cause of a software error and recommend a precise fix.
 - `deploy/SKILL.md` — Execute build and deployment pipelines to various environments
+- `docs-seeker/SKILL.md` — Fetch and summarize external documentation for any library, API, or framework. Use to keep project knowledge updated without leaving the terminal.
 - `document/SKILL.md` — Generate accurate technical documentation from provided code content and context.
-- `gk-execute/SKILL.md` — Execute Markdown-based implementation plans by parsing, executing tasks, and updating status.
+- `email/SKILL.md` — Setup transactional email system with templates, queue integration, and delivery monitoring
 - `export-session/SKILL.md` — Exports the current session state and conversation summary for continuation.
+- `feature-flags/SKILL.md` — Setup feature flag system, create flags, and manage gradual rollouts and A/B experiments
+- `frontend/SKILL.md` — Build React/Next.js/TypeScript frontends with modern patterns. Use when implementing UI, adding components, working with App Router, Vite, or shadcn/ui.
 - `git/SKILL.md` — Execute git operations: commit, branch, status, PR prep, and conflict detection.
+- `gk-execute/SKILL.md` — Execute Markdown-based implementation plans by parsing, executing tasks, and updating status.
 - `health-check/SKILL.md` — Validate framework compliance across all agents and skills.
+- `i18n/SKILL.md` — Setup internationalization, extract hardcoded strings, and validate translation completeness
 - `infra/SKILL.md` — Manage infrastructure as code (Docker, K8s, Terraform configurations)
 - `intake/SKILL.md` — Capture, structure, and refine initial user requirements or project ideas.
+- `journal/SKILL.md` — Write technical journal entries about session work, changes made, and lessons learned. Use after completing features, fixing bugs, or finishing implementation sessions.
+- `llms/SKILL.md` — Generate llms.txt and llms-full.txt from codebase and docs. Use to prepare project context for AI consumption or external documentation tools.
 - `mcp-manager/SKILL.md` — Manage MCP server configuration, test connections, and scaffold new servers. Use this skill to add/edit/remove MCP servers or to troubleshoot connectivity.
+- `media/SKILL.md` — Process video, audio, and images with FFmpeg and ImageMagick. Use when converting media formats, applying filters, generating thumbnails, or processing uploads.
 - `migrate/SKILL.md` — Manage database schema changes and data migrations
+- `mobile/SKILL.md` — Build mobile apps with React Native (Expo) or Flutter. Use when implementing native features, platform-specific code, navigation, or app state management.
 - `monitor/SKILL.md` — Analyze system logs and monitor performance metrics to detect anomalies
-- `onboard/SKILL.md` — Helps users quickly grasp a new project securely. Summarizes architecture, tech stack, dependencies, and development workflow while ensuring sensitive data remains confidential.
+- `observability/SKILL.md` — Setup and audit observability infrastructure — error tracking, APM, and structured logging
+- `performance/SKILL.md` — Audit Core Web Vitals, bundle size, and runtime performance — then recommend actionable optimizations
 - `plan/SKILL.md` — Break down a complex task into structured, executable subtasks with dependencies and effort estimates.
+- `preview/SKILL.md` — Generate visual explanations of code, architecture, or logic. Use to visualize complex systems, generate diagrams, or create slide-style presentations.
 - `refactor/SKILL.md` — Improve code structure and maintainability without changing external behavior
 - `research/SKILL.md` — Gather, compare, and synthesize technical options into a structured recommendation report.
-- `review/SKILL.md` — Comprehensive review of code quality, API design, security, and performance with actionable findings.
-- `skill-creator/SKILL.md` — Generate agent and skill files following Gemini Kit templates and rules.
+- `retro/SKILL.md` — Run sprint retrospectives with git metrics analysis. Use when reviewing sprint/week performance, identifying patterns, or generating retrospective reports.
+- `review/SKILL.md` — Comprehensive review of code quality, API design, security, and performance. Includes OpenAPI 3.1 spec generation, validation, and UI serving.
+- `security-scan/SKILL.md` — Scan code for OWASP Top 10 vulnerabilities, secrets exposure, and SAST issues. Use when auditing code security, checking for injection flaws, or detecting leaked credentials.
+- `sequential-thinking/SKILL.md` — Structured step-by-step analysis for complex problems. Use when thinking through logic, analyzing interdependencies, or solving ambiguous technical challenges.
+- `skill-creator/SKILL.md` — Generate agent and skill files following Gemini Kit templates. Use when creating a new skill or /gk-* command. Use for building agent definitions or extending Gemini Kit.
 - `sql/SKILL.md` — Optimize a SQL query for performance while preserving its logical result.
-- `summarize/SKILL.md` — Compress conversation history or agent output into a structured, token-efficient summary.
+- `summarize/SKILL.md` — Compress context into structured memory using project-specific templates (execution, long-term, short-term).
+- `team/SKILL.md` — Orchestrate multi-agent teams for parallel development. Use when spawning parallel agents, setting up file ownership boundaries, coordinating complex multi-session workflows.
 - `ui/SKILL.md` — Generate precise visual component specs or review implemented UI for design quality and accessibility compliance.
+- `verify/SKILL.md` — Execute Python code in sandbox to verify fixes, test logic, or validate transformations.
+- `watzup/SKILL.md` — Review recent changes and wrap up the current work session. Use when finishing a coding session, summarizing work done, or planning next steps.
+- `web-testing/SKILL.md` — Write and run Playwright E2E, Vitest unit, and k6 performance tests. Use when adding test coverage, writing E2E scenarios, or load testing APIs.
 
 <!-- GK_SKILL_ROUTING_END -->
 

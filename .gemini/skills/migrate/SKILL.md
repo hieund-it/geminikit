@@ -2,6 +2,7 @@
 name: gk-migrate
 agent: maintenance
 version: "1.2.0"
+tier: core
 description: "Manage database schema changes and data migrations"
 ---
 
@@ -54,5 +55,26 @@ Safely evolve the project's database schema while ensuring zero data loss and ma
   },
   "summary": "Migration plan ready for review; confirmation required before execution.",
   "confidence": "high | medium | low"
+}
+```
+
+**Example (completed — --generate):**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "result": {
+    "migration_proposal": {
+      "changes": ["Add nullable 'deleted_at TIMESTAMPTZ' column to users table"],
+      "risk_level": "low",
+      "data_loss_risk": false,
+      "downtime_estimate": "< 1s (non-locking ALTER on PostgreSQL 14+)",
+      "rollback_strategy": "ALTER TABLE users DROP COLUMN deleted_at"
+    },
+    "migration_file": "drizzle/migrations/0009_add_soft_delete.sql",
+    "execution_log": "Dry-run succeeded; rollback verified."
+  },
+  "summary": "Soft-delete migration generated; low risk, no downtime; awaiting confirmation to apply.",
+  "confidence": "high"
 }
 ```

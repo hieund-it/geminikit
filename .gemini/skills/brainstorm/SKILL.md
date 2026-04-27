@@ -1,9 +1,15 @@
 ---
 name: gk-brainstorm
 agent: researcher
-version: "1.3.0"
+version: "2.0.0"
+tier: core
 description: "Software solution brainstorming, architectural evaluation, and technical decision debating."
 ---
+
+## Tools
+- `google_web_search` — research architectural patterns, case studies, technology comparisons for options
+- `read_file` — understand existing codebase before proposing solutions
+- `list_directory` — explore project structure to assess scope of each option
 
 ## Interface
 - **Invoked via:** /gk-brainstorm
@@ -68,6 +74,18 @@ Before starting, write skill state to enable hook context injection:
 Write to: `.gemini/.skill-state.json`
 The BeforeAgent hook will inject the report path and `summary-template.md` automatically.
 
+## Gemini-Specific Optimizations
+- **Long Context:** Read entire existing codebase before proposing options — avoids suggestions that conflict with current architecture
+- **Google Search:** Use to research real-world case studies, performance benchmarks, and architectural trade-offs for each option
+- **Code Execution:** N/A — brainstorming is exploratory; use search for evidence instead
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `task` or `problem` missing | Enter Phase 1 interview: ask 1-3 targeted questions via `ask_user` |
+| BLOCKED | AMBIGUOUS_PROBLEM | Probe constraints (scale, budget, timeline) before proposing options |
+| FAILED | User never confirms selection | Re-present options with clearer trade-off summary; ask again |
+
 # Process
 1. **Intake & Interview** — Call `ask_user` with 1-3 targeted questions to align with user expectations and project constraints. Wait for answers before proceeding.
 2. **Research & Ideation** — Map the problem space and generate potential architectural paths internally.
@@ -100,5 +118,38 @@ The BeforeAgent hook will inject the report path and `summary-template.md` autom
   "output_file": "string (optional) — path where brainstorm report was saved",
   "summary": "User selected [chosen_solution]; ready for planning phase.",
   "confidence": "high | medium | low"
+}
+```
+
+**Example (completed):**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "result": {
+    "chosen_solution": "BullMQ + Redis",
+    "solutions": [
+      {
+        "name": "BullMQ + Redis",
+        "approach": "Redis-backed job queue with built-in retry and rate limiting",
+        "pros": ["Battle-tested", "Real-time job progress", "TypeScript native"],
+        "cons": ["Requires Redis infrastructure"],
+        "risk": "Low — well-maintained, active community"
+      },
+      {
+        "name": "Inngest",
+        "approach": "Serverless event-driven job queue with hosted infra",
+        "pros": ["Zero infra to manage", "Fan-out and step functions"],
+        "cons": ["Vendor lock-in", "Higher cost at scale"],
+        "risk": "Medium — external dependency"
+      }
+    ],
+    "matrix": { "complexity": ["low", "very-low"], "cost": ["low", "medium"], "control": ["high", "low"] },
+    "recommendation": "BullMQ for self-hosted environments needing full observability; Inngest for serverless-first teams.",
+    "next_steps": "Hand off to gk-plan to design queue schema and worker architecture."
+  },
+  "output_file": "reports/brainstorm/260427-1430-job-queue-options.md",
+  "summary": "User selected BullMQ + Redis; ready for planning phase.",
+  "confidence": "high"
 }
 ```

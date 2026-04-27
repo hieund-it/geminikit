@@ -1,10 +1,17 @@
 ---
 name: gk-debug
 agent: support
-version: "1.1.0"
+version: "2.0.0"
+tier: core
 format: "json"
 description: "Identify root cause of a software error and recommend a precise fix."
 ---
+
+## Tools
+- `read_file` — read source file and all referenced modules to map full execution context
+- `grep_search` — locate variable mutations, async calls, or pattern instances across codebase
+- `google_web_search` — look up framework-specific bugs, runtime error codes, known issues
+- `run_code` — reproduce minimal repro case to confirm hypothesis before prescribing fix
 
 ## Interface
 - **Invoked via:** /gk-debug
@@ -14,8 +21,8 @@ description: "Identify root cause of a software error and recommend a precise fi
 
 | Flag | Description | Reference |
 |------|-------------|-----------|
-| --trace | Step-by-step execution trace, variable states, divergence point | ./modes/trace.md |
-| --deep | Multi-layer analysis (app/framework/runtime/OS), repro case | ./modes/deep.md |
+| --trace | Step-by-step execution trace, variable states, divergence point | ./references/trace.md |
+| --deep | Multi-layer analysis (app/framework/runtime/OS), repro case | ./references/deep.md |
 | (default) | Standard error diagnosis | (base skill rules) |
 
 # Role
@@ -42,6 +49,18 @@ Identify root cause of an error from provided data and recommend a precise, acti
   "mode": "string (optional) — trace|deep"
 }
 ```
+
+## Gemini-Specific Optimizations
+- **Long Context:** Read entire call chain (file + all imports) — diagnosis requires full context, not just the error line
+- **Google Search:** Search error message verbatim + runtime/version; also search known race conditions or platform-specific bugs
+- **Code Execution:** Use `run_code` to reproduce the bug with a minimal repro — confirms hypothesis before prescribing fix
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `error` field missing | Ask for exact error message and stack trace |
+| FAILED | Cannot reproduce bug | Set `confidence: low`; list `needs` (env info, full logs, repro steps) |
+| FAILED | Multiple hypotheses remain | Pick most likely with `confidence: medium`; list alternatives in `needs` |
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)

@@ -1,10 +1,16 @@
 ---
 name: gk-document
 agent: documenter
-version: "1.1.0"
+version: "2.0.0"
+tier: core
 format: "json"
 description: "Generate accurate technical documentation from provided code content and context."
 ---
+
+## Tools
+- `read_file` — read source code and existing docs to document actual behavior (not assumptions)
+- `write_file` — save generated documentation
+- `google_web_search` — look up standard doc formats (Keep a Changelog, OpenAPI), framework-specific doc conventions
 
 ## Interface
 - **Invoked via:** agent-only (documenter)
@@ -30,6 +36,18 @@ Read provided code/diff and generate accurate technical documentation reflecting
   "existing": "string (optional) — current content for update"
 }
 ```
+
+## Gemini-Specific Optimizations
+- **Long Context:** Read the ENTIRE source file and all related modules — Gemini's 1M window enables accurate documentation without sampling
+- **Google Search:** Use for industry-standard doc formats (changelog, OpenAPI, JSDoc) and audience-specific terminology
+- **Code Execution:** N/A — use `read_file` to trace actual code behavior
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `code` or `doc_type` missing | Ask user to provide code and documentation type |
+| FAILED | Contradiction detected | Flag it explicitly in output; do NOT silently pick one; ask user which is correct |
+| FAILED | Unknown audience | Default to `developer`; state the assumption in output |
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)

@@ -4,6 +4,7 @@ agent: developer
 version: "1.1.0"
 format: "markdown"
 description: "Exports the current session state and conversation summary for continuation."
+tier: internal
 ---
 
 ## Interface
@@ -31,7 +32,7 @@ To generate a structured markdown block containing the current task state from `
 - The output should instruct the user on how to use it.
 
 # Output
-A markdown block that looks like this:
+**Example (completed):** A markdown block that looks like this:
 
 ````markdown
 **SESSION EXPORT**

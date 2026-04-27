@@ -2,6 +2,7 @@
 name: gk-verify
 agent: developer
 version: "1.0.0"
+tier: core
 description: "Execute Python code in sandbox to verify fixes, test logic, or validate transformations."
 ---
 
@@ -60,6 +61,24 @@ Execute a code snippet in Python sandbox and report pass/fail with evidence.
   },
   "summary": "one sentence verdict",
   "confidence": "high | medium | low"
+}
+```
+
+**Example (completed — pass):**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "display": "## Verification: PASS\n\n**Test:** sort([3,1,2]) returns [1,2,3]\n**Result:** ✓ All 3 assertions passed",
+  "result": {
+    "verdict": "pass",
+    "test_script": "assert sorted([3,1,2]) == [1,2,3]",
+    "execution_output": "All assertions passed.",
+    "assertions_passed": 3,
+    "assertions_total": 3
+  },
+  "summary": "Verification passed: sort function returns correct ascending order.",
+  "confidence": "high"
 }
 ```
 

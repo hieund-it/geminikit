@@ -1,9 +1,15 @@
 ---
 name: gk-git
 agent: developer
-version: "1.1.0"
+version: "2.0.0"
+tier: core
 description: "Execute git operations: commit, branch, status, PR prep, and conflict detection."
 ---
+
+## Tools
+- `run_shell_command` — execute git commands (status, diff, commit, push, branch, worktree)
+- `read_file` — read staged diffs or scan for accidental secrets before committing
+- `grep_search` — detect debug logs, unused imports, or credential patterns pre-commit
 
 ## Interface
 - **Invoked via:** agent-only (developer)
@@ -34,6 +40,19 @@ Execute specified git operation and return structured results. Report changes on
   "mode": "string (optional) — dry-run|execute"
 }
 ```
+
+## Gemini-Specific Optimizations
+- **Long Context:** Read full git diff before committing — scan ALL changed files for secrets, debug code, or accidental inclusions
+- **Google Search:** N/A — git operations are deterministic shell commands
+- **Code Execution:** N/A — use `run_shell_command` for git operations
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `operation` field missing | Ask user which git operation to perform |
+| BLOCKED | Security block (secret detected) | Report the file/line; do NOT commit; ask user to review |
+| FAILED | Merge conflict | Report conflicting files; do NOT auto-resolve; ask user |
+| FAILED | Force-push to main | REJECT; explain risk; suggest PR instead |
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)

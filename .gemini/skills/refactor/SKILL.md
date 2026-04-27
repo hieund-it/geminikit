@@ -1,9 +1,17 @@
 ---
 name: gk-refactor
 agent: maintenance
-version: "1.2.0"
+version: "2.0.0"
+tier: core
 description: "Improve code structure and maintainability without changing external behavior"
 ---
+
+## Tools
+- `read_file` — read entire target file(s) and all callers using long context before proposing changes
+- `grep_search` — find all usages of the symbol/pattern being refactored
+- `write_file` — apply approved changes
+- `google_web_search` — look up modern alternatives or patterns when using `--modernize`
+- `run_code` — run before/after logic in sandbox to verify functional parity for complex transformations
 
 ## Interface
 - **Invoked via:** /gk-refactor
@@ -27,6 +35,18 @@ Propose and implement code improvements that enhance readability and maintainabi
   ask_user("Does this proposal look correct? Reply 'yes' to apply or describe what to change:")
   ```
 - **NEVER** embed interview questions or approval prompts inside JSON output fields.
+
+## Gemini-Specific Optimizations
+- **Long Context:** Read entire target file + all callers/importers — Gemini's 1M window allows full dependency graph analysis before proposing changes
+- **Google Search:** Use for `--modernize` to find current idiomatic patterns, deprecation notices, or migration guides
+- **Code Execution:** Use `run_code` for complex refactors (e.g., data transformations, algorithm changes) to prove functional parity
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | No target specified | Ask user which file/function/pattern to refactor |
+| FAILED | LOGIC_CHANGED | Stop and report; do NOT apply the change; diagnose divergence |
+| FAILED | PATTERN_NOT_FOUND | Report locations searched; ask user for clarification |
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
@@ -57,5 +77,27 @@ Propose and implement code improvements that enhance readability and maintainabi
   },
   "summary": "Refactoring proposal generated; awaiting user approval to proceed.",
   "confidence": "high | medium | low"
+}
+```
+
+**Example (completed):**
+```json
+{
+  "status": "completed",
+  "format": "json",
+  "result": {
+    "proposal": {
+      "before": "if/else chain with 7 branches checking `req.method`",
+      "after": "Strategy map: `const handlers = { GET: ..., POST: ..., PATCH: ... }; handlers[req.method]?.(req, res)`",
+      "benefits": ["Eliminates branching complexity", "New methods added without touching existing code (Open/Closed)"],
+      "risks": ["Unfamiliar pattern to junior devs — add comment explaining strategy map"]
+    },
+    "refactored_files": [
+      { "path": "src/routes/users.ts", "summary": "Replaced 7-branch if/else with strategy map; behavior preserved" }
+    ],
+    "verification_report": "All 14 existing route tests pass after refactor (vitest run)"
+  },
+  "summary": "7-branch if/else replaced with strategy map; 14 tests pass; no behavior change.",
+  "confidence": "high"
 }
 ```
