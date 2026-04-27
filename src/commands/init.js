@@ -7,9 +7,8 @@ const fse = require('fs-extra')
 const path = require('path')
 const pc = require('picocolors')
 const { spawnSync } = require('child_process')
-const { intro, outro, confirm, log, cancel, isCancel } = require('@clack/prompts')
+const { intro, outro, confirm, log, cancel, isCancel, text } = require('@clack/prompts')
 const { createSpinner } = require('../utils/ui')
-const { getSystemPython, setupEmbeddablePython, setupVenv, getExistingPython } = require('../utils/python-setup')
 
 /**
  * Recursively collects all file paths from dir, skipping entries where filterFn returns false.
@@ -42,37 +41,111 @@ async function copyFilesVerbose(files, srcBase, destBase, overwrite) {
 }
 
 /**
- * Parses requirements.txt, lists all packages, then installs them in one batch.
- * Using batch install avoids Windows shell escaping issues with version specifiers (>=, <=, ~=).
- * Returns the number of packages installed.
+ * Runs 'npm install' in the specified directory.
  */
-async function installPackagesVerbose(pythonPath, reqFile) {
-  const pkgs = (await fse.readFile(reqFile, 'utf8'))
-    .split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'))
-  if (pkgs.length === 0) return 0
+async function installNodePackages(targetDir) {
+  if (!(await fse.pathExists(path.join(targetDir, 'package.json')))) return
 
-  // Use spawnSync (no shell) to avoid cmd.exe escaping issues with paths and version specifiers
   const s = createSpinner()
-  s.start('Installing packages...')
-  const result = spawnSync(pythonPath, ['-m', 'pip', 'install', '-r', reqFile, '--quiet'], { encoding: 'utf8', timeout: 300000 })
-  if (result.error?.code === 'ETIMEDOUT') throw new Error('pip install timed out (5 min)')
-  if (result.status !== 0) throw new Error(result.stderr || result.error?.message || 'pip install failed')
-  s.stop(`${pkgs.length} packages installed`)
-  return pkgs.length
+  s.start('Installing Node packages...')
+  const result = spawnSync('npm', ['install', '--quiet'], {
+    cwd: targetDir,
+    encoding: 'utf8',
+    timeout: 300000
+  })
+  if (result.error) throw new Error(`npm spawn error: ${result.error.message}`)
+  if (result.status !== 0) throw new Error(result.stderr || 'npm install failed')
+  s.stop('Node packages installed')
+}
+
+/**
+ * Interactive .env setup: copies .env.example and prompts for values.
+ */
+async function setupEnvInteractively(targetDir) {
+  const envPath = path.join(targetDir, '.env')
+  const examplePath = path.join(targetDir, '.gemini', '.env.example')
+
+  if (!(await fse.pathExists(examplePath))) return
+
+  if (!(await fse.pathExists(envPath))) {
+    await fse.copy(examplePath, envPath)
+    log.info('.env file created from .env.example')
+  }
+
+  const content = await fse.readFile(envPath, 'utf8')
+  const entries = content.split('\n')
+    .map(l => l.trim())
+    .filter(l => l && !l.startsWith('#') && l.includes('='))
+    .map(l => {
+      const idx = l.indexOf('=')
+      return { key: l.slice(0, idx).trim(), currentValue: l.slice(idx + 1).trim() }
+    })
+
+  if (entries.length === 0) return
+
+  log.info('Interactive environment setup. Press Enter to keep current value.')
+
+  let newContent = content
+  for (const { key, currentValue } of entries) {
+    const value = await text({
+      message: `Enter value for ${pc.cyan(key)}:`,
+      initialValue: currentValue,
+      placeholder: 'leave empty to clear'
+    })
+
+    if (isCancel(value)) {
+      if (newContent !== content) log.warn('.env partially updated — cancelled mid-way')
+      break
+    }
+    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const regex = new RegExp(`^${escapedKey}=.*`, 'm')
+    newContent = newContent.replace(regex, `${key}=${value ?? currentValue}`)
+  }
+
+  await fse.writeFile(envPath, newContent)
+  log.success('.env configuration updated')
+}
+
+/**
+ * Scans skills/ directory and returns a Set of skill names marked as optional (tier: optional).
+ * These are skipped during gk init — users can install them later with gk install <skill>.
+ */
+async function getOptionalSkillNames(geminiSource) {
+  const skillsDir = path.join(geminiSource, 'skills')
+  if (!(await fse.pathExists(skillsDir))) return new Set()
+
+  const optional = new Set()
+  for (const entry of await fse.readdir(skillsDir)) {
+    const skillMd = path.join(skillsDir, entry, 'SKILL.md')
+    if (!(await fse.pathExists(skillMd))) continue
+    try {
+      const content = await fse.readFile(skillMd, 'utf8')
+      const match = content.match(/^tier:\s*(\w+)/m)
+      if (match && match[1] === 'optional') optional.add(entry)
+    } catch (err) {
+      log.warn(`Could not read skill tier for '${entry}': ${err.message} — treating as core`)
+    }
+  }
+  return optional
 }
 
 /**
  * The main initialization logic, exported for reuse by 'update' command.
- * Runs 3 steps: copy files → setup Python → install packages.
+ * Runs 3 steps: copy files → install Node packages → setup env.
  */
 async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource, overwrite = false) {
   const startTime = Date.now()
 
   try {
     // Step 1: Copy framework files
+    const optionalSkills = await getOptionalSkillNames(geminiSource)
     const filterFn = (src) => {
       const rel = path.relative(geminiSource, src)
-      return !rel.startsWith('memory') && !rel.startsWith('runtime') && !src.endsWith('.env')
+      if (rel.startsWith('memory') || rel.startsWith('runtime') || path.basename(src) === '.env') return false
+      // Skip optional skills — available via gk install <skill>
+      const parts = rel.split(path.sep)
+      if (parts[0] === 'skills' && parts.length >= 2 && optionalSkills.has(parts[1])) return false
+      return true
     }
     log.info('[1/3] Copying framework files...')
     const files = await walkFiles(geminiSource, filterFn)
@@ -82,46 +155,19 @@ async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource
     }
     log.success(`[1/3] Copied ${files.length} files`)
 
-    // Step 2: Setup Python Runtime
-    let pythonPath = await getExistingPython(geminiTarget)
-    const systemPython = getSystemPython()
+    // Step 2: Install Node packages for hooks
+    log.info('[2/3] Installing Node packages for hooks...')
+    await installNodePackages(path.join(geminiTarget, 'hooks'))
+    log.success('[2/3] Node packages ready')
 
-    if (pythonPath) {
-      log.success('[2/3] Existing Python runtime reused')
-    } else if (systemPython) {
-      const s = createSpinner()
-      s.start(`[2/3] Creating Python venv with ${systemPython}...`)
-      pythonPath = await setupVenv(systemPython, geminiTarget)
-      s.stop('[2/3] Python venv ready')
-    } else if (process.platform === 'win32') {
-      const s = createSpinner()
-      s.start('[2/3] Downloading Python (Windows embeddable)...')
-      pythonPath = await setupEmbeddablePython(geminiTarget)
-      s.stop('[2/3] Python embeddable ready')
-    } else {
-      throw new Error('No Python found. Install Python 3 to use Gemini Kit skills.')
-    }
-
-    // Step 3: Install Python packages
-    if (pythonPath) {
-      const reqFile = path.join(geminiTarget, 'requirements.txt')
-      if (await fse.pathExists(reqFile)) {
-        log.info('[3/3] Installing Python packages...')
-        const count = await installPackagesVerbose(pythonPath, reqFile)
-        log.success(`[3/3] ${count} packages installed`)
-      }
-
-      // Persist python path to settings
-      const settingsPath = path.join(geminiTarget, 'settings.json')
-      const settings = await fse.readJson(settingsPath).catch(() => ({}))
-      settings.python_path = pythonPath
-      await fse.writeJson(settingsPath, settings, { spaces: 2 })
-    }
+    // Step 3: Setup environment variables
+    log.info('[3/3] Setting up environment variables...')
+    await setupEnvInteractively(targetDir)
+    log.success('[3/3] Environment ready')
 
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1)
     log.success(`Gemini Kit initialized successfully! (${elapsed}s)`)
-    log.info(`Local Python: ${pc.cyan(pythonPath || 'Not found')}`)
-    log.info(`Config file:  ${pc.cyan('GEMINI.md')}`)
+    log.info(`Config file: ${pc.cyan('GEMINI.md')}`)
   } catch (err) {
     log.error('Error during initialization: ' + err.message)
     throw err

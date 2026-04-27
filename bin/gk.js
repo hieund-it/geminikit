@@ -16,13 +16,6 @@ program
   .version(version)
 
 program
-  .command('version')
-  .description('Show the current version of gemini-kit')
-  .action(() => {
-    console.log(`gemini-kit v${version}`)
-  })
-
-program
   .command('init')
   .description('Scaffold .gemini/ and GEMINI.md into the current project')
   .action(() => require('../src/commands/init')())
@@ -38,9 +31,10 @@ program
   .action(() => require('../src/commands/update')())
 
 program
-  .command('uninstall')
-  .description('Remove Gemini Kit and its local runtime from the current project')
-  .action(() => require('../src/commands/uninstall')())
+  .command('doctor')
+  .description('Diagnose and fix Gemini Kit setup issues')
+  .option('--fix', 'Auto-fix addressable issues')
+  .action((options) => require('../src/commands/doctor').run(options))
 
 const { bridgeInit, bridgeStart, bridgeStatus, bridgeReset } = require('../src/commands/bridge')
 const bridge = program.command('bridge').description('Claude-Gemini bridge pipeline')
@@ -66,5 +60,25 @@ bridge
   .description('Reset tasks to pending for retry')
   .option('--failed-only', 'Only reset failed tasks (default: reset all)')
   .action((options) => bridgeReset(options))
+
+const { gain, discover, report } = require('../src/commands/token')
+const tokenCmd = program.command('token').description('Token analytics and savings tracking')
+
+tokenCmd
+  .command('gain')
+  .description('Show token savings dashboard')
+  .option('--history', 'Show per-session breakdown')
+  .option('--json', 'Output as JSON')
+  .action((options) => gain(options))
+
+tokenCmd
+  .command('discover')
+  .description('Identify token optimization opportunities')
+  .action(() => discover())
+
+tokenCmd
+  .command('report')
+  .description('Generate markdown report in plans/reports/')
+  .action(() => report())
 
 program.parse()

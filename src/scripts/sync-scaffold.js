@@ -1,3 +1,7 @@
+// sync-scaffold.js — copies .gemini/ → scaffold/ for npm publish.
+// Run before `npm publish` only. Do NOT run on every SKILL.md edit.
+// For live registry sync, use: node .gemini/scripts/sync-registry.js
+
 const fs = require('fs');
 const path = require('path');
 
@@ -29,10 +33,15 @@ function sync() {
         if (srcPath === src) return true;
         
         const relative = path.relative(src, srcPath);
-        const isTrash = relative.startsWith('memory') || 
-                        relative.startsWith('runtime') || 
-                        path.basename(srcPath).startsWith('.env');
-        
+        const parts = relative.split(path.sep);
+        const isTrash = relative.startsWith('memory') ||
+                        relative.startsWith('runtime') ||
+                        relative.startsWith('logs') ||
+                        parts.includes('node_modules') ||
+                        parts.includes('.venv') ||
+                        path.basename(srcPath) === '.env' ||
+                        path.basename(srcPath) === '.skill-state.json';
+
         return !isTrash;
       }
     });
