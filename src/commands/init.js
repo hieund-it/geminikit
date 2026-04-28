@@ -62,7 +62,7 @@ async function installNodePackages(targetDir) {
  * Interactive .env setup: copies .env.example and prompts for values.
  */
 async function setupEnvInteractively(targetDir) {
-  const envPath = path.join(targetDir, '.env')
+  const envPath = path.join(targetDir, '.gemini', '.env')
   const examplePath = path.join(targetDir, '.gemini', '.env.example')
 
   if (!(await fse.pathExists(examplePath))) return
