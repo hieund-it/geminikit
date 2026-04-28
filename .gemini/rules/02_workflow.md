@@ -8,6 +8,12 @@
   - Complex (Multi-step): Pass through `planner` to generate a roadmap before execution.
 
 ## 2. Execution Contract
+
+<mandatory_sequence>
+**REQUIRED execution order — NEVER skip or reorder:**
+Research → Strategy → Execution → Validation → Quality Gate → Done
+</mandatory_sequence>
+
 - MUST follow the workflow: **Research → Strategy → Execution → Validation**.
 - **2.1 Intake & Interview Protocol (CRITICAL):**
   - **Context Gathering**: For tasks involving `refactor`, `migrate`, or architectural changes, the Agent MUST interview the user using `gk-intake` or specific questions.
@@ -65,6 +71,19 @@
 - After 3 retries with no success: return `status: "failed"`, `error.code: "RATE_LIMITED"`, and surface to user.
 - On HTTP 5xx from external APIs: treat as transient, apply same backoff. Log each retry to `execution.md`.
 - **Graceful Degradation:** If a skill/agent is unavailable (timeout or load error), fall back to reporting the task as `blocked` — do not silently skip or hallucinate output.
+
+## 9. Definition of Done
+
+<definition_of_done>
+A task is ONLY considered complete when ALL of the following are true:
+1. **Tests pass** — 0 failures in test suite
+2. **Review score ≥ 7** — via `/gk-review`; no critical security findings
+3. **Quality gate passed** — `/gk-quality-gate` returns `gate_passed: true`
+4. **Artifacts saved** — reports stored in `reports/{skill}/` per Rule 05_6
+5. **Memory updated** — `.gemini/memory/execution.md` reflects current state
+
+**A task that skips any of these steps is INCOMPLETE — regardless of user approval.**
+</definition_of_done>
 
 ## 8. High-Impact Skill Validation
 - **gk-refactor / gk-migrate**: MUST provide a "Before/After" comparison report and wait for user approval before applying changes to the main branch.

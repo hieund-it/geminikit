@@ -68,12 +68,15 @@ Implement mobile screens, components, native integrations, and navigation flows 
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<mobile_safety_rules>
+**NON-NEGOTIABLE mobile development rules:**
 - **Platform Parity:** Test on both iOS and Android; document platform-specific behavior differences.
+- **Accessibility:** Use `accessibilityLabel`, `accessibilityRole`, and `accessible={true}` on all interactive elements.
+- **Permissions:** Request permissions with proper fallback UX for denial; never assume permission is granted.
+- **Async Safety:** Always handle `Promise` rejections; use `try/catch` around native API calls.
+</mobile_safety_rules>
 - **Performance:** Use `FlatList` (not `ScrollView`) for lists; virtualize long lists; avoid heavy computation on the main thread.
 - **Navigation Safety:** Always handle deep links and cold start navigation; avoid navigation before the navigator is mounted.
-- **Accessibility:** Use `accessibilityLabel`, `accessibilityRole`, and `accessible={true}` on all interactive elements.
-- **Async Safety:** Always handle `Promise` rejections; use `try/catch` around native API calls.
-- **Permissions:** Request permissions with proper fallback UX for denial; never assume permission is granted.
 - **State Management:** Prefer Zustand or React Context for shared state; avoid prop drilling > 2 levels.
 - **Offline First:** Cache critical data with AsyncStorage or MMKV; handle network errors gracefully.
 

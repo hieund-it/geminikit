@@ -57,10 +57,13 @@ Minimize session token overhead through active monitoring and scheduled compress
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<context_safety_rules>
+**ALWAYS enforced:**
 - **Token Economy:** Active context MUST remain < 2000 tokens for optimal performance.
 - **No Data Loss:** Summarize context before archiving; retain critical findings/plans in `pinned.md`.
-- **Scheduled Pruning:** Automate pruning for sessions > 2 hours.
 - **Transparency:** Always inform user when context is compressed or archived.
+</context_safety_rules>
+- **Scheduled Pruning:** Automate pruning for sessions > 2 hours.
 
 # Output
 ```json

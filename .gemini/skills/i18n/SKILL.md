@@ -39,6 +39,18 @@ Setup internationalization infrastructure, extract hardcoded strings into transl
 }
 ```
 
+## Steps
+
+<mandatory_steps>
+1. Validate required input fields per mode; return `blocked` with `missing_fields` if absent
+2. For --extract: scan `source_dir` for hardcoded UI strings using static analysis
+3. For --validate: compare all locale files against `base_locale`; identify missing and orphaned keys
+4. For --setup: scaffold locale routing, middleware, and `[locale]` directory structure
+5. Validate ICU message format syntax for all extracted/generated strings
+6. Check RTL support (CSS dir attribute) if Arabic/Hebrew/Farsi/Urdu locales are included
+7. Return structured result with generated files, missing_keys, orphaned_keys, and setup_steps
+</mandatory_steps>
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST use ICU message format for plurals and gender (e.g., `{count, plural, one {# item} other {# items}}`)

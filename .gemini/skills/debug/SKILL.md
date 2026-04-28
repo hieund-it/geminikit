@@ -64,13 +64,16 @@ Identify root cause of an error from provided data and recommend a precise, acti
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<diagnosis_protocol>
+**MANDATORY diagnosis rules — never skip:**
 - Hypothesis-Driven: Formulate at least two competing hypotheses before selecting the most likely one.
 - Isolate Symptom: Distinguish between the visible error (symptom) and the state failure (root cause).
+- Check stack trace bottom-up; check async errors, mutable shared state, implicit coercions.
+- Set confidence to "low" and list missing data in `needs` if data is insufficient.
+</diagnosis_protocol>
 - Evaluate Impact: Check if the fix introduces risks (performance, side effects).
 - Reproduction: Suggest a specific test case to definitively reproduce the bug.
 - Classify error: null reference, type, race condition, config, network, auth, data, logic, resource.
-- Check stack trace bottom-up; check async errors, mutable shared state, implicit coercions.
-- Set confidence to "low" and list missing data in `needs` if data is insufficient.
 
 # Output
 ```json

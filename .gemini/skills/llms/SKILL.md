@@ -58,12 +58,15 @@ Generate industry-standard AI-friendly documentation files (`llms.txt`, `llms-fu
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<llms_safety_rules>
+**ALWAYS enforced:**
+- **Privacy:** Redact secrets/PII from generated indices — NEVER include .env values, API keys, or credentials.
+- **Exclusion:** ALWAYS exclude dependencies, build artifacts, and sensitive data (respect `.gitignore` and `.geminiignore`).
+</llms_safety_rules>
 - **Standard:** Follow `llmstxt.org` conventions for file structure.
 - **Concise:** `llms.txt` MUST be a summary (high-level architecture, key paths).
 - **Comprehensive:** `llms-full.txt` includes detailed implementation details.
-- **Exclusion:** ALWAYS exclude dependencies, build artifacts, and sensitive data (respect `.gitignore` and `.geminiignore`).
 - **Update Frequency:** Re-generate only when architecture or major dependency changes occur.
-- **Privacy:** Redact secrets/PII from generated indices.
 
 # Output
 ```json

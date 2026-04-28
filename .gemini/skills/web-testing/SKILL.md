@@ -64,17 +64,21 @@ Write comprehensive, maintainable tests that verify correctness, prevent regress
 3. **Design:** Set up test fixtures, factories, and mocks matching real data shapes.
 4. **Execution:** Write test file following AAA pattern and project conventions.
 5. **Verification:** Execute tests via `run_shell_command` and check coverage thresholds.
-6. **Finalize:** Return structured result with test summary and any failing cases.
+6. **Review:** Invoke `/gk-review --post-test` on written test files; block if `false_positives_detected` or `isolation_violations` found.
+7. **Finalize:** Return structured result with test summary and any failing cases.
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<test_quality_rules>
+**NON-NEGOTIABLE test quality rules:**
 - **AAA Pattern:** Every test MUST follow Arrange-Act-Assert structure.
 - **Isolation:** Unit tests MUST NOT make real network calls or hit real databases; mock all external dependencies.
-- **Descriptive Names:** Test names MUST describe behavior: `it("returns 404 when user not found")` not `it("test error")`.
 - **No Sleep:** Never use `sleep()` in E2E tests; use `waitForSelector`, `waitForResponse`, or Playwright auto-waiting.
+- **Coverage:** Aim for 80% branch coverage minimum; always cover happy path, validation errors, and edge cases.
+</test_quality_rules>
+- **Descriptive Names:** Test names MUST describe behavior: `it("returns 404 when user not found")` not `it("test error")`.
 - **Stable Selectors:** Prefer `data-testid` attributes, ARIA roles, and visible text over CSS classes or DOM structure.
 - **No Snapshot Abuse:** Avoid large snapshot tests that break on every UI change; prefer behavioral assertions.
-- **Coverage:** Aim for 80% branch coverage minimum; always cover happy path, validation errors, and edge cases.
 - **Performance Baselines:** k6 tests MUST define thresholds for p95 response time and error rate.
 
 # Output

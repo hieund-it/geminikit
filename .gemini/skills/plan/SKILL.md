@@ -90,14 +90,17 @@ The BeforeAgent hook will inject `plan-template.md` and `phase-template.md` auto
 | FAILED | Plan exceeds 7 subtasks | Group related work into phases; keep max 7 phases per plan |
 | FAILED | Unknown tech stack | Run `google_web_search` to research before decomposing |
 
-## Steps
-0. **Read codebase first:** Use `list_directory` + `read_file` on key files (package.json, src/, configs) to map project structure — do NOT plan without this step
-1. Analyze the primary task and extract core requirements
+<mandatory_steps>
+## Steps — ALL steps are required, in order
+0. **Read codebase first** — `list_directory` + `read_file` on key files. DO NOT plan without this step.
+1. Analyze task and extract core requirements
 2. Group related work into high-level phases
 3. Decompose each phase into atomic, verifiable subtasks
 4. Map dependencies and identify the critical path
 5. Estimate effort (XS-XL) and identify risks
-6. Suggest success criteria and parallel execution lanes
+6. Define success criteria and parallel execution lanes
+**Plan is INVALID without a Risks & Mitigations section.**
+</mandatory_steps>
 
 # Output
 ```json

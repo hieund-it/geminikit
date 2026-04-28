@@ -103,9 +103,13 @@ The BeforeAgent hook will inject the active plan path and pending phases — **d
 }
 ```
 
-## Workflow Details
-1. **Parse**: Run `node .gemini/skills/gk-execute/scripts/parse_plan.js <plan_path>` to get the current state.
-2. **Execute**: Perform the actions described in the `currentTask`.
-3. **Verify**: Execute validation commands (tests/lint).
-4. **Update**: Run `node .gemini/skills/gk-execute/scripts/update_status.js <plan_path> "<task_description>" "x"` upon success.
-5. **Log**: Create a report in `reports/gk-execute/` following Rule 05_6.
+<required_verification>
+## Workflow Details — Verify step is MANDATORY before marking complete
+1. **Parse** — `node .gemini/skills/gk-execute/scripts/parse_plan.js <plan_path>`
+2. **Execute** — perform actions in `currentTask`
+3. **VERIFY** — run tests/lint/build; task is BLOCKED if verification fails
+4. **Review** — invoke `/gk-review --post-implement` on modified files; block if `plan_alignment: missing` or critical security finding
+5. **Update** — `node .gemini/skills/gk-execute/scripts/update_status.js <plan_path> "<task>" "x"` ONLY after steps 3 and 4 pass
+6. **Log** — create report in `reports/gk-execute/` per Rule 05_6
+**NEVER mark a task `[x]` without passing verification (step 3) AND review (step 4).**
+</required_verification>

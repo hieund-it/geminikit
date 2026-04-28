@@ -24,12 +24,20 @@ Run automated checks against all registered agents and skills to ensure adherenc
 }
 ```
 
+## Gemini-Specific Optimizations
+- **Long Context:** Read all `SKILL.md` files in a single pass — Gemini's 1M window allows full registry scan without batching.
+- **Google Search:** N/A — health check validates internal framework compliance only.
+- **Code Execution:** MUST run `node .gemini/scripts/sync-registry.js` via `run_shell_command` to verify registry sync status.
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<health_check_rules>
+**ALWAYS enforced — no partial scans:**
 - MUST NOT skip any registered skill or agent during the scan.
 - MUST report the exact rule or section missing for each failure.
 - MUST verify that all skill directories on disk have a valid `SKILL.md` with required frontmatter fields.
 - MUST verify that `REGISTRY.md` is in sync with the skills on disk (run `node .gemini/scripts/sync-registry.js` to fix).
+</health_check_rules>
 
 ## Steps
 1. Scan `.gemini/skills/*/SKILL.md` — check required frontmatter fields (name, agent, description).

@@ -49,6 +49,17 @@ Read provided code/diff and generate accurate technical documentation reflecting
 | FAILED | Contradiction detected | Flag it explicitly in output; do NOT silently pick one; ask user which is correct |
 | FAILED | Unknown audience | Default to `developer`; state the assumption in output |
 
+## Steps
+
+<mandatory_steps>
+1. Read source code/diff entirely — no sampling; use full file context
+2. Determine documentation type (`doc_type`) and target audience
+3. Analyze actual runtime behavior from code (not comments or assumptions)
+4. Check for contradictions with `existing` docs if `scope=update`; flag any found
+5. Generate documentation in the requested format following industry standards
+6. Validate output for completeness (all public APIs documented, correct format per type)
+</mandatory_steps>
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - Truth: Code is the source of truth; document actual behavior, not just comments.

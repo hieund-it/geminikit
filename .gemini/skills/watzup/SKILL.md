@@ -58,10 +58,13 @@ Summarize the current work session’s progress, identify completion status, and
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
-- **Accuracy:** Accomplishments MUST map directly to git commits or documented tasks.
+<watzup_accuracy_rules>
+**ALWAYS enforced:**
+- **Accuracy:** Accomplishments MUST map directly to git commits or documented tasks — no fabricated progress.
+- **Privacy:** Redact sensitive info (secrets, PII) from logs before output.
+</watzup_accuracy_rules>
 - **Tone:** Professional, objective, and action-oriented.
 - **Clarity:** Unfinished items MUST be clearly listed as "Continuation Tasks" for next session.
-- **Privacy:** Redact sensitive info (secrets, PII) from logs before output.
 
 # Output
 ```json

@@ -15,7 +15,7 @@ description: "Comprehensive review of code quality, API design, security, and pe
 
 ## Interface
 - **Invoked via:** /gk-review
-- **Flags:** --strict | --quick | --api | --api-generate | --api-validate | --api-serve | --security | --perf
+- **Flags:** --strict | --quick | --api | --api-generate | --api-validate | --api-serve | --security | --perf | --post-fix | --post-implement | --post-test | --post-refactor
 
 ## Mode Mapping
 
@@ -29,6 +29,10 @@ description: "Comprehensive review of code quality, API design, security, and pe
 | --api-serve | Generate `ui_config_path` for Scalar/Redoc; requires existing spec at `source`; returns mount instructions and `install_command` | (base skill rules) |
 | --security | Focus exclusively on OWASP, injection, auth, and data safety | ./references/security.md |
 | --perf | Focus on bottlenecks, N+1 queries, and resource efficiency | ./references/perf.md |
+| --post-fix | Called by gk-bug-fixer after applying a fix — verify root cause addressed, no side-effects, regression covered | ./references/post-fix.md |
+| --post-implement | Called by gk-execute after implementing a task — verify plan alignment, architecture fit, completeness | ./references/post-implement.md |
+| --post-test | Called by gk-web-testing after writing tests — verify coverage gaps, test isolation, no false positives | ./references/post-test.md |
+| --post-refactor | Called by gk-refactor after refactoring — verify behavioral equivalence, no regression, clarity gain | ./references/post-refactor.md |
 | (default) | Standard balanced review of code and API | (base skill rules) |
 
 # Role
@@ -85,8 +89,14 @@ Perform a deep review of code or API specifications to identify issues in qualit
 - **API Spec Validation (--api-validate):** Lint spec for REST best practices — status codes, idempotency, pagination, security headers; returns `validation_issues` with severity and fix suggestions; returns `SPEC_NOT_FOUND` if source does not resolve to a valid spec file.
 - **API Serve Config (--api-serve):** Generate UI config for Scalar/Redoc; returns mount instructions and install command; returns `SPEC_NOT_FOUND` if source is invalid.
 
+<mandatory_security_check>
+**Step 1 is ALWAYS required — regardless of focus flags:**
+Security scan (secrets, injection sinks, auth gaps) MUST run on every review.
+Skipping security scan is NEVER allowed, even with `--quick` or `--perf` flags.
+</mandatory_security_check>
+
 ## Steps
-1. Perform initial security scan (secrets, injection)
+1. **MANDATORY** — Security scan: secrets, injection, auth gaps, dangerous APIs
 2. Evaluate code correctness and logic flow
 3. (Optional) For complex logic, invoke `/gk-verify` to sandbox-test critical paths
 4. Assess API standards and documentation (if applicable)

@@ -68,10 +68,14 @@ Implement secure authentication and authorization flows following OWASP standard
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
-- **HTTPS Only:** Auth endpoints MUST enforce HTTPS; reject HTTP requests in production.
-- **Secrets:** JWT secrets and OAuth client secrets MUST come from environment variables — never hardcoded.
-- **Token Storage:** Access tokens in memory (JS), refresh tokens in `HttpOnly; Secure; SameSite=Strict` cookies.
-- **Token Expiry:** Access tokens ≤ 15 minutes; refresh tokens ≤ 7 days with rotation on each use.
+
+<auth_security_rules>
+**NON-NEGOTIABLE security rules — violations must be reported, never silently skipped:**
+- **HTTPS Only:** Auth endpoints MUST enforce HTTPS; reject HTTP in production
+- **No Hardcoded Secrets:** JWT secrets and OAuth client secrets MUST come from env vars only
+- **Token Storage:** Access tokens in memory (JS); refresh tokens in `HttpOnly; Secure; SameSite=Strict` cookies
+- **Token Expiry:** Access tokens ≤ 15 minutes; refresh tokens ≤ 7 days with rotation on each use
+</auth_security_rules>
 - **PKCE Required:** All OAuth2 flows MUST use PKCE (RFC 7636) — no implicit flow.
 - **RBAC:** Authorization checks MUST happen server-side; never trust client-provided role claims.
 - **Rate Limiting:** Login and token endpoints MUST have rate limiting to prevent brute force.

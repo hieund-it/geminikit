@@ -32,6 +32,11 @@ Execute bridge pipeline tasks and maintain task state integrity within the queue
 }
 ```
 
+## Gemini-Specific Optimizations
+- **Long Context:** Read the full task JSON and all `context_files` in one pass — partial reads cause incomplete implementations.
+- **Google Search:** N/A — bridge tasks are self-contained implementation specs.
+- **Code Execution:** N/A — use `run_shell_command` only if the task prompt explicitly requires build/test verification.
+
 ## Execution Protocol
 
 When dispatched by the orchestrator, follow these steps **in order**:
@@ -52,13 +57,14 @@ When dispatched by the orchestrator, follow these steps **in order**:
 - MUST NOT skip the status update step even if execution partially fails; set `status: "gemini_done"` and describe the failure in `gemini_summary`
 - MUST NOT modify task fields other than `status`, `gemini_summary`, and `updated_at`
 - Scope changes to `context_files` listed in the task when possible
-## Safety Constraints
-
+<bridge_safety_rules>
+## Safety Constraints — HARD RULES, never override:
 - Do NOT delete files unless the task prompt explicitly instructs it
 - Do NOT modify files outside the project root
 - Do NOT run destructive shell commands: `rm -rf`, `DROP TABLE`, `DELETE FROM`, `truncate`, `format`, etc.
 - Do NOT hardcode secrets, credentials, or API keys in any generated code
 - Do NOT install packages or modify `package.json` / `requirements.txt` unless the task explicitly requires it
+</bridge_safety_rules>
 
 ## gemini_summary Format
 

@@ -68,7 +68,11 @@ A complete list of agents and their skills is available in the [Agent Registry](
 ### 3. Skills (v2.0.0)
 Atomic, reusable units of functionality (located in `.gemini/skills/`). Skills are the "what" — they follow a strict Input/Output schema and perform one specific job (e.g., `gk-summarize`, `gk-analyze`, `gk-git`). They are the building blocks that agents use to accomplish their goals.
 
-As of Phase 05 (2026-04-26), all 15 core skills are v2.0.0 and include:
+**Skill Inventory (55 total):**
+- **Core Skills (15)**: plan, research, debug, review, git, sql, deploy, infra, audit, analyze, brainstorm, document, export-session, summarize, skill-creator
+- **Specialized Skills (40)**: frontend, backend, mobile, auth, database, cms, i18n, email, analytics, media, feature-flags, a11y, performance, coding-level, compare-logic, context-engineering, docs-seeker, health-check, llms, mcp-manager, migrate, monitor, observability, preview, quality-gate, refactor, security-scan, sequential-thinking, team, watzup, web-testing, and others
+
+All skills as of Phase 05 (2026-04-26) include:
 - **Tools section**: Explicit Gemini CLI tools with when-to-use guidance
 - **Output Schema**: Standardized JSON structure (status, display, result, summary, confidence)
 - **Error Recovery**: Tabular error handling strategies
@@ -96,9 +100,10 @@ Gemini CLI v0.26.0+ supports native hooks (`.gemini/settings.json` hook registra
 | **SessionStart** | `session-start.js` | Session initialization | Load pinned context and last 3 long-term memory entries into short-term context |
 | **AfterModel** | `after-model.js` | Model response received | Check token threshold; auto-summarize short-term to long-term if >25K tokens or every 10 turns; compress long-term if >15 entries |
 | **PreCompress** | `pre-compress.js` | Before Gemini CLI prunes history | Snapshot short-term context to long-term to prevent loss during context compression |
-| **BeforeAgent** | `before-agent-rules-inject.js` | Before agent rules injection | Detect active skill via `.gemini/.skill-state.json`; inject skill-specific context (templates, paths, registry state) without dedup; continue with standard rules injection |
 | **AfterTool** | `after-tool.js` | After tool execution | Log tool name, status (success/error), and duration to execution.md; redact sensitive fields; detect write operations and trigger post-write processing (phase scaffolding, skill registry sync, report indexing) |
 | **SessionEnd** | `session-end.js` | Session termination | Final long-term memory compression if overloaded; reset short-term memory |
+
+**Note:** BeforeAgent hook (`before-agent-rules-inject.js`) is injected by the orchestrator layer, not registered in settings.json. It detects active skill via `.gemini/.skill-state.json` and injects skill-specific context (templates, paths, registry state) before standard rules injection, reducing boilerplate and token usage.
 
 ### Hook Infrastructure
 

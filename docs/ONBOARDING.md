@@ -23,7 +23,55 @@ Gemini Kit is a multi-agent AI framework that orchestrates specialized AI "Agent
 
 ## 4. Key Files & Directories
 
-- **`.gemini/`**: The heart of the framework, containing all agents, skills, rules, and configuration.
-- **`src/`**: The source code for the `gk` command-line interface (CLI).
-- **`docs/`**: Project documentation (you are here!).
-- **`GEMINI.md`**: The root configuration and entry point for the Orchestrator.
+### Core Framework
+- **`.gemini/`**: The heart of the framework containing:
+  - **`agents/`**: Agent role definitions (architect, developer, reviewer, etc.)
+  - **`skills/`**: Atomic capability modules (gk-plan, gk-debug, gk-review, etc.)
+  - **`rules/`**: Execution rules and standards (core, workflow, development, documentation)
+  - **`hooks/`**: Lifecycle event handlers (session-start, after-model, pre-compress, after-tool, session-end)
+  - **`memory/`**: State persistence files (short-term, long-term, execution, pinned)
+  - **`settings.json`**: Hook registration and configuration
+  - **`.skill-state.json`**: Active skill tracking for context injection
+
+### Project Structure
+- **`src/commands/`**: CLI command implementations (init, list, update, doctor, bridge, token)
+- **`bridge/`**: Python orchestrator pipeline (task-schema, bridge-queue, bridge-dispatch, orchestrator, task-generator)
+- **`docs/`**: Project documentation including this guide
+- **`GEMINI.md`**: Root configuration and entry point for the system
+
+## 5. Prerequisites
+
+- **Node.js 18+**: Required for CLI commands and hooks
+- **Python 3.10+**: Required for bridge orchestration scripts
+- **Gemini CLI**: Must be installed and authenticated (latest version recommended)
+- **Claude CLI**: Required for bridge review stage (optional for standard usage)
+
+## 6. Hook System & Memory
+
+The framework uses five lifecycle hooks for automatic state management:
+
+| Event | Trigger | Function |
+|-------|---------|----------|
+| **SessionStart** | Session initialization | Load pinned context + last 3 long-term entries |
+| **AfterModel** | Model response received | Auto-summarize if >25K tokens or 10 turns |
+| **PreCompress** | Before context pruning | Snapshot short-term to long-term |
+| **AfterTool** | After tool execution | Log tool calls and trigger post-write processing |
+| **SessionEnd** | Session termination | Compress long-term memory and reset short-term |
+
+Three persistent memory files manage state:
+- **`short-term.md`**: Session-specific context (reset on SessionEnd)
+- **`long-term.md`**: Cross-session knowledge (max 15 entries, auto-compressed)
+- **`execution.md`**: Tool invocation audit trail with timestamps and status
+- **`pinned.md`**: Immutable system instructions (persist across all sessions)
+
+## 7. Security & Access Control
+
+The Agent Permission Matrix defines tool access by role:
+- **File Read**: Read source code and config
+- **File Write**: Modify code, create tests, manage infrastructure
+- **Shell Execute**: Run terminal commands
+- **Network Access**: Call external APIs and search services
+- **Secrets Access**: Read sensitive credentials
+- **Bypass Blacklist**: Access protected paths (.env, .git, .ssh, etc.)
+
+See [AGENTS_REGISTRY.md](AGENTS_REGISTRY.md) for complete permission matrix.

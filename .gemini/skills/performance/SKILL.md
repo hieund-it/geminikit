@@ -43,6 +43,17 @@ Audit web application performance across Core Web Vitals, JavaScript bundle size
 }
 ```
 
+## Steps
+
+<mandatory_steps>
+1. Validate input: `target` required for all modes; return `blocked` if missing
+2. Run audit tool per mode: Lighthouse CI (--vitals/--audit), bundle analyzer (--bundle)
+3. Measure Core Web Vitals against budget thresholds (LCP, INP, CLS, FCP)
+4. Identify all issues; sort by impact × effort score — highest impact, lowest effort first
+5. Flag `AUDIT_FAILED` if target unreachable; `BUILD_REQUIRED` if no build output for --bundle
+6. Return structured result with verified metric numbers — MUST NOT report completed without real metrics
+</mandatory_steps>
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST use LCP < 2500ms, INP < 200ms, CLS < 0.1 as default thresholds when no budget provided.

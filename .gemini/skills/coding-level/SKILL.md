@@ -68,8 +68,11 @@ Calibrate interaction style and explanation depth to match the user's documented
     - 3: Mid (Clean code, performance, architecture basics).
     - 4: Senior (Deep architecture, trade-offs, security).
     - 5: Architect (Systems thinking, scale, strategic decisions).
-- **Consistency:** Always adjust terminology, detail level, and code snippet complexity based on stored level.
+<level_persistence_rules>
+**ALWAYS enforced:**
 - **Memory:** Coding level MUST persist in `pinned.md` using the "Coding Level" tag.
+- **Consistency:** Always adjust terminology, detail level, and code snippet complexity based on stored level.
+</level_persistence_rules>
 - **Correction:** If user corrects depth, immediately adjust explanation and update level if required.
 
 # Output

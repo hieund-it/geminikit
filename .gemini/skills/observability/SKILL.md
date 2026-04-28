@@ -61,10 +61,13 @@ Scaffold, audit, or configure observability infrastructure for a project. Detect
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<observability_safety_rules>
+**ALWAYS enforced:**
 - MUST NOT write DSN or API keys to files — use env var references only (e.g. `process.env.SENTRY_DSN`).
 - MUST detect existing observability setup before proposing changes.
-- MUST provide install commands for the detected package manager (npm/pnpm/yarn/bun).
 - MUST validate that error boundaries are configured for frontend stacks (React, Next.js).
+</observability_safety_rules>
+- MUST provide install commands for the detected package manager (npm/pnpm/yarn/bun).
 - MUST recommend structured logging (Pino/Winston) over `console.log` for Node.js services.
 
 ## Steps

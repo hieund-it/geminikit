@@ -68,13 +68,18 @@ Take an error message or log as input, locate the faulting code, and provide a v
 | FAILED | `run_code` sandbox unavailable | Document fix with high confidence rationale; mark `confidence: medium` |
 
 ## Steps
+
+<mandatory_fix_pipeline>
 1. Reproduce the bug (manually or with automated script)
 2. Locate faulting code through search and stack trace analysis
 3. Diagnose root cause (hypothesize and verify)
 4. Generate a verified, project-idiomatic code fix
-5. (Optional) If fix involves logic changes, invoke `/gk-verify` to execute fix logic in sandbox
-6. Provide a regression test to prevent future occurrences
-7. Summarize the fix and validation report
+5. **MANDATORY** — invoke `/gk-verify` to execute fix in sandbox (skip ONLY for pure config/typo fixes)
+6. **MANDATORY** — provide regression test to prevent future recurrence
+7. **MANDATORY** — invoke `/gk-review --post-fix` on modified files; block if `root_cause_addressed: false` or critical security finding
+8. Summarize fix and verification report
+**A fix is NOT complete without steps 5, 6, and 7.**
+</mandatory_fix_pipeline>
 
 # Output
 ```json

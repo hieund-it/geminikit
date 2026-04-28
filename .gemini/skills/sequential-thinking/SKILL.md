@@ -62,9 +62,12 @@ Decompose ambiguous or complex problems into a reliable, step-by-step execution 
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<thinking_integrity_rules>
+**ALWAYS enforced — no shortcuts:**
 - **Step-by-Step:** Every task MUST have a logical, sequential flow.
 - **Confidence Tracking:** Assign a confidence score (high/med/low) to each step.
 - **Assumption Tracking:** All implicit assumptions MUST be documented and explicitly marked as "verified" or "unverified".
+</thinking_integrity_rules>
 - **Revisability:** Analysis MUST support revisiting previous steps based on new insights.
 - **Constraint-First:** Every step MUST be tested against defined constraints.
 - **Goal-Oriented:** Every step MUST contribute explicitly to the final goal.

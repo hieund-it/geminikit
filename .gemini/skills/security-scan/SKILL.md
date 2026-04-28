@@ -69,9 +69,14 @@ Identify exploitable security vulnerabilities in source code through static anal
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
-- **Coverage:** MUST always scan for secrets exposure regardless of mode — it's the fastest path to compromise.
-- **Priority:** Critical > High > Medium > Low; never ignore Critical/High findings.
-- **Evidence-Based:** Every finding MUST include file, line number, and exact code snippet as evidence.
+
+<mandatory_scan_coverage>
+**ALWAYS run regardless of mode flags:**
+1. Secrets scan — hardcoded credentials, API keys, tokens (fastest path to compromise)
+2. Injection scan — SQL, command, LDAP, XSS sinks
+3. Auth audit — broken access control, missing auth checks
+Every finding MUST include file, line number, and exact code snippet. NEVER ignore Critical/High findings.
+</mandatory_scan_coverage>
 - **Exploitability:** Distinguish between theoretical and practically exploitable vulnerabilities; rate accordingly.
 - **No False Alarms:** Verify findings before reporting — security fatigue from false positives reduces trust.
 - **Remediation Required:** Every finding MUST have a specific, implementable fix — not just "fix this".

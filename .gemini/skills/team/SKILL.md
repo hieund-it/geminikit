@@ -68,9 +68,12 @@ Design and execute parallel multi-agent development workflows with clear ownersh
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<team_ownership_rules>
+**HARD RULES — ownership violations block the pipeline:**
 - **File Ownership is Sacred:** Each agent MUST own distinct files; NO overlapping edits. Define ownership via glob patterns.
 - **No Shared Mutable State:** Agents communicating through shared files MUST have explicit handoff points, never concurrent writes.
 - **Worktrees for Implementation Teams:** Use `git worktree` for parallel implementation to eliminate merge conflicts during development.
+</team_ownership_rules>
 - **Context Economy:** Each agent receives ONLY the context relevant to its task — no full session history dumping.
 - **Lead Resolves Conflicts:** Lead agent handles any shared file conflicts directly; never let two agents race on same file.
 - **Explicit Interfaces:** Parallel tasks MUST define their output interface (file names, function signatures, API contracts) before starting.

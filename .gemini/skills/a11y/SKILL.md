@@ -41,10 +41,13 @@ Audit UI components and pages for WCAG 2.2 AA compliance, classify violations by
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<a11y_compliance_rules>
+**NON-NEGOTIABLE accessibility rules:**
 - MUST classify every violation by WCAG principle: Perceivable, Operable, Understandable, or Robust.
-- MUST prioritize fixes by impact order: critical (blocks access) > serious > moderate > minor.
 - MUST check: color contrast ≥ 4.5:1, focus indicators visible, alt text present, ARIA labels correct, keyboard navigation functional.
 - MUST NOT set `compliant: true` if any critical or serious violations exist.
+</a11y_compliance_rules>
+- MUST prioritize fixes by impact order: critical (blocks access) > serious > moderate > minor.
 - MUST include the specific WCAG success criterion (e.g., "1.4.3 Contrast Minimum") for every reported violation.
 - MUST suggest automated testing setup (axe-core + Playwright) if none is detected in the project.
 - MUST return `NO_UI_FILES` if target path contains no auditable UI files.

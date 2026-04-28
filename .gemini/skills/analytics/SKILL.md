@@ -39,6 +39,17 @@ Scaffold analytics providers, generate event tracking schemas, or audit existing
 }
 ```
 
+## Steps
+
+<mandatory_steps>
+1. Validate required input fields per mode; return `blocked` with `missing_fields` if absent
+2. Research provider SDK version and current integration patterns (google_web_search)
+3. Execute mode-specific task: scaffold setup / generate event taxonomy / audit existing events
+4. Validate all event names: `object_action` convention, snake_case, ≤50 chars
+5. Check GDPR/consent compliance; flag `MISSING_CONSENT` if no consent mechanism detected
+6. Return structured result with generated files, event taxonomy, and compliance notes
+</mandatory_steps>
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST NOT expose API keys — use env var references only (e.g. `process.env.NEXT_PUBLIC_POSTHOG_KEY`).

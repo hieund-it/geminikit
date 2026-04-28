@@ -50,9 +50,13 @@ Manage MCP server configurations, verify connectivity, and scaffold new server i
 - **remove:** Read config → verify server name exists → delete key from `mcpServers` → write file back.
 - **test:** Use native shell tool to run `<command> <args>` and verify it starts without error; check for process exit code. Report success/failure with tool count if available.
 - **scaffold:** Generate a minimal MCP server stub (Node.js or Python) at `destination`. Include `index.js`/`server.py`, `package.json`/`pyproject.toml`, and a `README.md`.
+<mcp_safety_rules>
+**ALWAYS enforced:**
 - Verify First: Always test the connection after adding a new server.
-- Windows Pathing: MUST use backslashes `\` for paths or properly quote paths containing spaces.
 - Environment Awareness: Check `.gemini/.env` for required env vars; never expose secret values in output.
+- MUST NOT overwrite existing server configs without user confirmation.
+</mcp_safety_rules>
+- Quote paths containing spaces on all platforms.
 
 ## Config File Format
 

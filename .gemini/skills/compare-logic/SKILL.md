@@ -43,7 +43,7 @@ To analyze, compare, and report on the differences in business logic between an 
 - MUST document findings in a structured report.
 - If a language or framework is unfamiliar, use `google_web_search` to find common patterns for that technology.
 
-# Process
+## Steps
 
 ## Phase 1: High-Level Analysis
 
@@ -103,9 +103,30 @@ To analyze, compare, and report on the differences in business logic between an 
   "status": "completed | failed | blocked",
   "format": "json",
   "result": {
-    "report_path": "reports/compare-logic/{YYMMDD-HHmm}-comparison.md"
+    "report_path": "string — path to the full comparison report",
+    "similarity_score": "number (0-100) — estimated % of logic migrated with high fidelity",
+    "files_compared": "number — count of file pairs analyzed",
+    "discrepancies": [
+      {
+        "severity": "critical | high | medium | low",
+        "type": "mismatch | gap | new_feature | partial_match",
+        "old_location": "string (file:function)",
+        "new_location": "string (file:function) | null",
+        "description": "string — what differs and why it matters"
+      }
+    ],
+    "matched_files": [
+      {
+        "old_path": "string",
+        "new_path": "string",
+        "match_quality": "exact | functional | partial"
+      }
+    ],
+    "unmapped_old_files": ["string — old system files with no counterpart in new system"],
+    "unmapped_new_files": ["string — new system files with no counterpart in old system"],
+    "manual_review_required": ["string — areas too complex for automated comparison"]
   },
-  "summary": "The logic comparison is complete. The report has been generated.",
+  "summary": "one sentence describing fidelity score and most critical discrepancy",
   "confidence": "medium"
 }
 ```
@@ -116,11 +137,35 @@ To analyze, compare, and report on the differences in business logic between an 
   "status": "completed",
   "format": "json",
   "result": {
-    "report_path": "reports/compare-logic/260427-1430-comparison.md"
+    "report_path": "reports/compare-logic/260427-1430-comparison.md",
+    "similarity_score": 68,
+    "files_compared": 14,
+    "discrepancies": [
+      {
+        "severity": "critical",
+        "type": "mismatch",
+        "old_location": "includes/payment.php:processRefund",
+        "new_location": "src/services/payment.ts:processRefund",
+        "description": "Old system applies 5% restocking fee for partial refunds; new system refunds full amount — revenue impact."
+      },
+      {
+        "severity": "high",
+        "type": "gap",
+        "old_location": "includes/inventory.php:adjustStock",
+        "new_location": null,
+        "description": "Stock adjustment on order cancellation not implemented in new system."
+      }
+    ],
+    "matched_files": [
+      { "old_path": "includes/auth.php", "new_path": "src/auth/auth.ts", "match_quality": "functional" }
+    ],
+    "unmapped_old_files": ["includes/legacy-export.php"],
+    "unmapped_new_files": ["src/webhooks/stripe-handler.ts"],
+    "manual_review_required": ["Payment reconciliation logic — complex conditional tax rules"]
   },
-  "summary": "Logic comparison complete: ~68% fidelity. 3 mismatches and 2 gaps found in payment processing. Full report saved.",
+  "summary": "68% fidelity: 2 critical gaps in refund and stock logic require immediate attention before go-live.",
   "confidence": "medium"
 }
 ```
 
-**Note:** Confidence is set to 'medium' by default, as automated logic comparison is inherently complex and may miss nuances that a human developer would catch. The report should always recommend a final manual review.
+**Note:** Confidence is 'medium' by default — automated comparison may miss runtime behavior nuances. Report always recommends final manual review.

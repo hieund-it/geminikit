@@ -61,10 +61,13 @@ Create structured, searchable technical journal entries that document progress, 
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<journal_integrity_rules>
+**ALWAYS enforced:**
 - **Structure:** Entries MUST include: Title, Timestamp, Context, Details, Tags.
-- **Searchability:** Use descriptive, searchable titles (e.g., `260427-auth-flow-fix.md`).
-- **Persistence:** All entries MUST be stored in `plans/journals/`.
 - **Integrity:** Entries MUST accurately reflect the session's work; do not embellish.
+- **Persistence:** All entries MUST be stored in `plans/journals/`.
+</journal_integrity_rules>
+- **Searchability:** Use descriptive, searchable titles (e.g., `260427-auth-flow-fix.md`).
 - **Traceability:** Link to commit IDs or PR numbers if available.
 
 # Output

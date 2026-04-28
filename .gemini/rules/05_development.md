@@ -11,12 +11,13 @@
   - Explain *why*, not *what* (code should be self-explanatory).
   - Document public APIs, complex algorithms, and workarounds.
 
-## 2. Testing Strategy
-- **Mandatory Testing:**
-  - **New Features:** MUST include unit tests covering positive and negative cases.
-  - **Bug Fixes:** MUST include a reproduction test case (regression test) to verify the fix.
-- **Test Execution:** Run relevant tests locally before submitting changes.
+<mandatory_quality_gate>
+## 2. Testing Strategy — MANDATORY
+- **New Features:** MUST include unit tests (positive + negative cases). No exceptions.
+- **Bug Fixes:** MUST include regression test. No exceptions.
+- **Before ANY commit:** Run `/gk-quality-gate` — commit is BLOCKED if gate fails.
 - **Coverage:** Aim for high test coverage for critical paths.
+</mandatory_quality_gate>
 
 ## 3. Git & Version Control
 - **Branching:** Use descriptive branch names (e.g., `feature/add-login`, `fix/nav-bug`).
@@ -43,4 +44,7 @@
   - **Plans:** Use `plans/{date}-{slug}/` as defined in Rule 02_5.1.
   - **Documentation:** Use the standard `docs/` or project-specific documentation paths.
 - **6.3 No External Output:** Agents MUST NOT output files to system temporary directories, user home directories, or any path outside the defined workspace directories.
+
+---
+> **Reminder:** Every commit MUST pass `/gk-quality-gate` (tests pass + review score ≥ 7). No secrets. No console.log in production.
 

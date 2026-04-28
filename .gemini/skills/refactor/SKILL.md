@@ -48,6 +48,15 @@ Propose and implement code improvements that enhance readability and maintainabi
 | FAILED | LOGIC_CHANGED | Stop and report; do NOT apply the change; diagnose divergence |
 | FAILED | PATTERN_NOT_FOUND | Report locations searched; ask user for clarification |
 
+## Steps
+1. **Intent Interview** — call `ask_user` with 1-2 targeted questions (why now? hidden consumers?)
+2. **Read** — read target file(s) + all callers/importers via `grep_search`
+3. **Propose** — present Before/After comparison in plain text; call `ask_user` for explicit approval
+4. **Apply** — write approved changes via `write_file`
+5. **Verify** — run existing tests via `run_shell_command` to prove behavioral parity
+6. **Review** — invoke `/gk-review --post-refactor` on modified files; block if `behavioral_equivalence: suspected_change` or `api_surface_broken`
+7. **Report** — return structured result with verification evidence
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - **Intent Interview**: Call `ask_user` with 1-2 targeted questions before starting any analysis — do NOT proceed without user context.

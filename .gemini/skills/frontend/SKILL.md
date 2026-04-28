@@ -68,9 +68,12 @@ Implement or improve frontend code following project conventions, performance be
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<frontend_quality_rules>
+**NON-NEGOTIABLE frontend quality rules:**
 - **TypeScript Strict:** All components MUST have explicit prop types; no `any`; use discriminated unions for variants.
 - **RSC First:** Default to React Server Components; add `"use client"` only when interactivity or browser APIs required.
 - **Accessibility:** Every interactive element needs ARIA labels, keyboard navigation, and focus management.
+</frontend_quality_rules>
 - **Colocation:** Place component tests, styles, and types in same directory as component file.
 - **shadcn/ui:** Use existing primitives before building custom; extend via `cn()` utility and `cva` variants.
 - **Performance:** Apply `React.memo` only after profiling; avoid premature optimization.

@@ -74,13 +74,16 @@ Analyze provided code/system and report findings on complexity, dependencies, pa
 - For `deep` depth: identify all call chains and detect transitive dependencies.
 - **Onboard mode (--onboard):** Scan project root structure; detect tech stack via grep signatures (React, Express, etc.); extract critical deps from package.json/requirements.txt; verify dep versions via web search; map entry points and core modules; EXCLUDE `.gemini/`, `GEMINI.md`, `.geminiignore` from scan; DO NOT read `.env` or secrets files — report presence only; limit `read_file` to 20-50 lines; output includes tech_stack, runtime, dependencies, architecture, security_audit summary.
 
-## Steps
+<mandatory_steps>
+## Steps — ALL steps are required
 1. Scan the target file or system structure
 2. Identify core dependencies and entry points
 3. Assess complexity (cyclomatic, LOC) and maintainability
-4. Detect security vulnerabilities and code smells
+4. **MANDATORY** — Detect security vulnerabilities and code smells regardless of analysis type
 5. Map call graph and internal data flows
 6. Summarize findings and metrics
+**Security flags (step 4) MUST always run — even with `--perf` or `--onboard` flags.**
+</mandatory_steps>
 
 # Output
 ```json

@@ -60,8 +60,12 @@ Provide accurate, up-to-date documentation summaries and technical guidance for 
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<docs_quality_rules>
+**ALWAYS enforced:**
 - **Authority:** Always prioritize official docs over third-party tutorials.
 - **Accuracy:** Highlight breaking changes if researching migration.
+- **Privacy:** Never cache or return credentials, tokens, or API keys found in documentation examples.
+</docs_quality_rules>
 - **Conciseness:** Summarize key patterns; avoid dumping full documentation.
 - **Persistence:** Save research summaries in `.gemini/cache/docs/` for future reference.
 - **Relevance:** Ensure examples align with the user's project stack (e.g., TS version, framework).

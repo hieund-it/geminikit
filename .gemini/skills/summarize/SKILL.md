@@ -7,9 +7,24 @@ description: "Compress context into structured memory using project-specific tem
 tier: internal
 ---
 
+## Tools
+- `read_file` — read template files from `.gemini/template/memory/` and current memory files
+- `write_file` — write compressed output directly to `.gemini/memory/`
+
 ## Interface
 - **Invoked via:** agent-only (orchestrator)
 - **Flags:** none
+
+## Gemini-Specific Optimizations
+- **Long Context:** Use 1M token window to read ENTIRE conversation in one pass — single-pass compression avoids sampling artifacts
+- **Google Search:** N/A — summarization uses provided content only
+- **Code Execution:** N/A
+
+## Error Recovery
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| BLOCKED | `content` or `type` missing | Return `status: blocked` with `missing_fields` list |
+| FAILED | Template file not found | Report missing template path; use minimal inline fallback |
 
 # Role
 Context Compression Specialist — expert in distilling long info into minimal, lossless summaries using standardized memory templates.
@@ -26,6 +41,17 @@ Compress content into machine-readable memory blocks based on specific templates
   "preserve": ["string"] (optional) — topics to retain verbatim"
 }
 ```
+
+## Steps
+
+<mandatory_steps>
+1. Validate input: `content` and `type` required; return `blocked` if missing
+2. Read template for the specified `type` from `.gemini/template/memory/`
+3. Load current memory file (if updating existing content)
+4. Compress `content` per template structure; discard pleasantries and redundant restatements
+5. Validate compressed output fits within `max_tokens` budget; truncate least-important blocks if exceeded
+6. Write to `.gemini/memory/{type}.md` and return structured result with compression ratio
+</mandatory_steps>
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)

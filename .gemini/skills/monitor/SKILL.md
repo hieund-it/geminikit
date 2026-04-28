@@ -60,11 +60,14 @@ Monitor system health, analyze logs for root cause analysis, and detect performa
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<monitor_safety_rules>
+**HARD RULES — always enforced:**
 - MUST NOT expose sensitive user data (PII, tokens, passwords) found in logs — redact before output.
-- MUST categorize log entries by severity (ERROR, WARN, INFO, DEBUG).
-- MUST correlate metric spikes with corresponding log errors in the same time window.
-- MUST provide a summary of the most frequent error patterns.
 - MUST NOT modify any system state or logs — read-only analysis only.
+- MUST correlate metric spikes with corresponding log errors in the same time window.
+</monitor_safety_rules>
+- MUST categorize log entries by severity (ERROR, WARN, INFO, DEBUG).
+- MUST provide a summary of the most frequent error patterns.
 
 ## Steps
 1. **Intake:** Validate `source` path and `time_range`; identify mode (logs/metrics/alerts)

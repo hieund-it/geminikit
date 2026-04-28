@@ -148,6 +148,7 @@ For each subtask, check `.gemini/skills/` for matching skill:
 - `feature-flags/SKILL.md` — Setup feature flag system, create flags, and manage gradual rollouts and A/B experiments
 - `frontend/SKILL.md` — Build React/Next.js/TypeScript frontends with modern patterns. Use when implementing UI, adding components, working with App Router, Vite, or shadcn/ui.
 - `git/SKILL.md` — Execute git operations: commit, branch, status, PR prep, and conflict detection.
+- `quality-gate/SKILL.md` — Enforce pre-commit quality gate: run tests and code review, block if score < 7 or tests fail.
 - `gk-execute/SKILL.md` — Execute Markdown-based implementation plans by parsing, executing tasks, and updating status.
 - `health-check/SKILL.md` — Validate framework compliance across all agents and skills.
 - `i18n/SKILL.md` — Setup internationalization, extract hardcoded strings, and validate translation completeness

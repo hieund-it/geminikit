@@ -40,6 +40,17 @@ Integrate headless CMS into projects with correct client configuration, typed co
 }
 ```
 
+## Steps
+
+<mandatory_steps>
+1. Validate required input fields per mode; return `blocked` with `missing_fields` if absent
+2. Research CMS SDK version and Next.js ISR/cache tag patterns (google_web_search if needed)
+3. Execute mode-specific task: scaffold setup / generate schema / generate typed query
+4. Validate content schema has required SEO fields (title, description, slug)
+5. Configure ISR revalidation and cache tags for Next.js integrations
+6. Return structured result with generated files, install command, and setup steps
+</mandatory_steps>
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST NOT expose CMS API tokens — use env var references only

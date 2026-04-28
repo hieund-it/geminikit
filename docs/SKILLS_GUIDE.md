@@ -53,9 +53,15 @@ Each skill is defined by a `SKILL.md` file containing:
 - **Error Recovery**: Table of error codes, causes, and recovery strategies
 - **Gemini-Specific Optimizations**: How the skill leverages Gemini's native capabilities (long context, google_search, code execution)
 
+## Skill Inventory
+
+The framework includes 55 skills across multiple categories:
+- **Core Skills (15)**: Essential agents (plan, debug, review, research, etc.)
+- **Specialized Skills (40)**: Domain-specific capabilities (frontend, backend, mobile, auth, database, i18n, media, analytics, and more)
+
 ## Version 2.0.0 Quality Baseline
 
-As of 2026-04-26, all 15 core skills have been rebuilt to v2.0.0 with the following enhancements:
+All skills follow v2.0.0 structure with the following enhancements:
 
 ### Mandatory Sections (All Skills)
 1. **Tools** — Explicit list of Gemini CLI tools (`google_search`, `read_file`, `write_file`, `run_code`, `run_shell_command`)
@@ -83,6 +89,27 @@ As of 2026-04-26, all 15 core skills have been rebuilt to v2.0.0 with the follow
 
 **Support Skills**
 - `brainstorm`, `analyze`, `document`, `intake`, `gk-execute`: All leverage Gemini-native capabilities per their domain
+
+## Skill Lifecycle Management
+
+Skills follow a strict lifecycle for state and discovery:
+
+### Skill State Tracking
+- Skills may write `.gemini/.skill-state.json` at startup to signal active skill and session context
+- Hook system reads this file to inject skill-specific templates, paths, and registry state
+- 2-hour TTL prevents stale state persistence
+- Optional feature — hooks degrade gracefully if not written
+
+### Skill Discovery & Registration
+- All skills stored in `.gemini/skills/<skill-name>/SKILL.md`
+- Registry auto-synced via `after-tool.js` hook on file writes
+- Update `.gemini/REGISTRY.md` and `.gemini/AGENT.md` automatically
+- Validation pipeline: SKILL.md → schema check → benchmark (min 70/100) → package (.zip)
+
+### Skill Versions
+- Skills use semantic versioning (major.minor.patch)
+- v2.0.0 is the current baseline for all skills (as of 2026-04-26)
+- Breaking changes trigger version bumps in CHANGELOG.md
 
 ## Skill Development Guidelines
 

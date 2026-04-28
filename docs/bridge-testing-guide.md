@@ -19,6 +19,33 @@ npm install -g @google/gemini-cli
 
 ---
 
+## Overview: Bridge Architecture
+
+The bridge pipeline connects Claude (orchestrator) with Gemini (executor) and back to Claude (reviewer). It enables multi-agent complex task execution with atomic task queue management.
+
+**Task Lifecycle:** pending → executing → gemini_done → reviewing → done (or pending for retry)
+
+**Task JSON Schema:**
+```json
+{
+  "task_id": "task-01-01",
+  "phase": 1,
+  "step": 1,
+  "name": "Phase name",
+  "type": "implement|fix|test|refactor",
+  "status": "pending|executing|gemini_done|reviewing|done|failed",
+  "assigned_to": "gemini|claude",
+  "prompt": "Task description for executor",
+  "gemini_summary": "Executor output summary",
+  "review_result": "Reviewer feedback",
+  "retry_count": 0,
+  "created_at": "ISO timestamp",
+  "updated_at": "ISO timestamp"
+}
+```
+
+---
+
 ## Step 1 — Create a minimal plan for testing
 
 Create the following 2 files in `plans/test-bridge/`:
@@ -146,6 +173,34 @@ gk bridge reset        # clear state, keep queue
 gk bridge init --plan plans/test-bridge/plan.md   # recreate queue
 gk bridge start
 ```
+
+---
+
+## Retry & Timeout Configuration
+
+### Retry Logic
+- **Max retries:** 3 attempts per task
+- **Trigger:** If review result is "FAIL" or model output is malformed
+- **Behavior:** Task reverts to pending with `retry_count` incremented
+- **Final state:** After 3 retries, task moves to `failed` permanently
+
+Example retry scenario:
+```
+Task 01-01: pending (attempt 1) → executing → reviewing → FAIL
+Task 01-01: pending (attempt 2) → executing → reviewing → FAIL
+Task 01-01: pending (attempt 3) → executing → reviewing → FAIL
+Task 01-01: failed (no more retries)
+```
+
+### Timeout Configuration
+- **Gemini execution timeout:** 60 seconds per task (configurable in `orchestrator.py`)
+- **Claude review timeout:** 30 seconds per review (configurable in `orchestrator.py`)
+- **Pipeline polling interval:** 2 seconds (checks task state)
+
+If timeout occurs:
+- Task remains in `executing` or `reviewing` state
+- Manual reset required: `gk bridge reset --failed-only`
+- Check `.bridge/logs/pipeline-*.log` for timeout traces
 
 ---
 

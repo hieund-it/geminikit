@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Extended Skill Library**: Expanded from 15 core skills to 55 total skills including specialized domains (frontend, backend, mobile, auth, database, CMS, i18n, analytics, media, performance, security, and more)
+- **Bridge Pipeline Features**: Enhanced task lifecycle with detailed JSON schema, retry logic (max 3 retries), and configurable timeout handling
+- **Skill Lifecycle Management**: Formal skill discovery, registration, versioning, and validation pipeline with `.skill-state.json` tracking
+- **Documentation Enhancements**: Completed ONBOARDING.md with prerequisites, hooks overview, and security matrix; added troubleshooting and platform-specific setup guides; documented full bridge architecture and task JSON schema
+- **Native Hooks Improvements**: Clarified BeforeAgent hook behavior and context injection mechanism; documented hook library modules and TTL management
+
+### Changed
+- **Skills Quality Baseline**: All 55 skills now conform to v2.0.0 structure (Tools, Output Schema, Error Recovery, Gemini-Specific Optimizations)
+- **Agent Permission Matrix**: Extended from 7 to 14 agents with complete permission definitions for all agent types
+- **Command Reference**: Enhanced documentation of `gk bridge init`, `gk doctor --fix`, and token command options; fixed skill command naming inconsistencies
+
+### Fixed
+- **Documentation Accuracy**: Verified all CLI commands against actual implementation (bin/gk.js, src/commands/); confirmed bridge is live production feature
+- **Permission Matrix Completeness**: Added missing agents (Comparator, Designer, Documenter, MCP Manager, Maintenance, Support, Tester) to registry
+- **Setup Guide Coverage**: Added Windows/Mac/Linux platform-specific notes, troubleshooting section, and upgrade instructions
+
 ## [1.2.2] - 2026-04-26
 ### Changed
 - **Skills Quality Rebuild (Phase 05)**: Rebuilt 15 core skills to v2.0.0 with Gemini-native optimizations

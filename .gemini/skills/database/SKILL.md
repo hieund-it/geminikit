@@ -69,6 +69,15 @@ Design efficient database schemas, write optimized queries, and improve database
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+
+<database_safety_rules>
+**ALWAYS enforced — no exceptions:**
+- **Parameterized Queries:** MUST use parameterized queries or ORM; NEVER string-concatenate user input into SQL
+- **Reversible Migrations:** Migrations MUST include `down` migration; NEVER modify deployed migrations
+- **Timestamps:** ALL tables MUST have `created_at` and `updated_at TIMESTAMPTZ`
+- **Constraints:** Add NOT NULL, UNIQUE, CHECK at DB level — don't rely on application validation alone
+</database_safety_rules>
+
 - **Normalization:** Default to 3NF; denormalize only when query performance requires it and access patterns justify it.
 - **Naming:** snake_case for columns and tables; plural table names (`users`, `orders`); `_id` suffix for FK columns.
 - **Timestamps:** All tables MUST have `created_at` and `updated_at` timestamps with timezone.

@@ -122,6 +122,7 @@ This document details the specialized agents within the Gemini Kit framework, th
 ## 14. Tester (`tester`)
 **Role:** Senior QA Engineer
 **Specialization:** Validation, test writing, and coverage reporting.
+**Key Skills:** (Tests collaboratively with developer)
 **Responsibility:**
 - Writes and executes comprehensive test cases.
 - Measures and reports test coverage.
@@ -135,12 +136,19 @@ The following matrix defines the default tool and system access levels for each 
 | Agent | File Read | File Write | Shell Execute | Network Access | Secrets Access | Bypass Blacklist |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Architect** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Comparator** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Designer** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | **Developer** | ✅ | ✅ | ✅ | ⚠️ | ❌ | ❌ |
-| **Reviewer** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **Researcher**| ✅ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| **Documenter** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | **DevOps** | ✅ | ✅ | ✅ | ✅ | ⚠️ | ❌ |
-| **Security** | ✅ | ❌ | ❌ | ❌ | ✅ | ⚠️ |
+| **Maintenance** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **MCP Manager** | ✅ | ✅ | ✅ | ❌ | ⚠️ | ❌ |
 | **Planner** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Researcher** | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| **Reviewer** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Security** | ✅ | ❌ | ❌ | ❌ | ✅ | ⚠️ |
+| **Support** | ✅ | ❌ | ⚠️ | ✅ | ❌ | ❌ |
+| **Tester** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
 
 **Legend:**
 - ✅ : Full Access

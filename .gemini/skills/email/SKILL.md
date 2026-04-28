@@ -40,6 +40,17 @@ Scaffold a transactional email system, generate typed React Email templates, or 
 }
 ```
 
+## Steps
+
+<mandatory_steps>
+1. Validate required input fields per mode; return `blocked` with `missing_fields` if absent
+2. Research provider SDK and DNS best practices (google_web_search for SPF/DKIM/DMARC patterns)
+3. Execute mode-specific task: scaffold setup / generate React Email template / validate test send
+4. Verify DNS records (SPF, DKIM, DMARC) included in --setup; flag `DNS_NOT_CONFIGURED` in --test if absent
+5. Ensure idempotency keys and queue integration are part of setup scaffold
+6. Return structured result with generated files, DNS records, and ordered setup steps
+</mandatory_steps>
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST NOT expose API keys — reference env vars only (e.g. `process.env.RESEND_API_KEY`).

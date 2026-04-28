@@ -69,13 +69,16 @@ Implement efficient media processing pipelines for upload, transformation, optim
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<media_safety_rules>
+**ALWAYS enforced:**
+- **Security:** Validate MIME type from file magic bytes, not extension; reject SVG with scripts.
+- **Cleanup:** Temporary files MUST be cleaned up after processing even on failure.
+- **Async Processing:** Long video transcoding MUST be offloaded to a job queue (BullMQ, Inngest) — never block HTTP request.
+</media_safety_rules>
 - **Quality vs Size:** Always balance quality and file size; use modern codecs (H.264/H.265 video, WebP/AVIF images).
 - **Streaming:** Large file processing MUST use streaming (avoid loading entire file into memory).
 - **Error Handling:** Media processing MUST validate input format before processing; handle corrupt files gracefully.
-- **Async Processing:** Long video transcoding MUST be offloaded to a job queue (BullMQ, Inngest) — never block HTTP request.
 - **Storage:** Processed media MUST go to object storage (S3, R2, GCS) — never local disk in production.
-- **Security:** Validate MIME type from file magic bytes, not extension; reject SVG with scripts.
-- **Cleanup:** Temporary files MUST be cleaned up after processing even on failure.
 - **Progress:** Long operations SHOULD report progress via WebSocket or server-sent events.
 
 # Output

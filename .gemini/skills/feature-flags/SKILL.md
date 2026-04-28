@@ -44,6 +44,17 @@ Scaffold feature flag infrastructure, create well-structured flags with lifecycl
 }
 ```
 
+## Steps
+
+<mandatory_steps>
+1. Validate required input fields per mode; return `blocked` with `missing_fields` if absent
+2. Research provider SDK and current feature flag best practices (google_web_search)
+3. Execute mode-specific task: scaffold setup / create flag / configure rollout plan
+4. Validate flag naming: `{scope}.{feature}` convention required
+5. Ensure kill-switch (0% instant rollback) step is included in any rollout plan
+6. Return structured result with generated files, flag definitions, and rollout stages
+</mandatory_steps>
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - MUST use `{scope}.{feature}` naming convention for all flags (e.g., `checkout.new_flow`).

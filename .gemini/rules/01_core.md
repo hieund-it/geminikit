@@ -1,5 +1,6 @@
 # 01_CORE: Foundations & Safety
 
+<critical_rules>
 ## 1. Supreme Principles
 - **YAGNI & KISS:** Implement only what is necessary; prioritize the simplest working solution.
 - **No Assumptions:** If information is missing, you MUST ask for clarification; never infer or guess.
@@ -9,6 +10,7 @@
 - **Non-Destructive:** DO NOT delete or overwrite critical files without explicit user confirmation.
 - **Security:** Never store or display API Keys, passwords, or PII (Personally Identifiable Information).
 - **Scope:** DO NOT write files outside the current project directory.
+</critical_rules>
 
 ## 3. Anti-Hallucination
 <confidence_gate>
@@ -24,3 +26,6 @@
 ## 5. Localization & Language
 - **Input Processing:** All user inputs MUST be translated to English internally before starting the reasoning or execution phase.
 - **Internal Logic:** All reasoning, planning, and intermediate steps MUST be conducted in English.
+
+---
+> **Reminder:** YAGNI + KISS + No Assumptions + Single Responsibility. If missing data → ask. If outside scope → refuse.

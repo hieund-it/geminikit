@@ -68,12 +68,15 @@ Implement backend API endpoints, middleware, or validation logic following REST/
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
-- **HTTP Semantics:** GET=safe+idempotent, POST=create, PUT=full replace idempotent, PATCH=partial, DELETE=idempotent.
-- **Status Codes:** 200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable, 429 Rate Limit, 500 Internal.
+<backend_safety_rules>
+**ALWAYS enforced for all backend implementations:**
 - **Validation:** MUST validate all input at the boundary with Zod (TS) or Pydantic (Python); never trust raw request body.
 - **Error Format:** Use RFC 7807 Problem Details: `{ type, title, status, detail, instance }`.
-- **Pagination:** List endpoints MUST support cursor or offset pagination with `limit` (max 100), `cursor`/`offset`, and `total` in response.
 - **No Secrets in Logs:** Never log tokens, passwords, PII, or full request bodies.
+</backend_safety_rules>
+- **HTTP Semantics:** GET=safe+idempotent, POST=create, PUT=full replace idempotent, PATCH=partial, DELETE=idempotent.
+- **Status Codes:** 200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable, 429 Rate Limit, 500 Internal.
+- **Pagination:** List endpoints MUST support cursor or offset pagination with `limit` (max 100), `cursor`/`offset`, and `total` in response.
 - **Idempotency:** PUT and DELETE MUST be idempotent; document idempotency key for POST if needed.
 
 # Output

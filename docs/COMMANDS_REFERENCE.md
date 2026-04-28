@@ -12,11 +12,14 @@ These commands manage the Gemini Kit environment and are executed directly in yo
 | `gk list` | Lists all available agents and skills in the current project. |
 | `gk update` | Updates the Gemini Kit framework to the latest version from GitHub. |
 | `gk uninstall` | Removes the `.gemini/` directory and uninstalls the local runtime from the current project. |
-| `gk version` | Displays the installed version of Gemini Kit. |
-| `gk bridge` | Manages the Claude-Gemini bridge pipeline (subcommands: `init`, `start`, `status`, `reset`). |
-| `gk token gain` | Show token savings dashboard. Options: `--history` (per-session breakdown), `--json` (machine-readable output). |
+| `gk doctor [--fix]` | Diagnose Gemini Kit setup issues (Node version, directories, hooks, memory files). Use `--fix` to auto-correct addressable problems. |
+| `gk bridge init [--plan <path>]` | Create `.bridge/` directory structure and generate task queue from plan.md. Auto-detects plan if path omitted. |
+| `gk bridge start` | Launch orchestrator and stream pipeline progress (pending → executing → gemini_done → reviewing → done). |
+| `gk bridge status` | Display pipeline state summary and per-task status table. |
+| `gk bridge reset [--failed-only]` | Reset tasks to pending for retry. Use `--failed-only` to reset only failed tasks (default: resets all). |
+| `gk token gain [--history] [--json]` | Show token savings dashboard. `--history` shows per-session breakdown; `--json` outputs machine-readable format. |
 | `gk token discover` | Analyze token usage patterns to identify missed optimization opportunities. |
-| `gk token report` | Generate a markdown token analytics report saved to `plans/reports/token-report-YYYYMMDD.md`. |
+| `gk token report` | Generate markdown token analytics report saved to `plans/reports/token-report-YYYYMMDD.md`. |
 
 ## AI Agent Commands
 
@@ -34,7 +37,7 @@ These commands invoke specialized AI agents to perform complex tasks.
 | `/gk-audit` | `security` | Audit dependencies and static code for security vulnerabilities and license compliance. |
 | `/gk-brainstorm` | `researcher` | Brainstorm software solutions and architectural options. |
 | `/gk-compare-logic` | `comparator` | Compare business logic between legacy and new systems. |
-| `/gk-create` | `developer` | Generate new skill and agent files from templates. |
+| `/gk-skill-creator` | `developer` | Generate new skill and agent files from templates. |
 | `/gk-debug` | `developer` | Identify the root cause of a software error and recommend a fix. |
 | `/gk-deploy` | `devops` | Execute build and deployment pipelines to various environments. |
 | `/gk-design` | `designer` | Generate or review UI specifications. |

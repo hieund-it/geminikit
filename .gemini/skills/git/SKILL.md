@@ -56,6 +56,15 @@ Execute specified git operation and return structured results. Report changes on
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+
+<pre_commit_gate>
+**MANDATORY before every commit operation:**
+1. MUST invoke `/gk-quality-gate` on staged files
+2. Commit is BLOCKED if `gate_passed: false`
+3. Report gate failure reason to user — do NOT bypass
+Exception: `--dry-run` mode skips gate (preview only)
+</pre_commit_gate>
+
 - **Worktree Isolation**: When creating a worktree, ensure the path is outside the main `.git` directory but within the project root (e.g., `temp/worktree-<branch>`).
 - **Worktree Cleanup**: Always `git worktree remove --force` when a task is finished or failed to prevent stale lock files.
 - Commit Atomicity: Ensure each commit represents a single logical change.

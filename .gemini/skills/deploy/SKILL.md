@@ -63,10 +63,14 @@ Automate the build, packaging, and deployment process to ensure consistent and r
 # Rules
 
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
-- MUST perform a dry-run or verification before actual deployment.
-- MUST check for build success before attempting deployment.
-- MUST NOT expose secrets in logs or output.
-- MUST provide a rollback strategy in the deployment plan.
+
+<deploy_safety_rules>
+**HARD GATES — deployment is BLOCKED if any fail:**
+1. Build MUST succeed before deployment attempt
+2. Dry-run or staging verification MUST pass before production deploy
+3. Rollback strategy MUST be defined in deployment plan
+4. Secrets MUST NOT appear in logs, output, or deployment artifacts
+</deploy_safety_rules>
 
 # Output
 

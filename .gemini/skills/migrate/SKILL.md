@@ -29,6 +29,23 @@ Safely evolve the project's database schema while ensuring zero data loss and ma
   ```
 - **NEVER** embed interview questions inside the `interview_follow_up` JSON field — call `ask_user` directly.
 
+## Steps
+
+<mandatory_steps>
+1. **Interview** — call `ask_user` with 1-2 questions about data sensitivity and hidden schema dependencies
+2. **Analyze** — read current schema and identify all changes required by the request
+3. **Generate** — produce migration script with up + rollback; verify rollback dry-run works
+4. **Risk Assessment** — produce plain-text Risk Assessment Report (risk_level, data_loss_risk, downtime_estimate)
+5. **Confirmation Gate** — present Risk Assessment and call `ask_user` for explicit "yes"/"abort" confirmation before --apply
+6. **Execute or Return** — apply migration (--apply) or return proposal (--generate/--rollback)
+**Steps 5 is MANDATORY for --apply — NEVER skip user confirmation.**
+</mandatory_steps>
+
+<confirmation_required>
+**HARD RULE:** MUST call `ask_user` for confirmation before executing ANY --apply or destructive migration.
+Presenting the plan is not enough — explicit "yes" required.
+</confirmation_required>
+
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
 - **Pre-migration Interview**: Call `ask_user` with 1-2 questions about data sensitivity and schema hacks before generating migration.

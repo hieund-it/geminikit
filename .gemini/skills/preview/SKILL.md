@@ -64,10 +64,13 @@ Demystify technical concepts and architectures using visual formats that improve
 
 # Rules
 - **Skill Common Rules**: See [.gemini/rules/08_skills_common.md](../../rules/08_skills_common.md)
+<visual_quality_rules>
+**ALWAYS enforced:**
 - **Visual Standards:** Diagrams MUST use clear, standard notations (C4 model, sequence, class).
-- **Presentation:** For slides, use high-level points, avoid dense blocks of text.
-- **Documentation:** Save generated diagrams as separate `.md` files or diagrams in `reports/preview/`.
 - **Clarity:** Ensure ASCII art maintains integrity in standard mono-spaced terminal fonts.
+- **Documentation:** Save generated diagrams as separate `.md` files or diagrams in `reports/preview/`.
+</visual_quality_rules>
+- **Presentation:** For slides, use high-level points, avoid dense blocks of text.
 - **Audience:** Language MUST be tuned to the specified audience (e.g., simpler terms for beginner).
 
 # Output
