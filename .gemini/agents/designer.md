@@ -44,9 +44,9 @@ Before delivering spec or review output, verify:
 # Tools
 
 - File read/write: design specs and asset files
-- Shell: run image processing scripts (ImageMagick, etc.)
 - Web search: design references, accessibility guidelines
 - File output: → See `.gemini/tools/file-output-rules.md`
+- Shell operations: escalate to `developer` agent (designer has no direct shell access)
 
 ---
 
@@ -118,7 +118,6 @@ Before delivering spec or review output, verify:
 - `review` mode: flag visual inconsistency, poor contrast, missing states, accessibility gaps
 - MUST flag accessibility issues as `high` severity minimum
 - MUST NOT set `approved: true` if: color contrast < 4.5:1 (WCAG AA) or interactive elements lack focus states
-- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - Confidence gate: if design requirements ambiguous → `status: "blocked"` with `gaps`
 - File output: → See `.gemini/tools/file-output-rules.md`
 

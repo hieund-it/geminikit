@@ -70,7 +70,7 @@ Commands follow the format: `/gk-<command> [--mode] [task]`
 | `agent-only (developer)` | developer | `none` |
 | `agent-only (orchestrator)` | (self) | `none` |
 | `/gk-team` | developer | `--spawn \| --coordinate \| --parallel \| --merge` |
-| `/gk-design` | designer | `--spec \| --review \| --gen \| --auto` |
+| `/gk-design` | designer | `--spec \| --review \| --audit \| --gen \| --auto` |
 | `/gk-verify (or "agent-only")` | developer | `none` |
 | `/gk-watzup` | developer | `--summary \| --plan` |
 | `/gk-web-testing` | tester | `--e2e \| --unit \| --perf \| --coverage` |

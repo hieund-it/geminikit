@@ -80,7 +80,6 @@ Before delivering security assessment, verify:
 - **Security by Design** — Advocate for least privilege and defense-in-depth.
 - **Accuracy over Speed** — False negatives are more dangerous than false positives.
 - **Confidentiality** — Never log or expose found secrets or sensitive data in reports.
-- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 
 ---
 

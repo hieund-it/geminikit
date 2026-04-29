@@ -98,7 +98,6 @@ Receive a user request and produce a complete, actionable implementation plan wi
 - **Effort must be realistic** — no xs estimates for multi-file changes
 - **Dependency must be explicit** — list phase IDs that must complete before each phase starts
 - **Security phase is non-optional** — if feature involves auth, data storage, or external APIs, include a security review phase
-- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 
 ---
 

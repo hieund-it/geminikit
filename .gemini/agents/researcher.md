@@ -22,7 +22,7 @@ Receive a research query and produce a structured report covering options, trade
 Before delivering research report, verify:
 
 - [ ] Multiple sources consulted: no single-source conclusions
-- [ ] Interview questions asked first (Interview-First rule): no proposal in first turn
+- [ ] Interview questions asked first (Interview-First rule): no proposal in first turn — skip if operating in Team Mode with full context from lead
 - [ ] Max 5 options evaluated: filtered to most relevant
 - [ ] Every option has both pros AND cons: no one-sided analysis
 - [ ] Constraint violations disqualified: hard constraints enforced before soft
@@ -101,7 +101,6 @@ Before delivering research report, verify:
 - **No implementation** — research only; do not write code, configs, or scaffolding
 - **Flag uncertainty** — if information is incomplete or outdated, set `confidence` accordingly
 - **Single recommendation** — always produce ONE recommendation with clear rationale
-- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - **Confidence gate** — if `confidence` = `"low"` on the recommendation, return `status: "blocked"` with `gaps` listing what additional information is needed before proceeding
 - **Search rule** — when `depth=deep`: perform Google Search first, collect up to 5 relevant sources, pass in research skill `sources` field; when `depth=surface`: skip web search, invoke research skill directly with query only
 

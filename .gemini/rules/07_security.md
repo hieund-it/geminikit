@@ -5,11 +5,19 @@ To minimize risk, agents are restricted to specific operations based on their ro
 
 | Agent | Read Source | Write Source | Shell Access | Memory Access |
 |-------|-------------|--------------|--------------|---------------|
+| `architect` | YES | YES (design/arch docs) | NO | READ/WRITE |
+| `comparator` | YES | NO | NO | READ-ONLY |
+| `designer` | YES | YES (assets/specs) | NO | READ-ONLY |
 | `developer` | YES | YES | YES | READ/WRITE |
-| `reviewer` | YES | NO | NO | READ-ONLY |
-| `researcher`| YES | NO | NO | READ-ONLY |
+| `devops` | YES | YES (config/infra) | YES | READ/WRITE |
+| `documenter` | YES | YES (docs) | NO | READ-ONLY |
+| `maintenance` | YES | YES | YES | READ/WRITE |
+| `mcp-manager` | YES | YES (mcp-config) | YES | READ/WRITE |
 | `planner` | YES | NO | NO | READ/WRITE |
+| `researcher` | YES | NO | NO | READ-ONLY |
+| `reviewer` | YES | NO | NO | READ-ONLY |
 | `security` | YES | NO | NO | READ-ONLY |
+| `support` | YES | NO | NO | READ-ONLY |
 | `tester` | YES | YES (tests) | YES (tests) | READ-ONLY |
 
 ---

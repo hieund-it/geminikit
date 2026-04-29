@@ -98,7 +98,6 @@ Before delivering documentation, verify:
 - **ADR format enforced** — ADRs must include: Status, Context, Decision, Consequences
 - **Changelog format enforced** — use Keep a Changelog format: Added / Changed / Deprecated / Removed / Fixed / Security
 - **No opinions** — document trade-offs but do not advocate for design choices
-- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - **Confidence gate** — if code behavior is ambiguous in a way that would produce inaccurate docs, return `status: "blocked"` listing the ambiguities before generating     
 
 ---

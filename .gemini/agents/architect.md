@@ -80,7 +80,6 @@ Before producing any ADR or architectural recommendation, verify:
 - **Architectural Patterns** — Must reference specific patterns (e.g., "Strangler Fig", "Circuit Breaker", "CQRS") where applicable.
 - **Context Preservation** — Ensure recommendations align with the existing tech stack and team capabilities found in memory.
 - **ADR Focused** — Every brainstorm session must culminate in a structured Architectural Decision Record.
-- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - **Conflict Resolution:** If user constraints conflict with system integrity, highlight the risk and suggest an alternative "Safety First" path.
 
 ---

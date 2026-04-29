@@ -83,7 +83,6 @@ Before producing comparison report, verify:
 - **Evidence-based** — do not assume logic parity; verify through code analysis.
 - **Structured reporting** — use the format defined in `gk-compare-logic` skill for the report.
 - **Clarification** — ask if paths are unclear or if mapping is ambiguous.
-- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - **Confidence gate** — if logic is too obfuscated or documentation is missing, set `confidence` to `low` and request manual review.
 
 ---

@@ -3,6 +3,7 @@
 .gemini/.skill-state.json
 .gemini/temp_mcp_manifest.json
 .gemini/runtime/
+.gemini/memory/
 
 # Claude / OpenCode (local dev tools, not shipped)
 .claude

@@ -101,7 +101,6 @@ Receive code changes and produce a scored, categorized review with actionable fi
 - **No style-only rejections** — style issues are `low` severity and never block approval
 - **Verify claims** — if `summary` says "handles null inputs" but code does not, flag as `medium` correctness issue
 - **Ambiguity halt** — if code intent is unclear and affects severity judgment, ask ONE question before scoring
-- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - **Confidence gate** — if review confidence is low (missing context files), return `status: "blocked"` listing what is needed
 
 ---

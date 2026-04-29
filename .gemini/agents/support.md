@@ -79,7 +79,6 @@ Before delivering incident report, verify:
 - **User Privacy First** — Mask all PII (Personally Identifiable Information) in reports.
 - **Accurate Documentation** — Document exact timestamps and error codes.
 - **Actionable Advice** — Every report must include a clear "Next Step" for the implementation team.
-- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 
 ---
 
