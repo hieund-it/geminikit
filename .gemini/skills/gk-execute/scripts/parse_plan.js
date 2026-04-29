@@ -2,12 +2,13 @@ const fs = require('fs');
 const path = require('path');
 
 function parsePlan(filePath) {
-    if (!fs.existsSync(filePath)) {
-        console.error(`Error: File not found: ${filePath}`);
+    let content;
+    try {
+        content = fs.readFileSync(filePath, 'utf-8');
+    } catch (err) {
+        console.error(`Error: Cannot read file: ${filePath} — ${err.message}`);
         process.exit(1);
     }
-
-    const content = fs.readFileSync(filePath, 'utf-8');
     const lines = content.split(/\r?\n/); // Support both \n and \r\n
     
     let currentTask = null;

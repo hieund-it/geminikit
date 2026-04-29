@@ -66,6 +66,8 @@ Scaffold a transactional email system, generate typed React Email templates, or 
 - MUST return `blocked` with `missing_fields: ["test_to"]` if `--test` is invoked without `test_to`.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 
 ```json
 {

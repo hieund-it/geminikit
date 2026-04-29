@@ -61,6 +61,9 @@ Capture raw user ideas or deep technical context to transform them into structur
 - Output MUST be structured to be compatible as input for `gk-plan` or `gk-brainstorm`.
 
 # Output
+
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

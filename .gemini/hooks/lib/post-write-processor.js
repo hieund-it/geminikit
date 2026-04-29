@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { spawnSync } = require('child_process');
 
 // Gemini CLI write operation tool names (best-effort — expand if new names discovered)
 const WRITE_TOOL_NAMES = new Set([
@@ -57,7 +57,7 @@ function syncSkillRegistry(cwd) {
   try {
     const syncScript = path.join(cwd, '.gemini', 'scripts', 'sync-registry.js');
     if (!fs.existsSync(syncScript)) return false;
-    execSync(`node "${syncScript}"`, { cwd, stdio: 'pipe', timeout: 10000 });
+    spawnSync(process.execPath, [syncScript], { cwd, stdio: 'pipe', timeout: 10000 });
     return true;
   } catch { return false; }
 }

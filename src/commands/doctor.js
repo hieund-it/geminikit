@@ -54,9 +54,12 @@ function checkHooksConfig(issues) {
   if (!fs.existsSync(settingsPath)) return; // already caught above
 
   try {
-    // settings.json may use JSONC (comments with //) — strip before parsing
+    // settings.json may use JSONC (comments with //) — strip both inline and full-line comments
     const raw = fs.readFileSync(settingsPath, 'utf8');
-    const stripped = raw.replace(/^\s*\/\/.*/gm, '').replace(/,(\s*[}\]])/g, '$1');
+    // Regex: skip matches inside quoted strings, strip // outside strings
+    const stripped = raw
+      .replace(/("(?:[^"\\]|\\.)*")|\/\/[^\n]*/g, (m, str) => str || '')
+      .replace(/,(\s*[}\]])/g, '$1');
     const settings = JSON.parse(stripped);
     const hooks = settings.hooks || {};
     const EXPECTED = ['SessionStart', 'AfterModel', 'PreCompress', 'AfterTool', 'SessionEnd'];
@@ -66,8 +69,8 @@ function checkHooksConfig(issues) {
     } else {
       console.log(`✓ settings.json — ${EXPECTED.length} hooks configured`);
     }
-  } catch {
-    issues.push({ id: 'settings_invalid', msg: 'settings.json is not valid JSON', fixable: false });
+  } catch (err) {
+    issues.push({ id: 'settings_invalid', msg: `settings.json is not valid JSON: ${err.message}`, fixable: false });
   }
 }
 
@@ -141,10 +144,10 @@ function applyFixes(issues) {
     if (issue.id === 'hooks_npm' || issue.id === 'hooks_npm_genai') {
       console.log(`  Running npm install in ${issue.hooksDir}...`);
       try {
-        execSync('npm install', { cwd: issue.hooksDir, stdio: 'inherit' });
+        execSync('npm install', { cwd: issue.hooksDir, stdio: 'inherit', timeout: 120000 });
         console.log('  ✓ npm install completed');
-      } catch {
-        console.log('  ✗ npm install failed — run manually: cd .gemini/hooks && npm install');
+      } catch (err) {
+        console.log(`  ✗ npm install failed — run manually: cd .gemini/hooks && npm install (${err.message})`);
       }
     }
   }
@@ -179,6 +182,9 @@ function run(options = {}) {
   } else if (fixable.length > 0) {
     console.log('\nRun "gk doctor --fix" to auto-fix addressable issues.');
   }
+
+  // Exit with code 1 so CI scripts can detect unhealthy setups
+  process.exit(1);
 }
 
 module.exports = { run };

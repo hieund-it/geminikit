@@ -127,6 +127,8 @@ Generate a production-quality, eval-validated agent or skill file that meets the
 - **TRACEABILITY:** In output `summary`, mention which template and guide were used and benchmark score achieved.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 
 ```json
 {

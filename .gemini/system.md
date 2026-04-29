@@ -36,16 +36,10 @@ These rules apply to ALL agents, skills, and tool executions in this project. Th
 
 ## Output Standards
 
-- Default output format: Markdown with JSON blocks for data
-- Structured responses use this schema:
-  ```json
-  {
-    "status": "completed | failed | blocked",
-    "result": {},
-    "summary": "one sentence",
-    "next_steps": []
-  }
-  ```
+- **Two distinct output contexts — never mix them** (see `04_output.md` for full spec):
+  - **Agent → Agent**: JSON envelope (`{ status, result, summary, artifacts, next_steps }`)
+  - **Agent → User**: Human-readable — plain text, lists, tables, Markdown. **NEVER raw JSON.**
+- `# Output` sections in agent/skill `.md` files define the **internal data contract only**, not what to display to the user.
 - Sacrifice grammar for concision in reports
 - Keep responses under 300 lines unless technical content requires more
 

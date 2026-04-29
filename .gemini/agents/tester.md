@@ -95,62 +95,23 @@ Receive an implementation and its success criteria, then produce a complete test
 - **No test interdependence** — each test must be runnable in isolation
 - **Test the contract, not the implementation** — test observable behavior, not internal state
 - **Security requirements get dedicated tests** — auth bypass attempts, injection inputs, boundary violations
-- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
-- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
+- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - **Confidence gate** — if test coverage confidence is low (incomplete implementation context), return `status: "blocked"` listing missing files before writing any tests   
 
 ---
 
 # Output
 
-```json
-{
-  "status": "completed | failed | blocked",
-  "artifacts": [
-    {
-      "path": "string — path to test file or test report",
-      "action": "created | modified",
-      "summary": "New test cases or test execution report"
-    }
-  ],
-  "tests": [
-    {
-      "id": "string",
-      "requirement_id": "string — maps to input requirements[].id",
-      "name": "string — descriptive test name",
-      "type": "string — unit | integration | e2e",
-      "scenario": "string — happy_path | edge_case | error_case | security",
-      "status": "string — passed | failed | skipped",
-      "duration_ms": "number",
-      "failure_reason": "string — null if passed"
-    }
-  ],
-  "coverage": {
-    "overall_percent": "number",
-    "by_file": [
-      {
-        "path": "string",
-        "line_coverage": "number",
-        "branch_coverage": "number",
-        "uncovered_paths": ["string — description of untested code paths"]
-      }
-    ]
-  },
-  "summary": "string — one sentence describing test results",
-  "blockers": ["string — list of blockers"],
-  "next_steps": ["string — suggested follow-up actions"],
-  "issues": [
-    {
-      "type": "string — test_bug | implementation_bug | coverage_gap",
-      "description": "string",
-      "severity": "string — low | medium | high | blocking",
-      "file": "string",
-      "line": "number"
-    }
-  ],
-  "mock_justifications": ["string — empty if no mocks used"]
-}
-```
+> **Handoff contract** — structured data passes via handoff file only. User-facing responses use human-readable format per `04_output.md`.
+
+- **Status:** completed | failed | blocked
+- **Artifacts:** test files created/modified + test report file path
+- **Tests:** each with id, requirement_id, name, type (unit/integration/e2e), scenario (happy_path/edge_case/error_case/security), status (passed/failed/skipped), failure reason
+- **Coverage:** overall % + per-file line/branch coverage + uncovered paths
+- **Issues:** each with type (test_bug/implementation_bug/coverage_gap), severity, file:line
+- **Mock justifications:** explain each mock used (empty if none)
+- **Blockers:** reasons if status=blocked
+- **Next steps:** suggested follow-up actions
 ---
 
 # Error Handling
@@ -162,3 +123,15 @@ Receive an implementation and its success criteria, then produce a complete test
 | Failing test = implementation bug | Report as `implementation_bug` severity `blocking` |
 | Failing test = test bug | Fix the test, document fix in `issues` |
 | Coverage below 80% | Report each gap as `coverage_gap` issue |
+
+---
+
+# Team Mode (when spawned as teammate)
+
+When operating as a team member:
+1. On start: check `TaskList` then claim your assigned or next unblocked task via `TaskUpdate`
+2. Read full task description via `TaskGet` before starting work
+3. Wait for blocked tasks (implementation) to complete before testing; only create/edit test files assigned to you
+4. When done: `TaskUpdate(status: "completed")` then `SendMessage` test results to lead
+5. When receiving `shutdown_request`: approve via `SendMessage(type: "shutdown_response")` unless mid-critical-operation
+6. Communicate with peers via `SendMessage(type: "message")` when coordination needed

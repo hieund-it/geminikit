@@ -74,7 +74,7 @@ Atomic, reusable units of functionality (located in `.gemini/skills/`). Skills a
 
 All skills as of Phase 05 (2026-04-26) include:
 - **Tools section**: Explicit Gemini CLI tools with when-to-use guidance
-- **Output Schema**: Standardized JSON structure (status, display, result, summary, confidence)
+- **Output sections**: Plain-text handoff contract (status, artifacts, summary, confidence) per `04_output.md`
 - **Error Recovery**: Tabular error handling strategies
 - **Gemini-Specific Optimizations**: Long context reading, google_search integration, code execution verification
 

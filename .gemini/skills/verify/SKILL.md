@@ -46,6 +46,8 @@ Execute a code snippet in Python sandbox and report pass/fail with evidence.
 5. Return structured result with `display` field
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 
 ```json
 {

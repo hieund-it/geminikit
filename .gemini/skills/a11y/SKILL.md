@@ -56,6 +56,8 @@ Audit UI components and pages for WCAG 2.2 AA compliance, classify violations by
 - MUST return `blocked` with `missing_fields: ["violations"]` if `--fix` is invoked without a `violations` array.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 
 ```json
 {

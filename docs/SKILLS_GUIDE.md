@@ -49,7 +49,7 @@ Each skill is defined by a `SKILL.md` file containing:
 - **Objective**: The specific goal of the skill
 - **Input Schema**: The JSON structure required to invoke the skill
 - **Process**: Step-by-step execution logic
-- **Output Schema**: The JSON structure returned by the skill (required format: `{status, display, result, summary, confidence}`)
+- **Output**: Plain-text handoff contract (status, artifacts, summary, confidence) per `04_output.md`
 - **Error Recovery**: Table of error codes, causes, and recovery strategies
 - **Gemini-Specific Optimizations**: How the skill leverages Gemini's native capabilities (long context, google_search, code execution)
 
@@ -65,7 +65,7 @@ All skills follow v2.0.0 structure with the following enhancements:
 
 ### Mandatory Sections (All Skills)
 1. **Tools** — Explicit list of Gemini CLI tools (`google_search`, `read_file`, `write_file`, `run_code`, `run_shell_command`)
-2. **Output Schema** — Standardized JSON with fields: `status` (completed|failed|blocked), `display` (markdown), `result` (structured data), `summary` (one sentence), `confidence` (high|medium|low)
+2. **Output** — Plain-text handoff contract with fields: `status` (ready|blocked|partial|completed|failed), `artifacts` (files created/modified/deleted), `summary` (one sentence), `confidence` (high|medium|low), plus domain-specific content per skill role
 3. **Error Recovery** — Table format with Error, Cause, and Recovery columns
 4. **Gemini-Specific Optimizations** — Sections for long context (1M tokens), google_search usage, and code execution verification
 

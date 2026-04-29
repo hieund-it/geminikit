@@ -67,6 +67,8 @@ Summarize the current work session’s progress, identify completion status, and
 - **Clarity:** Unfinished items MUST be clearly listed as "Continuation Tasks" for next session.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

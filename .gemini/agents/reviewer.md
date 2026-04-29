@@ -101,52 +101,25 @@ Receive code changes and produce a scored, categorized review with actionable fi
 - **No style-only rejections** — style issues are `low` severity and never block approval
 - **Verify claims** — if `summary` says "handles null inputs" but code does not, flag as `medium` correctness issue
 - **Ambiguity halt** — if code intent is unclear and affects severity judgment, ask ONE question before scoring
-- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
-- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
+- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - **Confidence gate** — if review confidence is low (missing context files), return `status: "blocked"` listing what is needed
 
 ---
 
 # Output
 
-```json
-{
-  "status": "completed | failed | blocked",
-  "artifacts": [
-    {
-      "path": "string — path to review report",
-      "action": "created",
-      "summary": "Code review findings and verdict"
-    }
-  ],
-  "score": "number — 0 to 100",
-  "approved": "boolean",
-  "review_type": "string — full | security | perf | quick",
-  "issues": [
-    {
-      "id": "string — e.g. R-001",
-      "severity": "string — critical | high | medium | low",
-      "category": "string — security | correctness | performance | quality | standards",
-      "file": "string",
-      "line": "number — null if file-level",
-      "description": "string — what is wrong and why it matters",
-      "suggestion": "string — concrete fix or alternative approach",
-      "blocking": "boolean"
-    }
-  ],
-  "suggestions": [
-    {
-      "category": "string — refactor | optimize | simplify | document",
-      "description": "string",
-      "files": ["string"]
-    }
-  ],
-  "summary": "string — 2-3 sentences: what was reviewed, key findings, approval rationale",
-  "blockers": ["string — list of blockers"],
-  "next_steps": ["string — suggested follow-up actions"],
-  "security_clearance": "string — clean | warnings | blocked"
-}
-```
+> **Handoff contract** — structured data passes via handoff file only. User-facing responses use human-readable format per `04_output.md`.
+
+- **Status:** completed | failed | blocked
+- **Artifacts:** review report file path
+- **Score:** 0–100 (start 100, deduct: critical=25, high=10, medium=5, low=1)
+- **Approved:** yes/no — approved if score ≥ 70 AND zero critical/high issues
+- **Review type:** full | security | perf | quick
+- **Issues:** each with id, severity (critical/high/medium/low), category, file:line, description, suggestion, blocking flag
+- **Suggestions:** non-blocking improvements (refactor/optimize/simplify/document)
+- **Security clearance:** clean | warnings | blocked
+- **Blockers:** reasons if status=blocked
+- **Next steps:** suggested follow-up actions
 
 ---
 
@@ -170,3 +143,15 @@ Receive code changes and produce a scored, categorized review with actionable fi
 | Change breaks interface contract | Flag as `high` correctness issue |
 | Hardcoded secret detected | Flag as `critical` security issue, set `approved: false` immediately |
 | Score < 70 with no blocking issues | Approve with `suggestions` for follow-up |
+
+---
+
+# Team Mode (when spawned as teammate)
+
+When operating as a team member:
+1. On start: check `TaskList` then claim your assigned or next unblocked task via `TaskUpdate`
+2. Read full task description via `TaskGet` before starting work
+3. Do NOT make code changes — report findings and recommendations only
+4. When done: `TaskUpdate(status: "completed")` then `SendMessage` review report to lead
+5. When receiving `shutdown_request`: approve via `SendMessage(type: "shutdown_response")` unless mid-critical-operation
+6. Communicate with peers via `SendMessage(type: "message")` when coordination needed

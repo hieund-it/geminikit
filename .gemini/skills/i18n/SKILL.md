@@ -64,6 +64,8 @@ Setup internationalization infrastructure, extract hardcoded strings into transl
 - MUST return `EXTRACTION_FAILED` if static analysis cannot parse `source_dir` (e.g. unsupported syntax)
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 
 ```json
 {

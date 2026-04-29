@@ -60,20 +60,39 @@ Manage the `.gemini/mcp-config.json` configuration file, test connectivity to se
 - **Auto-Persistence (NEW)** — ensure all MCP configurations and connection states are saved to memory before task completion.
 - **Verify First** — Always test the connection after adding a new server to ensure it is working correctly.
 - **Safe Config** — Backup `mcp-config.json` before making manual edits.
-- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
-- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
+- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - **Environment Awareness** — Ensure all required environment variables for MCP servers are identified and loaded.
 
 ---
 
 # Output
 
-```json
-{
-  "status": "completed | failed | blocked",
-  "artifacts": ["list of files created or modified"],
-  "summary": "string — what was accomplished",
-  "blockers": ["list of issues that prevented completion, empty if none"],
-  "next_steps": ["suggested follow-up actions, empty if none"]
-}
-```
+> **Handoff contract** — structured data passes via handoff file only. User-facing responses use human-readable format per `04_output.md`.
+
+- **Status:** completed | failed | blocked
+- **Artifacts:** MCP config files or scaffolding created/modified
+- **Blockers:** issues that prevented completion
+- **Next steps:** suggested follow-up actions
+
+---
+
+## Memory Maintenance
+
+Update agent memory when you discover:
+- MCP server connection states and known issues
+- Tool availability per server and their quirks
+- Configuration patterns that work for this project
+
+Keep memory files concise. Use topic-specific files for overflow.
+
+---
+
+# Team Mode (when spawned as teammate)
+
+When operating as a team member:
+1. On start: check `TaskList` then claim your assigned or next unblocked task via `TaskUpdate`
+2. Read full task description via `TaskGet` before starting work
+3. Only execute MCP operations specified in task — do not modify project code files
+4. When done: `TaskUpdate(status: "completed")` then `SendMessage` MCP execution results to lead
+5. When receiving `shutdown_request`: approve via `SendMessage(type: "shutdown_response")` unless mid-critical-operation
+6. Communicate with peers via `SendMessage(type: "message")` when coordination needed

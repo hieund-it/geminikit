@@ -65,6 +65,8 @@ Integrate headless CMS into projects with correct client configuration, typed co
 - MUST return `API_UNREACHABLE` if `project_id` is provided but the CMS API cannot be reached
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 
 ```json
 {

@@ -44,6 +44,13 @@ async function main() {
       const filePath = getFilePath(tool_input);
       if (filePath) {
         const absPath = path.isAbsolute(filePath) ? filePath : path.join(cwd, filePath);
+        // Guard against path traversal via malicious cwd or filePath
+        const safeCwd = path.resolve(cwd);
+        if (!path.resolve(absPath).startsWith(safeCwd + path.sep) && path.resolve(absPath) !== safeCwd) {
+          logError('after-tool', `Path escape attempt blocked: ${absPath}`);
+          process.stdout.write(JSON.stringify({ status: 'ok' }));
+          process.exit(0);
+        }
         const relPath = path.relative(cwd, absPath);
 
         if (/^plans\/[^/]+\/plan\.md$/.test(relPath)) {

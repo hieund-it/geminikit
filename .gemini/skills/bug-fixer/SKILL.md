@@ -82,6 +82,9 @@ Take an error message or log as input, locate the faulting code, and provide a v
 </mandatory_fix_pipeline>
 
 # Output
+
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

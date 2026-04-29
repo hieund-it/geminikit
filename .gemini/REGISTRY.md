@@ -17,7 +17,6 @@ This file is automatically managed by `sync-registry.js`. ALWAYS reference this 
 | `/gk-auth [--jwt \| --oauth \| --session \| --rbac] <args>` | developer | auth | Implement authentication and authorization with JWT, OAuth2, or session management. Use when adding login, OAuth providers, session handling, or Better Auth integration. |
 | `/gk-backend [--rest \| --graphql \| --middleware \| --validate] <args>` | developer | backend | Build Node.js/Python backend APIs with REST or GraphQL. Use when implementing API endpoints, middleware, authentication, or server-side logic. |
 | `/gk-brainstorm` | researcher | brainstorm | Software solution brainstorming, architectural evaluation, and technical decision debating. |
-| `Bridge orchestrator — not directly by users` | developer | bridge-task-runner | Execute a bridge pipeline task and signal completion by updating the task JSON status. |
 | `/gk-fix-bug (or "agent-only") [--verify \| --deep] <args>` | developer | bug-fixer | Identify root cause from error logs and generate a verified code fix with regression tests. |
 | `/gk-cms [--setup \| --schema \| --query] <args>` | developer | cms | Integrate headless CMS (Sanity, Strapi, Payload), define content schemas, and generate typed data fetching queries |
 | `/gk-coding-level [--set \| --get \| --explain] <args>` | developer | coding-level | Adapt response depth and style to user's coding experience level. Persists in memory to ensure consistent interaction quality. |
@@ -81,7 +80,6 @@ This file is automatically managed by `sync-registry.js`. ALWAYS reference this 
 | auth | `.gemini/skills/auth/SKILL.md` | — | Implement authentication and authorization with JWT, OAuth2, or session management. Use when adding login, OAuth providers, session handling, or Better Auth integration. |
 | backend | `.gemini/skills/backend/SKILL.md` | — | Build Node.js/Python backend APIs with REST or GraphQL. Use when implementing API endpoints, middleware, authentication, or server-side logic. |
 | brainstorm | `.gemini/skills/brainstorm/SKILL.md` | — | Software solution brainstorming, architectural evaluation, and technical decision debating. |
-| bridge-task-runner | `.gemini/skills/bridge-task-runner/SKILL.md` | — | Execute a bridge pipeline task and signal completion by updating the task JSON status. |
 | bug-fixer | `.gemini/skills/bug-fixer/SKILL.md` | — | Identify root cause from error logs and generate a verified code fix with regression tests. |
 | cms | `.gemini/skills/cms/SKILL.md` | — | Integrate headless CMS (Sanity, Strapi, Payload), define content schemas, and generate typed data fetching queries |
 | coding-level | `.gemini/skills/coding-level/SKILL.md` | — | Adapt response depth and style to user's coding experience level. Persists in memory to ensure consistent interaction quality. |

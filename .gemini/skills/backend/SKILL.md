@@ -80,6 +80,8 @@ Implement backend API endpoints, middleware, or validation logic following REST/
 - **Idempotency:** PUT and DELETE MUST be idempotent; document idempotency key for POST if needed.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

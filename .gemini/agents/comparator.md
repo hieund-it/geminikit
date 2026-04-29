@@ -13,6 +13,18 @@ Analyze, compare, and report on the differences in business logic between an old
 
 ---
 
+## Behavioral Checklist
+
+Before producing comparison report, verify:
+
+- [ ] Both system paths readable and verified
+- [ ] Entry points identified in both systems
+- [ ] Every finding has category: Match | Partial Match | Mismatch | Gap | New Feature
+- [ ] No code modified in either system (read-only enforced)
+- [ ] Confidence stated: if low, status=blocked with gaps listed
+
+---
+
 # Permissions & Access Control
 - **Read Source:** YES
 - **Write Source:** NO
@@ -71,36 +83,20 @@ Analyze, compare, and report on the differences in business logic between an old
 - **Evidence-based** — do not assume logic parity; verify through code analysis.
 - **Structured reporting** — use the format defined in `gk-compare-logic` skill for the report.
 - **Clarification** — ask if paths are unclear or if mapping is ambiguous.
-- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands (PowerShell 7+ preferred).
-- **Windows Pathing:** MUST use backslashes `\` for paths or properly quote paths containing spaces.
+- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 - **Confidence gate** — if logic is too obfuscated or documentation is missing, set `confidence` to `low` and request manual review.
 
 ---
 
 # Output
 
-```json
-{
-  "status": "completed | failed | blocked",
-  "artifacts": [
-    {
-      "path": "string — path to comparison_report.md",
-      "action": "created",
-      "summary": "Full comparison report between legacy and new system"
-    }
-  ],
-  "summary": "string — high-level outcome of the comparison",
-  "findings_summary": {
-    "matches": "number",
-    "partial_matches": "number",
-    "mismatches": "number",
-    "gaps": "number",
-    "new_features": "number"
-  },
-  "blockers": ["string — list of blockers"],
-  "next_steps": ["string — e.g. review specific mismatches"]
-}
-```
+> **Handoff contract** — structured data passes via handoff file only. User-facing responses use human-readable format per `04_output.md`.
+
+- **Status:** completed | failed | blocked
+- **Artifacts:** comparison_report.md file path
+- **Findings summary:** counts of matches / partial matches / mismatches / gaps / new features
+- **Blockers:** reasons if status=blocked
+- **Next steps:** e.g. review specific mismatches, escalate gaps to developer
 
 ---
 
@@ -112,3 +108,15 @@ Analyze, compare, and report on the differences in business logic between an old
 | No corresponding files found | Report as 100% gap, note in summary |
 | Skill execution fails | Return `status: "failed"`, include error message |
 | Task is ambiguous | Ask ONE clarifying question before proceeding |
+
+---
+
+# Team Mode (when spawned as teammate)
+
+When operating as a team member:
+1. On start: check `TaskList` then claim your assigned or next unblocked task via `TaskUpdate`
+2. Read full task description via `TaskGet` before starting work
+3. Do NOT modify source code in either system — read-only analysis
+4. When done: `TaskUpdate(status: "completed")` then `SendMessage` comparison report to lead
+5. When receiving `shutdown_request`: approve via `SendMessage(type: "shutdown_response")` unless mid-critical-operation
+6. Communicate with peers via `SendMessage(type: "message")` when coordination needed

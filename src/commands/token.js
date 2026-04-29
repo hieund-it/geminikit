@@ -11,8 +11,30 @@ function row(label, value) {
   return `│${inner.padEnd(BOX_WIDTH)}│`;
 }
 
+const MAX_LOG_READ_BYTES = 50 * 1024 * 1024; // 50MB guard
+
 function parseTokenLog() {
   if (!fs.existsSync(TOKEN_LOG_FILE)) return [];
+  try {
+    const stat = fs.statSync(TOKEN_LOG_FILE);
+    if (stat.size > MAX_LOG_READ_BYTES) {
+      console.warn(`Warning: token log exceeds 50MB (${Math.round(stat.size / 1024 / 1024)}MB) — reading last 10,000 lines only`);
+      // Read only last chunk to avoid OOM
+      const buf = Buffer.alloc(MAX_LOG_READ_BYTES);
+      const fd = fs.openSync(TOKEN_LOG_FILE, 'r');
+      let bytesRead;
+      try {
+        bytesRead = fs.readSync(fd, buf, 0, MAX_LOG_READ_BYTES, Math.max(0, stat.size - MAX_LOG_READ_BYTES));
+      } finally {
+        fs.closeSync(fd);
+      }
+      return buf.slice(0, bytesRead).toString('utf8')
+        .split('\n').filter(l => l.trim())
+        .slice(-10000)
+        .map(l => { try { return JSON.parse(l); } catch { return null; } })
+        .filter(Boolean);
+    }
+  } catch { /* fall through to normal read */ }
   return fs.readFileSync(TOKEN_LOG_FILE, 'utf8')
     .split('\n')
     .filter(l => l.trim())
@@ -100,7 +122,8 @@ function gain(options = {}) {
   console.log('├──────────────────────────────────────┤');
   console.log('│  Top skills by usage:                │');
   topSkills.forEach(([skill, tokens], i) => {
-    const label = `  ${i + 1}. ${skill.padEnd(18)}`;
+    const truncated = skill.length > 18 ? skill.slice(0, 17) + '…' : skill.padEnd(18);
+    const label = `  ${i + 1}. ${truncated}`;
     const val = `${tokens.toLocaleString()} tkn`;
     console.log(`│${(label + val).padEnd(BOX_WIDTH)}│`);
   });
@@ -232,9 +255,13 @@ function report() {
     md += `| ${sid} | ${turns.length} | ${total.toLocaleString()} | ${comps} |\n`;
   });
 
-  fs.mkdirSync(path.join(PROJECT_DIR, 'plans', 'reports'), { recursive: true });
-  fs.writeFileSync(reportPath, md, 'utf8');
-  console.log(`Report generated: ${reportPath}`);
+  try {
+    fs.mkdirSync(path.join(PROJECT_DIR, 'plans', 'reports'), { recursive: true });
+    fs.writeFileSync(reportPath, md, 'utf8');
+    console.log(`Report generated: ${reportPath}`);
+  } catch (err) {
+    console.error(`Failed to write report: ${err.message}`);
+  }
 }
 
 module.exports = { gain, discover, report };

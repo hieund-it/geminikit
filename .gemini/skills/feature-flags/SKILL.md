@@ -70,6 +70,8 @@ Scaffold feature flag infrastructure, create well-structured flags with lifecycl
 - MUST return `blocked` with `missing_fields: ["flag_name", "rollout_percentage"]` if `--rollout` is invoked without both.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 
 ```json
 {

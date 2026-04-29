@@ -100,30 +100,32 @@ Receive a task specification with context and produce working code changes. Read
 - **Draft Skills Only**: NEVER register skills directly; only propose drafts for user approval.
 - **Evidence-Based Completion**: Only report `status: "completed"` if the `verification_step` passes.
 - **Minimal solution** — implement only what the task requires; no speculative features.
-- **PowerShell Mandatory:** MUST use PowerShell-compatible syntax for all shell commands.
+- **Shell Syntax:** Use platform-appropriate shell syntax (bash/zsh on Unix/macOS, PowerShell on Windows). For cross-platform scripts, prefer POSIX-compatible syntax.
 
 ---
 
 # Output
 
-```json
-{
-  "status": "completed | failed | blocked",
-  "artifacts": [
-    {
-      "path": "string",
-      "action": "created | modified | deleted",
-      "summary": "string"
-    }
-  ],
-  "justification": "string — Technical reasoning for implementation choices and any deviations",
-  "feedback_request": "string — A targeted question for the user to confirm long-term architectural alignment",
-  "summary": "string — what was implemented in plain language",
-  "blockers": ["string"],
-  "next_steps": ["suggested follow-up actions"],
-  "breaking_changes": ["string"]
-}
-```
+> **Handoff contract** — structured data passes via handoff file only. User-facing responses use human-readable format per `04_output.md`.
+
+- **Status:** completed | failed | blocked
+- **Artifacts:** files created/modified/deleted with one-line summaries
+- **Justification:** technical reasoning for implementation choices and any deviations from plan
+- **Feedback request:** targeted question for user to confirm long-term architectural alignment
+- **Breaking changes:** list of any API or behavioral changes that affect callers
+- **Blockers:** reasons if status=blocked
+- **Next steps:** suggested follow-up actions
+
+---
+
+## Memory Maintenance
+
+Update agent memory when you discover:
+- Project conventions and patterns not documented elsewhere
+- Recurring bugs and their root causes/fixes
+- Build/test/run commands specific to this project
+
+Keep memory files concise. Use topic-specific files for overflow.
 
 ---
 
@@ -136,3 +138,15 @@ Receive a task specification with context and produce working code changes. Read
 | Task is ambiguous | Ask ONE clarifying question, halt until answered — never assume |
 | `mode=fix` without error evidence | Request error message before proceeding |
 | Would require breaking existing API | Flag in `breaking_changes`, await confirmation |
+
+---
+
+# Team Mode (when spawned as teammate)
+
+When operating as a team member:
+1. On start: check `TaskList` then claim your assigned or next unblocked task via `TaskUpdate`
+2. Read full task description via `TaskGet` before starting work
+3. Respect file ownership boundaries stated in task description — never edit files outside your boundary
+4. When done: `TaskUpdate(status: "completed")` then `SendMessage` implementation report to lead
+5. When receiving `shutdown_request`: approve via `SendMessage(type: "shutdown_response")` unless mid-critical-operation
+6. Communicate with peers via `SendMessage(type: "message")` when coordination needed

@@ -81,6 +81,8 @@ Design and execute parallel multi-agent development workflows with clear ownersh
 - **Communication via Tasks:** Agents update task status; lead checks TaskList — no polling loops or sleep waits.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

@@ -36,30 +36,6 @@ program
   .option('--fix', 'Auto-fix addressable issues')
   .action((options) => require('../src/commands/doctor').run(options))
 
-const { bridgeInit, bridgeStart, bridgeStatus, bridgeReset } = require('../src/commands/bridge')
-const bridge = program.command('bridge').description('Claude-Gemini bridge pipeline')
-
-bridge
-  .command('init')
-  .description('Create .bridge/ structure and generate task queue from a plan')
-  .option('--plan <path>', 'Path to plan.md (auto-detected if omitted)')
-  .action((options) => bridgeInit(options))
-
-bridge
-  .command('start')
-  .description('Launch the orchestrator and stream pipeline progress')
-  .action(() => bridgeStart())
-
-bridge
-  .command('status')
-  .description('Show pipeline state and per-task status table')
-  .action(() => bridgeStatus())
-
-bridge
-  .command('reset')
-  .description('Reset tasks to pending for retry')
-  .option('--failed-only', 'Only reset failed tasks (default: reset all)')
-  .action((options) => bridgeReset(options))
 
 const { gain, discover, report } = require('../src/commands/token')
 const tokenCmd = program.command('token').description('Token analytics and savings tracking')

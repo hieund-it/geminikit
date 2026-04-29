@@ -74,6 +74,8 @@ Demystify technical concepts and architectures using visual formats that improve
 - **Audience:** Language MUST be tuned to the specified audience (e.g., simpler terms for beginner).
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

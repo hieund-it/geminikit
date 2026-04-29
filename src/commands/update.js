@@ -105,8 +105,10 @@ module.exports = async function update() {
 
         if (choice === 'all') {
           // Full backup → restore user data → overwrite all scaffold files
-          const tempDir = path.join(targetDir, '.gemini_backup_' + Date.now())
+          const { randomBytes } = require('crypto')
+          const tempDir = path.join(targetDir, '.gemini_backup_' + randomBytes(8).toString('hex'))
           await fse.move(geminiTarget, tempDir)
+          let restored = false
           try {
             await fse.ensureDir(geminiTarget)
             const memoryDir = path.join(tempDir, 'memory')
@@ -116,15 +118,21 @@ module.exports = async function update() {
             if (await fse.pathExists(runtimeDir)) await fse.move(runtimeDir, path.join(geminiTarget, 'runtime'))
             if (await fse.pathExists(envFile)) await fse.copy(envFile, path.join(geminiTarget, '.env'), { overwrite: true })
             await init.performInit(geminiSource, geminiTarget, targetDir, geminiMdSource, true)
-            await fse.remove(tempDir)
             log.success('Project updated. Existing libraries and data preserved.')
           } catch (initErr) {
             log.error('Update failed: ' + initErr.message)
             log.warn('Restoring from backup...')
+            // Mark restored BEFORE moving so finally never deletes the backup
+            restored = true
             if (await fse.pathExists(geminiTarget)) await fse.remove(geminiTarget)
             await fse.move(tempDir, geminiTarget)
             log.success('Project restored to its previous state.')
             return
+          } finally {
+            // Always clean up the backup dir unless it was moved back during restore
+            if (!restored && await fse.pathExists(tempDir)) {
+              try { await fse.remove(tempDir) } catch { /* ignore cleanup errors */ }
+            }
           }
         } else {
           // 'new' — only copy files that don't exist yet, leave changed files untouched

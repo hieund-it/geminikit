@@ -94,6 +94,9 @@ The BeforeAgent hook will inject the report path and `summary-template.md` autom
 5. **Final Confirmation** — After `ask_user` returns a confirmed path, output the final JSON result for agent handoff.
 
 # Output
+
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 > Output JSON is for **agent handoff only** — after the user has confirmed via `ask_user`. Never output JSON with empty or placeholder question fields.
 
 ```json

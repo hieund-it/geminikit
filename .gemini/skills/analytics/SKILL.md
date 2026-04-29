@@ -64,6 +64,8 @@ Scaffold analytics providers, generate event tracking schemas, or audit existing
 - MUST return `blocked` with `missing_fields: ["existing_events"]` if `--audit` is invoked without `existing_events`.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 
 ```json
 {

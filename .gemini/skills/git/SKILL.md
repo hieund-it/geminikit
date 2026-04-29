@@ -76,6 +76,9 @@ Exception: `--dry-run` mode skips gate (preview only)
 - PR Prep: Produce title (≤70 chars) + body (summary + test plan) from diff.
 
 # Output
+
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

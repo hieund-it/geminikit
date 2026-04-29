@@ -18,24 +18,29 @@ const PROJECT_DIR = process.env.GEMINI_PROJECT_DIR || path.resolve(__dirname, '.
 const TOKEN_LOG_DIR = path.join(PROJECT_DIR, '.gemini', 'logs');
 const TOKEN_LOG_FILE = path.join(TOKEN_LOG_DIR, 'token-usage.jsonl');
 
-// In-memory turn counter keyed by session_id (persists within the hook process lifetime only).
-// For cross-process persistence we rely on counting existing entries in the log file.
+// Per-session turn counter stored in /tmp to avoid O(n) JSONL scan each invocation.
+function getSessionTurnCounterPath(sessionId) {
+  const safeId = String(sessionId).replace(/[^a-zA-Z0-9-_]/g, '_');
+  return path.join('/tmp', `gk-turn-${safeId}.json`);
+}
+
 function getSessionTurnCount(sessionId) {
   try {
-    if (!fs.existsSync(TOKEN_LOG_FILE)) return 1;
-    const content = fs.readFileSync(TOKEN_LOG_FILE, 'utf8');
-    const lines = content.split('\n').filter(l => l.trim());
-    let count = 0;
-    for (const line of lines) {
-      try {
-        const entry = JSON.parse(line);
-        if (entry.session_id === sessionId) count++;
-      } catch { /* skip malformed */ }
+    const counterPath = getSessionTurnCounterPath(sessionId);
+    if (fs.existsSync(counterPath)) {
+      const { turn } = JSON.parse(fs.readFileSync(counterPath, 'utf8'));
+      return (turn || 0) + 1;
     }
-    return count + 1;
+    return 1;
   } catch {
     return 1;
   }
+}
+
+function saveSessionTurnCount(sessionId, turn) {
+  try {
+    fs.writeFileSync(getSessionTurnCounterPath(sessionId), JSON.stringify({ turn }));
+  } catch { /* ignore */ }
 }
 
 const MAX_LOG_LINES = 10000;
@@ -47,7 +52,10 @@ function rotateTokenLogIfNeeded() {
     const content = fs.readFileSync(TOKEN_LOG_FILE, 'utf8');
     const lines = content.split('\n').filter(l => l.trim());
     if (lines.length > MAX_LOG_LINES) {
-      fs.writeFileSync(TOKEN_LOG_FILE, lines.slice(-KEEP_LOG_LINES).join('\n') + '\n', 'utf8');
+      // Write to temp file then rename atomically to avoid data loss on concurrent writes
+      const tmp = TOKEN_LOG_FILE + '.tmp';
+      fs.writeFileSync(tmp, lines.slice(-KEEP_LOG_LINES).join('\n') + '\n', 'utf8');
+      fs.renameSync(tmp, TOKEN_LOG_FILE);
       logInfo('after-model:token-log', `rotated: kept last ${KEEP_LOG_LINES} of ${lines.length} entries`);
     }
   } catch (err) {
@@ -94,9 +102,23 @@ async function main() {
       logInfo('after-model', 'display-field detected in response');
     }
 
+    // Detect raw JSON blocks in user-facing response (violation monitoring)
+    if (isLastChunk) {
+      const jsonBlockPattern = /```json[\s\S]*?```/;
+      // Use non-multiline $ to avoid false positives from code blocks containing { }
+      const jsonObjectPattern = /^\s*\{[^\n]{20,}\}\s*$/;
+      if (jsonBlockPattern.test(responseText) || jsonObjectPattern.test(responseText)) {
+        logInfo('after-model', 'WARNING: raw JSON detected in user-facing response — rule violation');
+      }
+    }
+
+    // Compute turn info once — needed for both summarization trigger and token log
+    const sessionId = input.session_id || 'unknown';
+    const turnNumber = isLastChunk ? getSessionTurnCount(sessionId) : 0;
+
     // Only summarize + reset on last chunk to avoid mid-stream processing
     let didSummarize = false;
-    if (isLastChunk && shouldSummarize(totalTokens)) {
+    if (isLastChunk && shouldSummarize(totalTokens, turnNumber)) {
       const turns = extractTurns('short-term.md');
       if (turns) {
         const summary = await summarize(turns);
@@ -113,10 +135,8 @@ async function main() {
 
     // Append token usage entry to .gemini/logs/token-usage.jsonl on every last chunk
     if (isLastChunk) {
-      const sessionId = input.session_id || 'unknown';
       const skillState = readSkillState(PROJECT_DIR);
       const activeSkill = skillState?.skill || 'unknown';
-      const turnNumber = getSessionTurnCount(sessionId);
 
       const logEntry = {
         ts: new Date().toISOString(),
@@ -127,6 +147,7 @@ async function main() {
         compressed: didSummarize
       };
       appendTokenLog(logEntry);
+      saveSessionTurnCount(sessionId, turnNumber);
       logInfo('after-model', `token-log turn=${turnNumber} skill=${activeSkill} tokens=${totalTokens} compressed=${didSummarize}`);
     }
 

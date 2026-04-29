@@ -18,8 +18,8 @@ const SENSITIVE_FILE_PATTERNS = [
 
 const SENSITIVE_SHELL_PATTERNS = [
   /cat\s+.*\.env/i,
-  /echo\s+\$[A-Z_]*(KEY|SECRET|TOKEN|PASSWORD|CREDENTIAL)/i,
-  /printenv\s+[A-Z_]*(KEY|SECRET|TOKEN|PASSWORD|CREDENTIAL)/i,
+  /echo\s+\$[A-Za-z_]*(KEY|SECRET|TOKEN|PASSWORD|CREDENTIAL)/i,
+  /printenv\s+[A-Za-z_]*(KEY|SECRET|TOKEN|PASSWORD|CREDENTIAL)/i,
 ];
 
 // File-access tool names supported by Gemini CLI
@@ -43,10 +43,11 @@ async function main() {
     let blocked = false;
     let reason = '';
 
-    if (FILE_TOOLS.includes(tool_name) && tool_input.path) {
-      if (isSensitivePath(tool_input.path)) {
+    const filePath = tool_input.path || tool_input.file_path || tool_input.filename;
+    if (FILE_TOOLS.includes(tool_name) && filePath) {
+      if (isSensitivePath(filePath)) {
         blocked = true;
-        reason = `Blocked: "${path.basename(tool_input.path)}" may contain sensitive data (keys, secrets, credentials). To access this file, ask the user for explicit approval first.`;
+        reason = `Blocked: "${path.basename(filePath)}" may contain sensitive data (keys, secrets, credentials). To access this file, ask the user for explicit approval first.`;
       }
     } else if (tool_name === 'run_shell_command' && tool_input.command) {
       if (isSensitiveCommand(tool_input.command)) {

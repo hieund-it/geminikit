@@ -20,7 +20,7 @@ Do NOT report success unless verification step has passed with zero errors.
 - **Security Audit** — ALWAYS check for sensitive data (secrets, keys, PII) in inputs/outputs and redact before returning.
 </security_audit_rule>
 - **Context Economy** — minimize the number of files read and tokens used while maintaining analysis quality.
-- **Display Convention** — When skill output includes user-facing content (review verdicts, debug reports, verification results), populate the optional `display` field with a markdown-formatted summary (max 500 words). This field drives what the user sees; `result` is for programmatic consumption. Skills that only return data for agent handoff (e.g., gk-plan, gk-git) may omit `display`.
+- **Output Routing** — The handoff file (`.agent-handoff-{session}.json`) is the ONLY structured data channel between agents. User-facing responses MUST be human-readable per `04_output.md` — never raw JSON. See `agent-handoff-schema.json` for the handoff contract.
 - **Shell Compatibility:** Use POSIX-compatible shell syntax by default. On Windows environments, use PowerShell-compatible syntax. Quote paths containing spaces on all platforms.
 - **Artifact Management (Rule 05_6):** ALL generated reports, specs, or logs MUST be stored in the appropriate `reports/{skill}/` directory with a timestamped filename (e.g., `{date}-{slug}.md`).
 
@@ -28,7 +28,7 @@ Do NOT report success unless verification step has passed with zero errors.
 
 - **Micro-tasking**: Break complex operations into atomic units verifiable with a single deliverable.
 - **Validation-Driven**: No subtask is complete without an automated verification (test case or shell check).
-- **Structured Output**: ALWAYS prefer structured JSON output matching the skill's defined schema.
+- **Structured Output**: For agent-to-agent handoffs, use the handoff file contract. For user-facing responses, always use human-readable format.
 - **Confidence Rating**: Include a `confidence` field (`high | medium | low`) in every output to indicate the certainty of the result.
 
 ---

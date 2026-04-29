@@ -55,6 +55,9 @@ Presenting the plan is not enough — explicit "yes" required.
 - **Idempotency**: MUST ensure all migration steps can be re-run safely if interrupted.
 
 # Output
+
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

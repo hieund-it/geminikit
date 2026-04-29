@@ -81,6 +81,8 @@ Implement mobile screens, components, native integrations, and navigation flows 
 - **Offline First:** Cache critical data with AsyncStorage or MMKV; handle network errors gracefully.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

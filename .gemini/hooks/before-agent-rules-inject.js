@@ -44,8 +44,9 @@ function getActivePlanContext(cwd) {
   try {
     const plansDir = path.join(cwd, 'plans');
     if (!fs.existsSync(plansDir)) return '';
-    const dirs = fs.readdirSync(plansDir)
-      .filter(d => fs.statSync(path.join(plansDir, d)).isDirectory());
+    const dirs = fs.readdirSync(plansDir, { withFileTypes: true })
+      .filter(d => d.isDirectory())
+      .map(d => d.name);
     for (const dir of dirs.sort().reverse()) {
       const planFile = path.join(plansDir, dir, 'plan.md');
       if (!fs.existsSync(planFile)) continue;
@@ -98,6 +99,12 @@ async function main() {
       `- YAGNI · KISS · DRY — no speculative abstractions`,
       `- Max 200 LOC per file — split if exceeded`,
       `- kebab-case for JS/TS/Python/shell filenames`,
+      ``,
+      `## Output Format (STRICT)`,
+      `- NEVER output raw JSON to the user — not in code blocks, not inline`,
+      `- JSON is ONLY for agent-to-agent handoff files written to disk`,
+      `- Structured data → prose, numbered list, or table`,
+      `- If structure must be shown → use plain "key: value" pairs or YAML`,
       planCtx ? `\n## Active Plan\n${planCtx}` : null,
     ].filter(s => s !== null && s !== undefined).join('\n');
 

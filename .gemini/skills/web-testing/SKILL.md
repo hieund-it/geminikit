@@ -82,6 +82,8 @@ Write comprehensive, maintainable tests that verify correctness, prevent regress
 - **Performance Baselines:** k6 tests MUST define thresholds for p95 response time and error rate.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 ```json
 {
   "status": "completed | failed | blocked",

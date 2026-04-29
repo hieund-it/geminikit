@@ -48,10 +48,12 @@ async function installNodePackages(targetDir) {
 
   const s = createSpinner()
   s.start('Installing Node packages...')
+  const isWin = process.platform === 'win32'
   const result = spawnSync('npm', ['install', '--quiet'], {
     cwd: targetDir,
     encoding: 'utf8',
-    timeout: 300000
+    timeout: 300000,
+    shell: isWin,
   })
   if (result.error) throw new Error(`npm spawn error: ${result.error.message}`)
   if (result.status !== 0) throw new Error(result.stderr || 'npm install failed')
@@ -97,9 +99,16 @@ async function setupEnvInteractively(targetDir) {
       if (newContent !== content) log.warn('.env partially updated — cancelled mid-way')
       break
     }
-    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const regex = new RegExp(`^${escapedKey}=.*`, 'm')
-    newContent = newContent.replace(regex, `${key}=${value ?? currentValue}`)
+    let regex
+    try {
+      const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      regex = new RegExp(`^${escapedKey}=.*`, 'gm')
+    } catch (e) {
+      log.warn(`Skipping key '${key}': invalid regex — ${e.message}`)
+      continue
+    }
+    const sanitizedValue = (value ?? currentValue).replace(/[\r\n]/g, '')
+    newContent = newContent.replace(regex, `${key}=${sanitizedValue}`)
   }
 
   await fse.writeFile(envPath, newContent)
@@ -202,6 +211,20 @@ module.exports = async function init() {
     if (isCancel(shouldContinue) || !shouldContinue) {
       cancel('Initialization cancelled. Your files were not changed.')
       process.exit(0)
+    }
+
+    // Guard against symlink attacks before removal
+    const lstat = fse.lstatSync(geminiTarget)
+    if (lstat.isSymbolicLink()) {
+      log.error('.gemini/ is a symlink — cannot safely remove. Remove it manually first.')
+      process.exit(1)
+    }
+    const realCwd = fse.realpathSync(process.cwd())
+    // Use realpathSync on the target too so symlinked CWDs don't cause false positives
+    const realTarget = fse.realpathSync(geminiTarget)
+    if (!realTarget.startsWith(realCwd + path.sep)) {
+      log.error('.gemini/ resolves outside the project directory — cannot safely remove.')
+      process.exit(1)
     }
 
     log.info('Removing existing .gemini/ to reinitialize...')

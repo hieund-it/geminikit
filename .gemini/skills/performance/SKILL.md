@@ -67,6 +67,8 @@ Audit web application performance across Core Web Vitals, JavaScript bundle size
 - MUST return `UNSUPPORTED_FRAMEWORK` if framework is specified but not in supported list.
 
 # Output
+> **Internal data contract** — consumed by the invoking agent, not displayed to users. Agent formats user-facing output per `04_output.md`.
+
 
 ```json
 {
