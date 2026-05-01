@@ -25,8 +25,6 @@ DIRS=(
 
 # Core files that must exist for the framework to function
 CORE_FILES=(
-  "AGENT.md"
-  "system.md"
   "settings.json"
 )
 

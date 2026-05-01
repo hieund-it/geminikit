@@ -1,5 +1,5 @@
 'use strict';
-// sync-registry.js — reads SKILL.md files and updates REGISTRY.md + AGENT.md
+// sync-registry.js — reads SKILL.md files and updates REGISTRY.md
 // Pure Node.js, no external deps. Run from project root: node .gemini/scripts/sync-registry.js
 
 const fs = require('fs');
@@ -8,7 +8,6 @@ const path = require('path');
 const GEMINI = path.join(process.cwd(), '.gemini');
 const SKILLS_DIR = path.join(GEMINI, 'skills');
 const REGISTRY_FILE = path.join(GEMINI, 'REGISTRY.md');
-const AGENT_FILE = path.join(GEMINI, 'AGENT.md');
 
 function parseFrontmatter(content) {
   const m = content.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---/);
@@ -71,21 +70,9 @@ for (const s of skills) {
 let skillReg = '| Skill | File | Modes | Use for |\n|-------|------|-------|---------|\n';
 for (const s of skills) skillReg += `| ${s.dir} | \`.gemini/skills/${s.dir}/SKILL.md\` | ${s.modes} | ${s.description} |\n`;
 
-// AGENT.md command table
-let cmdAgent = '| Command | Agent | Mode flags |\n|---------|-------|------------|\n';
-for (const s of skills) cmdAgent += `| \`${s.invokedVia}\` | ${s.agent} | \`${esc(s.flags)}\` |\n`;
-
-// AGENT.md skill routing
-let skillRouting = '';
-for (const s of skills) skillRouting += `- \`${s.dir}/SKILL.md\` — ${s.description}\n`;
-
 updateFile(REGISTRY_FILE, [
   ['<!-- GK_COMMAND_TABLE_START -->', '<!-- GK_COMMAND_TABLE_END -->', cmdReg],
   ['<!-- GK_SKILL_REGISTRY_START -->', '<!-- GK_SKILL_REGISTRY_END -->', skillReg],
-]);
-updateFile(AGENT_FILE, [
-  ['<!-- GK_COMMAND_TABLE_START -->', '<!-- GK_COMMAND_TABLE_END -->', cmdAgent],
-  ['<!-- GK_SKILL_ROUTING_START -->', '<!-- GK_SKILL_ROUTING_END -->', skillRouting],
 ]);
 
 console.log(`✓ Registry synced: ${skills.length} skills`);

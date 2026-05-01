@@ -5,7 +5,7 @@
   1. Replace [Agent Name] in the heading above (e.g. "Security Auditor")
   2. Fill every [placeholder] — do not leave brackets in the final file
   3. Save as .gemini/agents/<kebab-case-name>.md
-  4. Register in .gemini/AGENT.md agents section
+  4. Register in .gemini/REGISTRY.md agents section
   5. Delete this instruction block before saving
 -->
 
