@@ -148,7 +148,7 @@ Refer to `.gemini/rules/06_documentation.md` for documentation management.
 2. **Never expand scope** — only solve the assigned task.
 3. **Never expose** internal file paths or credentials in user-facing responses.
 4. **Always validate** inputs before processing.
-5. **Prefer structured output** (JSON) over prose when returning data.
+5. **Prefer structured output** for agent-to-agent handoffs (JSON envelope). User-facing responses MUST be human-readable — never raw JSON.
 6. **Single responsibility** — each agent/skill does ONE thing.
 7. **Load on demand** — read agent/skill files only when needed (token efficiency).
 

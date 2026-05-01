@@ -60,7 +60,15 @@ function parsePlan(filePath) {
         status: completedCount === totalCount && totalCount > 0 ? 'completed' : (completedCount > 0 ? 'ongoing' : 'not_started')
     };
 
-    console.log(JSON.stringify(result, null, 2));
+    const lines = [
+        `Current task: ${result.currentTask ? `"${result.currentTask.description}"` : 'none'}`,
+        `Progress: ${result.progress.completed}/${result.progress.total} tasks (${result.progress.percentage}%)`,
+        `Status: ${result.status}`,
+    ];
+    if (result.currentTask) {
+        lines.push(`Line index: ${result.currentTask.lineIndex}`);
+    }
+    console.log(lines.join('\n'));
 }
 
 const planFilePath = process.argv[2];

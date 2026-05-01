@@ -28,7 +28,7 @@ This file is automatically managed by `sync-registry.js`. ALWAYS reference this 
 | `/gk-docs-seeker [--latest \| --example \| --compare] <args>` | researcher | docs-seeker | Fetch and summarize external documentation for any library, API, or framework. Use to keep project knowledge updated without leaving the terminal. |
 | `agent-only (documenter)` | documenter | document | Generate accurate technical documentation from provided code content and context. |
 | `/gk-email [--setup \| --template \| --test] <args>` | developer | email | Setup transactional email system with templates, queue integration, and delivery monitoring |
-| `/gk-export-session` | developer | export-session | Exports the current session state and conversation summary for continuation. |
+| `/gk-export-session` | developer | export-session | Exports the current session state and conversation summary for continuation in a new session. |
 | `/gk-feature-flags [--setup \| --create \| --rollout] <args>` | developer | feature-flags | Setup feature flag system, create flags, and manage gradual rollouts and A/B experiments |
 | `/gk-frontend [--component \| --page \| --api-route \| --optimize] <args>` | developer | frontend | Build React/Next.js/TypeScript frontends with modern patterns. Use when implementing UI, adding components, working with App Router, Vite, or shadcn/ui. |
 | `agent-only (developer) [--dry-run] <args>` | developer | git | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
@@ -48,10 +48,11 @@ This file is automatically managed by `sync-registry.js`. ALWAYS reference this 
 | `/gk-performance [--audit \| --bundle \| --vitals] <args>` | reviewer | performance | Audit Core Web Vitals, bundle size, and runtime performance — then recommend actionable optimizations |
 | `/gk-plan [--fast \| --deep \| --parallel \| --from <path> \| --dry-run \| --phase <id>] <args>` | planner | plan | Break down a complex task into structured, executable subtasks with dependencies and effort estimates. |
 | `/gk-preview [--explain \| --diagram \| --ascii \| --slides] <args>` | documenter | preview | Generate visual explanations of code, architecture, or logic. Use to visualize complex systems, generate diagrams, or create slide-style presentations. |
+| `agent-only (developer, git workflow) [--strict \| --quick] <args>` | developer | quality-gate | Enforce quality gate before git commit: run tests and code review, block if score < 7 or tests fail. |
 | `/gk-refactor [--pattern \| --modernize \| --cleanup] <args>` | maintenance | refactor | Improve code structure and maintainability without changing external behavior |
 | `agent-only (planner, orchestrator)` | planner | research | Gather, compare, and synthesize technical options into a structured recommendation report. |
 | `/gk-retro [--sprint \| --weekly \| --project] <args>` | planner | retro | Run sprint retrospectives with git metrics analysis. Use when reviewing sprint/week performance, identifying patterns, or generating retrospective reports. |
-| `/gk-review [--strict \| --quick \| --api \| --api-generate \| --api-validate \| --api-serve \| --security \| --perf] <args>` | reviewer | review | Comprehensive review of code quality, API design, security, and performance. Includes OpenAPI 3.1 spec generation, validation, and UI serving. |
+| `/gk-review [--strict \| --quick \| --api \| --api-generate \| --api-validate \| --api-serve \| --security \| --perf \| --post-fix \| --post-implement \| --post-test \| --post-refactor] <args>` | reviewer | review | Comprehensive review of code quality, API design, security, and performance. Includes OpenAPI 3.1 spec generation, validation, and UI serving. |
 | `/gk-security-scan [--owasp \| --secrets \| --sast \| --report] <args>` | security | security-scan | Scan code for OWASP Top 10 vulnerabilities, secrets exposure, and SAST issues. Use when auditing code security, checking for injection flaws, or detecting leaked credentials. |
 | `/gk-sequential-thinking [--depth \| --assumption \| --refine] <args>` | architect | sequential-thinking | Structured step-by-step analysis for complex problems. Use when thinking through logic, analyzing interdependencies, or solving ambiguous technical challenges. |
 | `/gk-create [--skill \| --agent] <args>` | developer | skill-creator | Generate agent and skill files following Gemini Kit templates. Use when creating a new skill or /gk-* command. Use for building agent definitions or extending Gemini Kit. |
@@ -91,7 +92,7 @@ This file is automatically managed by `sync-registry.js`. ALWAYS reference this 
 | docs-seeker | `.gemini/skills/docs-seeker/SKILL.md` | — | Fetch and summarize external documentation for any library, API, or framework. Use to keep project knowledge updated without leaving the terminal. |
 | document | `.gemini/skills/document/SKILL.md` | — | Generate accurate technical documentation from provided code content and context. |
 | email | `.gemini/skills/email/SKILL.md` | — | Setup transactional email system with templates, queue integration, and delivery monitoring |
-| export-session | `.gemini/skills/export-session/SKILL.md` | — | Exports the current session state and conversation summary for continuation. |
+| export-session | `.gemini/skills/export-session/SKILL.md` | — | Exports the current session state and conversation summary for continuation in a new session. |
 | feature-flags | `.gemini/skills/feature-flags/SKILL.md` | — | Setup feature flag system, create flags, and manage gradual rollouts and A/B experiments |
 | frontend | `.gemini/skills/frontend/SKILL.md` | — | Build React/Next.js/TypeScript frontends with modern patterns. Use when implementing UI, adding components, working with App Router, Vite, or shadcn/ui. |
 | git | `.gemini/skills/git/SKILL.md` | — | Execute git operations: commit, branch, status, PR prep, and conflict detection. |
@@ -111,6 +112,7 @@ This file is automatically managed by `sync-registry.js`. ALWAYS reference this 
 | performance | `.gemini/skills/performance/SKILL.md` | — | Audit Core Web Vitals, bundle size, and runtime performance — then recommend actionable optimizations |
 | plan | `.gemini/skills/plan/SKILL.md` | — | Break down a complex task into structured, executable subtasks with dependencies and effort estimates. |
 | preview | `.gemini/skills/preview/SKILL.md` | — | Generate visual explanations of code, architecture, or logic. Use to visualize complex systems, generate diagrams, or create slide-style presentations. |
+| quality-gate | `.gemini/skills/quality-gate/SKILL.md` | — | Enforce quality gate before git commit: run tests and code review, block if score < 7 or tests fail. |
 | refactor | `.gemini/skills/refactor/SKILL.md` | — | Improve code structure and maintainability without changing external behavior |
 | research | `.gemini/skills/research/SKILL.md` | — | Gather, compare, and synthesize technical options into a structured recommendation report. |
 | retro | `.gemini/skills/retro/SKILL.md` | — | Run sprint retrospectives with git metrics analysis. Use when reviewing sprint/week performance, identifying patterns, or generating retrospective reports. |

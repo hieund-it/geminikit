@@ -42,9 +42,25 @@ Run automated checks against all registered agents and skills to ensure adherenc
 ## Steps
 1. Scan `.gemini/skills/*/SKILL.md` — check required frontmatter fields (name, agent, description).
 2. Run `node .gemini/scripts/sync-registry.js` to verify REGISTRY.md sync.
-3. Save the full JSON report to `reports/health-check/{YYMMDD-HHmm}-health-report.json`.
-4. Summarize the results (total skills, pass/fail counts, registry sync status).
-5. If failures exist, list the critical non-compliance issues.
+3. Save the full report as **Markdown** to `reports/health-check/{YYMMDD-HHmm}-health-report.md`. Format:
+   ```markdown
+   # Health Check Report — {YYMMDD-HHmm}
+
+   ## Summary
+   | Total Skills | Passed | Failed | Registry Sync |
+   |-------------|--------|--------|---------------|
+   | {N}         | {P}    | {F}    | ✓ synced / ✗ out of sync |
+
+   ## Issues
+   - ✗ {skill-name}: {exact rule or field missing}
+   - ...
+
+   ## Passed
+   - ✓ {skill-name}
+   - ...
+   ```
+4. Present results to user as a human-readable summary (counts, key issues).
+5. If failures exist, list the critical non-compliance issues in plain text.
 
 # Output
 
@@ -53,9 +69,9 @@ Run automated checks against all registered agents and skills to ensure adherenc
 ```json
 {
   "status": "completed | failed | blocked",
-  "format": "json",
+  "format": "markdown",
   "result": {
-    "report_path": "reports/health-check/{YYMMDD-HHmm}-health-report.json",
+    "report_path": "reports/health-check/{YYMMDD-HHmm}-health-report.md",
     "summary": {
       "total_skills": "number",
       "passed": "number",
@@ -73,9 +89,9 @@ Run automated checks against all registered agents and skills to ensure adherenc
 ```json
 {
   "status": "completed",
-  "format": "json",
+  "format": "markdown",
   "result": {
-    "report_path": "reports/health-check/260324-1200-health-report.json",
+    "report_path": "reports/health-check/260324-1200-health-report.md",
     "summary": { "total_skills": 25, "passed": 23, "failed": 2 },
     "registry_sync": "pass",
     "critical_issues": ["Skill 'git' missing PowerShell rule", "Skill 'analyze' exceeds 200 lines"]
