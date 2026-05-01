@@ -27,41 +27,21 @@
 - **Input Processing:** All user inputs MUST be translated to English internally before starting the reasoning or execution phase.
 - **Internal Logic:** All reasoning, planning, and intermediate steps MUST be conducted in English.
 
-## 6. Project Type Detection
+## 6. Project Type Confirmation
 
-**When to run:** Start of first session on a project (no `project-type` line found in `.gemini/memory/pinned.md`).  
-**Purpose:** Determine which section of `09_product-rules.md` to apply. Run once; stored in `pinned.md` (never pruned).
+**Trigger:** The `session-start` hook injects a `## ⚠️ PROJECT TYPE CONFIRMATION NEEDED`,
+`## ⚠️ PROJECT TYPE AMBIGUOUS`, or `## ⚠️ PROJECT TYPE UNKNOWN` block at session start.
 
-### Step 1 — Check Pinned Memory
-Read `.gemini/memory/pinned.md` → look for a line matching `Project type: <type>` under `## Project Context`.
-- **Found** → extract type, apply matching `[<type>]` section from `09_product-rules.md`. **Stop.**
-- **Not found** → proceed to Step 2.
+**Action:** Execute the instructions in the block exactly:
+1. Ask the user the specified confirmation question.
+2. On answer, write to `.gemini/memory/pinned.md` under `## Project Context`:
+   ```
+   - Project type: <confirmed-type>
+   ```
+3. Apply `[<confirmed-type>]` section from `09_product-rules.md` for this session.
+4. Do not ask again in the same session after confirmation.
 
-### Step 2 — Scan Codebase Signals (project root only)
-
-| Type | Detection signals — check at **project root** |
-|------|------------------------------------------------|
-| `mobile` | `pubspec.yaml` (Flutter) OR `metro.config.js`/`react-native.config.js` OR both `android/` and `ios/` dirs |
-| `web` | `next.config.*` OR `nuxt.config.*` OR `astro.config.*` OR (`vite.config.*` AND react/vue in `package.json` deps AND no `src/routes/`) |
-| `backend` | `src/routes/` or `src/controllers/` OR express/fastify/hono/gin/chi dep OR (`main.py` AND fastapi in `requirements.txt`/`pyproject.toml`) OR `main.go` with no `cmd/` |
-| `tool` | `bin/` dir at project root OR `commander`/`yargs`/`cobra`/`click` dep OR `cmd/` dir (Go) |
-
-- **Exclusions for `web`:** Electron (`electron` dep), Tauri (`tauri` dep), Storybook-only (`storybook` dep + no page routes) → do NOT classify as `web`; treat as 0-match and ask user.
-- 2+ signals → high confidence; still confirm with user.
-- Multiple types match → list all; ask user to pick **primary** (e.g. fullstack monorepo — one type per session context).
-- 0 signals → ask user directly; no guessing.
-
-### Step 3 — Confirm & Save
-Ask user: *"I detected this as a **[type]** project (signals: X, Y). Is that correct?"*
-
-- **User confirms** → write to `.gemini/memory/pinned.md` under `## Project Context`:
-  ```
-  - Project type: <type>
-  ```
-  Apply `[<type>]` section from `09_product-rules.md`. Done.
-
-- **User rejects** → ask: *"What is the correct project type? (mobile / web / backend / tool)"*  
-  On answer, write the corrected type to `pinned.md` and apply matching section. Done.
+If no `⚠️` block is injected → type is already set in `pinned.md` → apply silently.
 
 ---
 > **Reminder:** YAGNI + KISS + No Assumptions + Single Responsibility. If missing data → ask. If outside scope → refuse.
