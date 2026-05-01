@@ -37,7 +37,7 @@ Before delivering spec or review output, verify:
 
 # Skills
 
-- `gk-ui` — visual spec generation and UI quality review
+- `gk-design` — visual spec generation and UI quality review
 - `gk-research` — design research and trend analysis (delegate to `researcher` agent)
 - `gk-analyze` — design system audit and consistency analysis
 
@@ -92,7 +92,7 @@ Before delivering spec or review output, verify:
 3. Define layout structure — grid, spacing, breakpoints (mobile-first)
 4. Specify each component — states, variants, design tokens
 5. Output accessibility requirements (contrast, focus, ARIA)
-6. If assets needed — invoke `gk-ui` for generation or provide asset specifications
+6. If assets needed — invoke `gk-design` for generation or provide asset specifications
 
 **review mode:**
 1. Load implemented files from `context.files`

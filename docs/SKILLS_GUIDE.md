@@ -9,7 +9,7 @@ Skills are atomic units of capability that Agents use to perform specific tasks.
 - **gk-audit**: Audits dependencies and static code for security vulnerabilities and license compliance.
 - **gk-compare-logic**: Compares business logic between two systems (legacy vs. new).
 - **gk-review**: Comprehensive code review with scoring and actionable feedback.
-- **gk-ui**: Generates UI specifications and validates implementation against design.
+- **gk-design**: Generates UI specifications and validates implementation against design.
 
 ### Development & Maintenance
 - **gk-bug-fixer**: Automatically analyzes error logs to identify root causes and generates verified fixes.

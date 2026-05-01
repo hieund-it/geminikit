@@ -23,7 +23,7 @@ This document details the specialized agents within the Gemini Kit framework, th
 ## 3. Designer (`designer`)
 **Role:** UI/UX Designer
 **Specialization:** Visual specs and UI quality validation.
-**Key Skills:** `gk-ui`
+**Key Skills:** `gk-design`
 **Responsibility:**
 - Produces precise visual specifications pre-implementation.
 - Validates implemented UI against design standards.

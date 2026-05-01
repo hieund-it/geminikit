@@ -59,7 +59,7 @@ This file is automatically managed by `sync-registry.js`. ALWAYS reference this 
 | `agent-only (developer)` | developer | sql | Optimize a SQL query for performance while preserving its logical result. |
 | `agent-only (orchestrator)` | (self) | summarize | Compress context into structured memory using project-specific templates (execution, long-term, short-term). |
 | `/gk-team [--spawn \| --coordinate \| --parallel \| --merge] <args>` | developer | team | Orchestrate multi-agent teams for parallel development. Use when spawning parallel agents, setting up file ownership boundaries, coordinating complex multi-session workflows. |
-| `/gk-design [--spec \| --review \| --gen \| --auto] <args>` | designer | ui | Generate precise visual component specs or review implemented UI for design quality and accessibility compliance. |
+| `/gk-design [--spec \| --review \| --gen \| --auto] <args>` | designer | design | Generate precise visual component specs or review implemented UI for design quality and accessibility compliance. |
 | `/gk-verify (or "agent-only")` | developer | verify | Execute Python code in sandbox to verify fixes, test logic, or validate transformations. |
 | `/gk-watzup [--summary \| --plan] <args>` | developer | watzup | Review recent changes and wrap up the current work session. Use when finishing a coding session, summarizing work done, or planning next steps. |
 | `/gk-web-testing [--e2e \| --unit \| --perf \| --coverage] <args>` | tester | web-testing | Write and run Playwright E2E, Vitest unit, and k6 performance tests. Use when adding test coverage, writing E2E scenarios, or load testing APIs. |
@@ -123,7 +123,7 @@ This file is automatically managed by `sync-registry.js`. ALWAYS reference this 
 | sql | `.gemini/skills/sql/SKILL.md` | — | Optimize a SQL query for performance while preserving its logical result. |
 | summarize | `.gemini/skills/summarize/SKILL.md` | — | Compress context into structured memory using project-specific templates (execution, long-term, short-term). |
 | team | `.gemini/skills/team/SKILL.md` | — | Orchestrate multi-agent teams for parallel development. Use when spawning parallel agents, setting up file ownership boundaries, coordinating complex multi-session workflows. |
-| ui | `.gemini/skills/ui/SKILL.md` | — | Generate precise visual component specs or review implemented UI for design quality and accessibility compliance. |
+| design | `.gemini/skills/design/SKILL.md` | — | Generate precise visual component specs or review implemented UI for design quality and accessibility compliance. |
 | verify | `.gemini/skills/verify/SKILL.md` | — | Execute Python code in sandbox to verify fixes, test logic, or validate transformations. |
 | watzup | `.gemini/skills/watzup/SKILL.md` | — | Review recent changes and wrap up the current work session. Use when finishing a coding session, summarizing work done, or planning next steps. |
 | web-testing | `.gemini/skills/web-testing/SKILL.md` | — | Write and run Playwright E2E, Vitest unit, and k6 performance tests. Use when adding test coverage, writing E2E scenarios, or load testing APIs. |

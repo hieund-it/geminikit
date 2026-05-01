@@ -34,5 +34,5 @@ Add one line to skill's `# Rules` section:
 - .gemini/skills/debug/SKILL.md
 - .gemini/skills/analyze/SKILL.md
 - .gemini/skills/plan/SKILL.md
-- .gemini/skills/ui/SKILL.md
+- .gemini/skills/design/SKILL.md
 - .gemini/skills/brainstorm/SKILL.md

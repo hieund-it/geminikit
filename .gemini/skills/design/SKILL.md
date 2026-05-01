@@ -1,5 +1,5 @@
 ---
-name: gk-ui
+name: gk-design
 agent: designer
 version: "1.1.0"
 tier: optional
