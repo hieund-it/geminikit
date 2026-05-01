@@ -1,8 +1,8 @@
 # 09_PRODUCT: Product-Specific Development Rules
 
-> **Usage:** At session start, read `long-term.md` for an entry with tag `project-type`.
+> **Usage:** At session start, read `.gemini/memory/pinned.md` for a `Project type: <type>` line under `## Project Context`.
 > Apply ONLY the matching `[type]` section below. If no entry found, follow the detection
-> protocol in `01_core.md § 6` to identify the type, confirm with user, and save to memory.
+> protocol in `01_core.md § 6` to identify the type, confirm with user, and save to `pinned.md`.
 
 ---
 
@@ -20,6 +20,7 @@
 - Feature-first folder structure: `lib/features/{feature}/`
 - Repository pattern for data access; inject via providers/hooks
 - Platform-specific code: isolate behind abstract interfaces
+- **Secrets:** Never embed API keys in source — use build-time env injection (`--dart-define` for Flutter, `react-native-config` for RN) or a secrets vault
 
 ### Testing
 - Flutter: widget tests + unit tests; use `flutter_test`, `mocktail`; golden file tests for critical UI components (`matchesGoldenFile`)
@@ -86,6 +87,7 @@
 - Never trust raw request body — strip unknown fields
 - Auth middleware on all protected routes; verify JWT signature + expiry
 - Rate-limit public endpoints; stricter limits on auth routes
+- Configure CORS explicitly — never use wildcard `*` in production for credentialed requests
 
 ### Database
 - Use transactions for multi-step writes
@@ -115,6 +117,7 @@
 - Node.js: `commander` or `yargs`; Python: `click` or `argparse`; Go: `cobra`
 - Always implement `--help` / `-h` (auto-handled by most frameworks)
 - Provide `--version` flag returning semver string
+- Detect CLI entry: `bin` field in `package.json` (Node), `console_scripts` in `pyproject.toml` (Python), `cmd/` dir (Go) — not shebang detection
 
 ### Standard Flags (implement consistently)
 | Flag | Behavior |
