@@ -116,29 +116,6 @@ async function setupEnvInteractively(targetDir) {
 }
 
 /**
- * Scans skills/ directory and returns a Set of skill names marked as optional (tier: optional).
- * These are skipped during gk init — users can install them later with gk install <skill>.
- */
-async function getOptionalSkillNames(geminiSource) {
-  const skillsDir = path.join(geminiSource, 'skills')
-  if (!(await fse.pathExists(skillsDir))) return new Set()
-
-  const optional = new Set()
-  for (const entry of await fse.readdir(skillsDir)) {
-    const skillMd = path.join(skillsDir, entry, 'SKILL.md')
-    if (!(await fse.pathExists(skillMd))) continue
-    try {
-      const content = await fse.readFile(skillMd, 'utf8')
-      const match = content.match(/^tier:\s*(\w+)/m)
-      if (match && match[1] === 'optional') optional.add(entry)
-    } catch (err) {
-      log.warn(`Could not read skill tier for '${entry}': ${err.message} — treating as core`)
-    }
-  }
-  return optional
-}
-
-/**
  * The main initialization logic, exported for reuse by 'update' command.
  * Runs 3 steps: copy files → install Node packages → setup env.
  */
@@ -147,13 +124,9 @@ async function performInit(geminiSource, geminiTarget, targetDir, geminiMdSource
 
   try {
     // Step 1: Copy framework files
-    const optionalSkills = await getOptionalSkillNames(geminiSource)
     const filterFn = (src) => {
       const rel = path.relative(geminiSource, src)
       if (rel.startsWith('memory') || rel.startsWith('runtime') || path.basename(src) === '.env') return false
-      // Skip optional skills — available via gk install <skill>
-      const parts = rel.split(path.sep)
-      if (parts[0] === 'skills' && parts.length >= 2 && optionalSkills.has(parts[1])) return false
       return true
     }
     log.info('[1/3] Copying framework files...')
